@@ -1,0 +1,12 @@
+@import url("https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@100;400&display=swap");
+
+.appContainer {
+    position: absolute;
+    font-family: "Roboto Mono", monospace;
+    color: white;
+    width: 100vw;
+    min-height: 100vh;
+    height: fit-content;
+    background-color: rgb(57, 57, 57);
+    padding-bottom: 50px;
+  }

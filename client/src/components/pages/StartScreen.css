@@ -1,0 +1,46 @@
+@import url("https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@100;400&display=swap");
+
+.StartScreen-container {
+    position: absolute;
+    font-family: "Roboto Mono", monospace;
+    color: white;
+    top: 20px;
+    height: 80px;
+    width: calc(100vw - 40px);
+    padding: 20px;
+    background-color: rgb(57, 57, 57);
+}
+
+.StartScreen-login {
+    position: absolute;
+    right: 100px;
+    top: 20px;
+    opacity: 100%;
+    z-index: 10;
+    background-color: black;
+}
+
+.StartScreen-body {
+    position: absolute;
+    text-align: center;
+    vertical-align: middle;
+    margin: auto;
+    width: calc(100vw - 40px);
+    top: 15vw;
+}
+
+.StartScreen-button {
+    font-family: "Roboto Mono", monospace;
+    color: black;
+    font-size: 24px;
+    height: 50px;
+    font-weight: 1000;
+    min-width: 150px;
+    border-radius: 50px;
+    margin: 1.25vw 0vw;
+    cursor: pointer;
+}
+
+.textAlign {
+    text-align: center;
+}

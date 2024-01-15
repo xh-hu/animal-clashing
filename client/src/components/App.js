@@ -4,9 +4,13 @@ import { Routes, Route } from "react-router-dom";
 import jwt_decode from "jwt-decode";
 
 import NotFound from "./pages/NotFound.js";
-import Skeleton from "./pages/Skeleton.js";
+// import Skeleton from "./pages/Skeleton.js";
+import StartScreen from "./pages/StartScreen.js";
+import Help from "./pages/Help.js";
+import LobbyFind from "./pages/LobbyFind.js";
 
 import "../utilities.css";
+import "./App.css";
 
 import { socket } from "../client-socket.js";
 
@@ -43,11 +47,13 @@ const App = () => {
   };
 
   return (
+    <>
+    <div className="appContainer">
     <Routes>
       <Route
         path="/"
         element={
-          <Skeleton
+          <StartScreen
             path="/"
             handleLogin={handleLogin}
             handleLogout={handleLogout}
@@ -55,8 +61,22 @@ const App = () => {
           />
         }
       />
+      <Route
+        path="/help"
+        element={
+          <Help />
+        }
+      />
+      <Route
+        path="/lobbyfind"
+        element={
+          <LobbyFind />
+        }
+      />
       <Route path="*" element={<NotFound />} />
     </Routes>
+    </div>
+    </>
   );
 };
 
