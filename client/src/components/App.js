@@ -15,6 +15,7 @@ import "./App.css";
 import { socket } from "../client-socket.js";
 
 import { get, post } from "../utilities";
+import GameRound from "./pages/GameRound.js";
 
 /**
  * Define the "App" component
@@ -71,6 +72,12 @@ const App = () => {
         path="/lobbyfind"
         element={
           <LobbyFind />
+        }
+      />
+      <Route
+        path="/gameround"
+        element={
+          <GameRound />
         }
       />
       <Route path="*" element={<NotFound />} />

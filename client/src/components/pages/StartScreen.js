@@ -6,7 +6,7 @@ import "../../utilities.css";
 import "./StartScreen.css";
 
 //TODO: REPLACE WITH YOUR OWN CLIENT_ID
-const GOOGLE_CLIENT_ID = "FILL ME IN";
+const GOOGLE_CLIENT_ID = "403610806352-6todi6649i18j0fn8sauqk7bpgsqghru.apps.googleusercontent.com";
 
 const StartScreen = ({ userId, handleLogin, handleLogout }) => {
   return (
