@@ -18,7 +18,6 @@ const StartScreen = ({ userId, handleLogin, handleLogout }) => {
                 googleLogout();
                 handleLogout();
             }}
-            style={{width: 50}}
             className="StartScreen-login"
             >
             Logout
@@ -38,16 +37,19 @@ const StartScreen = ({ userId, handleLogin, handleLogout }) => {
         </GoogleOAuthProvider>
         <div className="StartScreen-body">
             <h1>welcome to game!</h1>
-            <div className="textAlign">
-            <Link to="/lobbyfind">
-                <button className="StartScreen-button">PLAY</button>
-            </Link>
-            </div>
-            <div className="textAlign">
-            <Link to="/help">
-                <button className="StartScreen-button">HELP</button>
-            </Link>
-            </div>
+            {userId ? <>
+                <div className="textAlign">
+                <Link to="/lobbyfind">
+                    <button className="StartScreen-button">PLAY</button>
+                </Link>
+                </div>
+                <div className="textAlign">
+                <Link to="/help">
+                    <button className="StartScreen-button">HELP</button>
+                </Link>
+                </div>
+            </> : "please sign in to continue <3"
+            }
         </div>
     </div>
   );

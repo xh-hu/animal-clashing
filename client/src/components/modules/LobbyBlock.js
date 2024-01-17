@@ -1,14 +1,16 @@
 import React, { useState, useEffect } from "react";
-import { get, post } from "../../utilities.js";
+import { Link } from "react-router-dom";
 
 import "./LobbyBlock.css";
 
 function LobbyBlock(props) {
-    const {} = props;
+    const {lobby, addToLobby} = props;
     return (
-        <div className="LobbyBlock-container">
-            Lobby Test
-        </div>
+        <Link to="/lobby">
+            <button onClick={() => {addToLobby(lobby)}} className="LobbyBlock-container">
+                Lobby {lobby.name}: {lobby.users.length}/4
+            </button>
+        </Link>
     );
 }
 

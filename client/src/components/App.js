@@ -8,6 +8,8 @@ import NotFound from "./pages/NotFound.js";
 import StartScreen from "./pages/StartScreen.js";
 import Help from "./pages/Help.js";
 import LobbyFind from "./pages/LobbyFind.js";
+import GameRound from "./pages/GameRound.js";
+import LobbyWait from "./pages/LobbyWait.js";
 
 import "../utilities.css";
 import "./App.css";
@@ -15,35 +17,75 @@ import "./App.css";
 import { socket } from "../client-socket.js";
 
 import { get, post } from "../utilities";
-import GameRound from "./pages/GameRound.js";
 
 /**
  * Define the "App" component
  */
 const App = () => {
-  const [userId, setUserId] = useState(undefined);
+  const [user, setUser] = useState(undefined);
+  const [lobbies, setLobbies] = useState(null);
+  const [myLobby, setMyLobby] = useState(null);
 
   useEffect(() => {
     get("/api/whoami").then((user) => {
-      if (user._id) {
+      if (user) {
         // they are registed in the database, and currently logged in.
-        setUserId(user._id);
+        setUser(user);
       }
     });
   }, []);
+
+  useEffect(() => {
+    if (user) {
+      get("/api/alllobbies").then((data) => {
+        setLobbies(data.filter((lobby) => (lobby.users.length > 0)));
+      });
+      get("/api/mylobby", {user: user}).then((data) => {
+        setMyLobby(data);
+      });
+    }
+  }, [])
+
+  function createLobby() {
+    post("/api/createlobby", {user: user}).then((lobby) => {
+      if (lobby) {
+        if (lobbies) {
+          const newLobbies = [...lobbies, lobby];
+          setLobbies(newLobbies);
+        } else {
+          setLobbies([lobby]);
+        }
+        setMyLobby(lobby);
+      }
+    })
+  }
+
+  function addToLobby(lobby) {
+    post("/api/addtolobby", {user: user, lobbyName: lobby.name}).then((updatedLobby) => {
+      if (updatedLobby) {
+        setMyLobby(updatedLobby);
+      }
+    })
+  }
+
+  function removeFromLobby(lobby) {
+    post("/api/removefromlobby", {user: user, lobbyName: lobby.name}).then((updateLobby) => {
+      setMyLobby(null);
+    })
+  }
 
   const handleLogin = (credentialResponse) => {
     const userToken = credentialResponse.credential;
     const decodedCredential = jwt_decode(userToken);
     console.log(`Logged in as ${decodedCredential.name}`);
     post("/api/login", { token: userToken }).then((user) => {
-      setUserId(user._id);
+      setUser(user);
       post("/api/initsocket", { socketid: socket.id });
     });
   };
 
   const handleLogout = () => {
-    setUserId(undefined);
+    setUser(undefined);
     post("/api/logout");
   };
 
@@ -58,7 +100,7 @@ const App = () => {
             path="/"
             handleLogin={handleLogin}
             handleLogout={handleLogout}
-            userId={userId}
+            userId={user ? user._id : null}
           />
         }
       />
@@ -71,7 +113,20 @@ const App = () => {
       <Route
         path="/lobbyfind"
         element={
-          <LobbyFind />
+          <LobbyFind 
+            lobbies={lobbies}
+            createLobby={createLobby}
+            addToLobby={addToLobby}
+          />
+        }
+      />
+      <Route
+        path="/lobby"
+        element={
+          <LobbyWait
+            myLobby={myLobby}
+            removeFromLobby={removeFromLobby}
+          />
         }
       />
       <Route

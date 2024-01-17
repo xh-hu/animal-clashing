@@ -13,11 +13,16 @@
 
 .StartScreen-login {
     position: absolute;
+    font-family: "Roboto Mono", monospace;
+    font-weight: 100px;
+    height: 40px;
+    width: 80px;
     right: 100px;
+    border-radius: 10px;
     top: 20px;
     opacity: 100%;
     z-index: 10;
-    background-color: black;
+    background-color: white;
 }
 
 .StartScreen-body {

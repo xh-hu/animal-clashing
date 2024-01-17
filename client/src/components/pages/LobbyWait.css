@@ -4,7 +4,7 @@
     text-align: center;
 }
 
-.LobbyFind-container {
+.LobbyWait-container {
     position: absolute;
     color: white;
     height: 80px;
@@ -16,7 +16,7 @@
     top: 3vw;
 }
 
-.LobbyFind-back {
+.LobbyWait-back {
     position: absolute;
     font-family: "Roboto Mono", monospace;
     color: black;
@@ -31,16 +31,15 @@
     z-index: 3;
 }
 
-.LobbyFind-box {
+.LobbyWait-box {
     height: 60vh;
     margin: 0vw 12vw;
     outline-style: solid;
     outline-color: white;
     border-radius: 50px;
-    overflow: scroll;
 }
 
-.LobbyFind-button {
+.LobbyWait-button {
     font-family: "Roboto Mono", monospace;
     color: black;
     font-size: 18px;
