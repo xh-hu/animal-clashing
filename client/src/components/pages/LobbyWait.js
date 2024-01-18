@@ -1,14 +1,16 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, redirect } from "react-router-dom";
 import UserBlock from "../modules/UserBlock";
 
-import "../../utilities.css";
 import "./LobbyWait.css";
 
+import { get, post } from "../../utilities";
+
 const LobbyWait = (props) => {
-    const {myLobby, removeFromLobby} = props;
+    const {myLobby, removeFromLobby, myState} = props;
     return (
         <>
+            
             <div className="textAlign">
             <Link to="/lobbyfind">
                 <button onClick={() => {removeFromLobby(myLobby)}} className="LobbyWait-back">BACK</button>
@@ -25,7 +27,9 @@ const LobbyWait = (props) => {
                         ) : "No users in lobby"}
                     </div>
                     <Link to="/gameround">
-                        <button className="LobbyWait-button">START</button>
+                        <button onClick={() => {
+                            post("/api/startgame", {lobby: myLobby});
+                        }} className="LobbyWait-button">START</button>
                     </Link>
                 </> : "You are not in a lobby yet! Please return to the main page"}
             </div>

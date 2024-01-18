@@ -4,10 +4,10 @@ import { get, post } from "../../utilities.js";
 import "./ItemDisplay.css";
 
 function ItemDisplay(props) {
-    const {} = props;
+    const {item} = props;
     return (
         <div className="ItemDisplay-container">
-            Item Test
+            {item.name}: {item.property}
         </div>
     );
 }

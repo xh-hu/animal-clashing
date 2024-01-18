@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Routes, Route } from "react-router-dom";
-
+import { Routes, Route, Navigate } from "react-router-dom";
 import jwt_decode from "jwt-decode";
 
 import NotFound from "./pages/NotFound.js";
@@ -23,8 +22,9 @@ import { get, post } from "../utilities";
  */
 const App = () => {
   const [user, setUser] = useState(undefined);
-  const [lobbies, setLobbies] = useState(null);
+  const [lobbies, setLobbies] = useState([]);
   const [myLobby, setMyLobby] = useState(null);
+  const [myState, setMyState] = useState(null);
 
   useEffect(() => {
     get("/api/whoami").then((user) => {
@@ -46,6 +46,88 @@ const App = () => {
     }
   }, [])
 
+  useEffect(() => {
+    socket.once("createLobby", (lobby) => {
+      console.log("Create lobby " + lobby.name);
+      setLobbies([...lobbies, lobby])
+      return () => {
+        socket.off("createLobby");
+      }
+    })
+  })
+
+  useEffect(() => {
+    socket.once("addToLobby", (lobby) => {
+      console.log("Add to lobby " + lobby.name);
+      let ind = -1;
+      for (let i = 0; i < lobbies.length; i++) {
+        if (lobbies[i].name === lobby.name) {
+          ind = i;
+          break;
+        }
+      }
+      if (ind !== -1) {
+        const tempList = [...lobbies.slice(0, ind), lobby, ...lobbies.slice(ind+1)];
+        setLobbies(tempList);
+      }
+      if (myLobby) {
+        if (myLobby.name === lobby.name) {
+          setMyLobby(lobby);
+        }
+      }
+      return () => {
+        socket.off("addToLobby");
+      }
+    })
+  })
+
+  useEffect(() => {
+    socket.once("removeFromLobby", (lobby) => {
+      if (lobby) {
+        console.log("Remove from lobby " + lobby.name);
+        let ind = -1;
+        for (let i = 0; i < lobbies.length; i++) {
+          if (lobbies[i].name === lobby.name) {
+            ind = i;
+            break;
+          }
+        }
+        if (ind !== -1) {
+          const tempList = [...lobbies.slice(0, ind), lobby, ...lobbies.slice(ind+1)];
+          setLobbies(tempList);
+        }
+        if (myLobby) {
+          if (myLobby.name === lobby.name) {
+            setMyLobby(lobby);
+          }
+        }
+        return () => {
+          socket.off("removeFromLobby");
+        }
+      }
+    })
+  })
+
+  useEffect(() => {
+    socket.once("startGame", (state) => {
+      console.log("Starting game!");
+      setMyState(state);
+      return () => {
+        socket.off("startGame");
+      }
+    })
+  })
+
+  useEffect(() => {
+    socket.once("readyForNext", (state) => {
+      console.log("Ready for next round");
+      setMyState(state);
+      return () => {
+        socket.off("readyForNext");
+      }
+    })
+  })
+
   function createLobby() {
     post("/api/createlobby", {user: user}).then((lobby) => {
       if (lobby) {
@@ -64,13 +146,46 @@ const App = () => {
     post("/api/addtolobby", {user: user, lobbyName: lobby.name}).then((updatedLobby) => {
       if (updatedLobby) {
         setMyLobby(updatedLobby);
+        let ind = -1;
+        for (let i = 0; i < lobbies.length; i++) {
+          if (lobbies[i].name === lobby.name) {
+            ind = i;
+            break;
+          }
+        }
+        if (ind !== -1) {
+          const tempList = [...lobbies.slice(0, ind), updatedLobby, ...lobbies.slice(ind+1)];
+          setLobbies(tempList);
+        }
       }
     })
   }
 
   function removeFromLobby(lobby) {
-    post("/api/removefromlobby", {user: user, lobbyName: lobby.name}).then((updateLobby) => {
+    post("/api/removefromlobby", {user: user, lobbyName: lobby.name}).then((updatedLobby) => {
       setMyLobby(null);
+      let ind = -1;
+      for (let i = 0; i < lobbies.length; i++) {
+        if (lobbies[i].name === lobby.name) {
+          ind = i;
+          break;
+        }
+      }
+      if (ind !== -1) {
+        if (lobby.users.length <= 1) {
+          const tempList = [...lobbies.slice(0, ind), ...lobbies.slice(ind+1)];
+          setLobbies(tempList);
+        } else {
+          const tempList = [...lobbies.slice(0, ind), updatedLobby, ...lobbies.slice(ind+1)];
+          setLobbies(tempList);
+        }
+      }
+    })
+  }
+
+  function tradeItem(item, state) {
+    post("/api/tradeitem", {state: state, item: item}).then((updatedState) => {
+      setMyState(updatedState);
     })
   }
 
@@ -122,17 +237,21 @@ const App = () => {
       />
       <Route
         path="/lobby"
-        element={
+        element={ myState ? <Navigate to="/gameround" state={{myState: myState}} /> :
           <LobbyWait
             myLobby={myLobby}
             removeFromLobby={removeFromLobby}
+            myState={myState}
           />
         }
       />
       <Route
         path="/gameround"
         element={
-          <GameRound />
+          <GameRound
+            myState={myState}
+            tradeItem={tradeItem}
+          />
         }
       />
       <Route path="*" element={<NotFound />} />

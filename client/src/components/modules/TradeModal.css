@@ -1,0 +1,36 @@
+@import url("https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@100;400&display=swap");
+
+.TradeModal-container {
+    position: absolute;
+    font-family: "Roboto Mono", monospace;
+    left: calc((100vw - 500px)/2 - 80px);
+    height: calc(100vh - 300px);
+    width: 500px;
+    text-align: center;
+    padding: 25px;
+    border-radius: 50px;
+    color: BLACK;
+    font-weight: 1000;
+    font-size: 18px;
+    background-color: rgb(239, 239, 239);
+}
+
+.TradeModal-text {
+    font-size: 24px;
+}
+
+.TradeModal-tradeButton {
+    position: relative;
+    top: 330px;
+    font-family: "Roboto Mono", monospace;
+    color: white;
+    background-color: rgb(153, 153, 153);
+    font-size: 18px;
+    height: 60px;
+    font-weight: 1000;
+    min-width: 120px;
+    /* margin: 30px 1vw;  */
+    border-radius: 50px;
+    border-color: rgb(153, 153, 153);
+    cursor: pointer;
+}

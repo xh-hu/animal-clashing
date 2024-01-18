@@ -12,6 +12,8 @@ const express = require("express");
 // import models so we can interact with the database
 const Lobby = require("./models/lobby");
 const User = require("./models/user");
+const Item = require("./models/item");
+const State = require("./models/state");
 
 // import authentication library
 const auth = require("./auth");
@@ -49,7 +51,7 @@ router.get("/alllobbies", auth.ensureLoggedIn, (req, res) => {
   Lobby.find({}).then((lobbies) => {
     res.send(lobbies);
     // clear empty lobbies
-    (lobbies.filter((lobby) => lobby.users.length === 0)).map((lobby) => Lobby.findOneAndDelete({name: lobby.name}));
+    (lobbies.filter((lobby) => lobby.users.length === 0)).map((lobby) => Lobby.findOneAndRemove({name: lobby.name}));
   });
 })
 
@@ -82,6 +84,7 @@ router.post("/createlobby", auth.ensureLoggedIn, async (req, res) => {
     users: [req.body.user]
   });
   await newLobby.save();
+  await socketManager.getIo().emit("createLobby", newLobby);
   res.send(newLobby);
 })
 
@@ -95,6 +98,7 @@ router.post("/addtolobby", auth.ensureLoggedIn, async (req, res) => {
         { $push: {users: req.body.user}},
         { new: true}
       );
+      await socketManager.getIo().emit("addToLobby", updatedLobby);
       res.send(updatedLobby);
     } else {
       res.send({errMsg: "Already in lobby."});
@@ -112,22 +116,89 @@ router.post("/removefromlobby", auth.ensureLoggedIn, async (req, res) => {
     return;
   }
   for (let i = 0; i < lobby.users.length; i++) {
-    if (lobby.users[i].googleid === req.body.user.googleId) {
+    if (lobby.users[i].googleid === req.body.user.googleid) {
       ind = i;
       break;
     }
   }
   if (ind !== -1) {
     const tempList = [...lobby.users.slice(0, ind), ...lobby.users.slice(ind+1)];
-    const updatedLobby = await Lobby.findOneAndUpdate(
-      { name: req.body.lobbyName},
-      { $set: { users: tempList }},
-      { new: true}
-    );
-    res.send(updatedLobby);
+    if (tempList.length > 0) {
+      const updatedLobby = await Lobby.findOneAndUpdate(
+        { name: req.body.lobbyName},
+        { $set: { users: tempList }},
+        { new: true}
+      );
+      await socketManager.getIo().emit("removeFromLobby", updatedLobby);
+      res.send(updatedLobby);
+    } else {
+      await Lobby.findOneAndRemove({ name: req.body.lobbyName});
+      await socketManager.getIo().emit("removeFromLobby", null);
+      res.send({});
+    }
   } else {
     res.send({errMsg: "Already removed."});
   }
+})
+
+router.post("/startgame", auth.ensureLoggedIn, async (req, res) => {
+  const lobby = req.body.lobby;
+  const stateList = await Promise.all(lobby.users.map(async (user) => {
+    const newState = new State({
+      name: user.name,
+      user_id: user._id,
+      googleid: user.googleid,
+      lobbyName: lobby.name,
+      avatar: "PICTURE HERE",
+      alive: true,
+      items: Item.find({}),
+      trade: undefined,
+      readyForNext: false,
+    });
+    newState.save();
+    return newState;
+  }));
+  await Promise.all(stateList.map(async (state) => {
+    socketManager.getSocketFromUserID(state.user_id).emit("startGame", state);
+  }));
+  res.send({});
+})
+
+router.post("/readyfornext", auth.ensureLoggedIn, async (req, res) => {
+  const newState = await State.findOneAndUpdate(
+    { user_id : req.body.state.user_id },
+    { $set: {readyForNext: true} },
+    { new: true },
+  );
+  const friendStates = await State.find({lobbyName: req.body.state.lobbyName});
+  let allPlayersReady = true
+  for (let i = 0; i < friendStates.length; i++) {
+    allPlayersReady = (allPlayersReady && friendStates[i].readyForNext);
+  }
+  if (allPlayersReady) {
+    const newStateList = await Promise.all(friendStates.map((state) => {
+      State.findOneAndUpdate(
+        { user_id: state.user_id },
+        { $set: {readyForNext: false} },
+        { $set: {trade: undefined} },
+        { new: true },
+      );
+    }));
+    await Promise.all(newStateList.map(async (state) => {
+      socketManager.getSocketFromUserID(state.user_id).emit("readyForNext", state);
+    }));
+    res.send({newState});
+  }
+})
+
+router.post("/tradeitem", auth.ensureLoggedIn, async (req, res) => {
+  const tradedItem = await Item.findOne({ name: req.body.item.name, property: req.body.item.property });
+  const newState = await State.findOneAndUpdate(
+    { user_id : req.body.state.user_id },
+    { $set: {trade: tradedItem} },
+    { new: true },
+  );
+  res.send({newState});
 })
 
 // anything else falls to this "not found" case
