@@ -25,7 +25,7 @@ const LobbyFind = (props) => {
                         />
                     ) : "No lobbies available yet!"}
                 </div>
-                <button onClick={() => {window.location.reload()}} className="LobbyFind-button">REFRESH</button>
+                {/* <button onClick={() => {window.location.reload()}} className="LobbyFind-button">REFRESH</button> */}
                 <Link to="/lobby">
                     <button onClick={() => {createLobby()}} className="LobbyFind-button">CREATE</button>
                 </Link>

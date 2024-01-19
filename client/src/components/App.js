@@ -25,6 +25,11 @@ const App = () => {
   const [lobbies, setLobbies] = useState([]);
   const [myLobby, setMyLobby] = useState(null);
   const [myState, setMyState] = useState(null);
+  const [roundNo, setRoundNo] = useState(1);
+  const [receiveModal, setReceiveModal] = useState(false);
+  
+  const maxRounds = 5;
+  const roundDuration = 20;
 
   useEffect(() => {
     get("/api/whoami").then((user) => {
@@ -82,28 +87,46 @@ const App = () => {
   })
 
   useEffect(() => {
-    socket.once("removeFromLobby", (lobby) => {
-      if (lobby) {
-        console.log("Remove from lobby " + lobby.name);
+    socket.once("removeFromLobby", ({oldLobby, newLobby}) => {
+      if (newLobby) {
+        console.log("Remove from lobby " + newLobby.name);
         let ind = -1;
         for (let i = 0; i < lobbies.length; i++) {
-          if (lobbies[i].name === lobby.name) {
+          if (lobbies[i].name === newLobby.name) {
             ind = i;
             break;
           }
         }
         if (ind !== -1) {
-          const tempList = [...lobbies.slice(0, ind), lobby, ...lobbies.slice(ind+1)];
+          const tempList = [...lobbies.slice(0, ind), newLobby, ...lobbies.slice(ind+1)];
           setLobbies(tempList);
         }
         if (myLobby) {
-          if (myLobby.name === lobby.name) {
-            setMyLobby(lobby);
+          if (myLobby.name === newLobby.name) {
+            setMyLobby(newLobby);
           }
         }
-        return () => {
-          socket.off("removeFromLobby");
+      } else {
+        console.log("Remove lobby " + oldLobby.name);
+        let ind = -1;
+        for (let i = 0; i < lobbies.length; i++) {
+          if (lobbies[i].name === oldLobby.name) {
+            ind = i;
+            break;
+          }
         }
+        if (ind !== -1) {
+          const tempList = [...lobbies.slice(0, ind), ...lobbies.slice(ind+1)];
+          setLobbies(tempList);
+        }
+        if (myLobby) {
+          if (myLobby.name === oldLobby.name) {
+            setMyLobby(null);
+          }
+        }
+      }
+      return () => {
+        socket.off("removeFromLobby");
       }
     })
   })
@@ -122,6 +145,10 @@ const App = () => {
     socket.once("readyForNext", (state) => {
       console.log("Ready for next round");
       setMyState(state);
+      setRoundNo(roundNo+1);
+      if (state.receive.name !== "none") {
+        setReceiveModal(true);
+      }
       return () => {
         socket.off("readyForNext");
       }
@@ -146,17 +173,17 @@ const App = () => {
     post("/api/addtolobby", {user: user, lobbyName: lobby.name}).then((updatedLobby) => {
       if (updatedLobby) {
         setMyLobby(updatedLobby);
-        let ind = -1;
-        for (let i = 0; i < lobbies.length; i++) {
-          if (lobbies[i].name === lobby.name) {
-            ind = i;
-            break;
-          }
-        }
-        if (ind !== -1) {
-          const tempList = [...lobbies.slice(0, ind), updatedLobby, ...lobbies.slice(ind+1)];
-          setLobbies(tempList);
-        }
+        // let ind = -1;
+        // for (let i = 0; i < lobbies.length; i++) {
+        //   if (lobbies[i].name === lobby.name) {
+        //     ind = i;
+        //     break;
+        //   }
+        // }
+        // if (ind !== -1) {
+        //   const tempList = [...lobbies.slice(0, ind), updatedLobby, ...lobbies.slice(ind+1)];
+        //   setLobbies(tempList);
+        // }
       }
     })
   }
@@ -164,28 +191,46 @@ const App = () => {
   function removeFromLobby(lobby) {
     post("/api/removefromlobby", {user: user, lobbyName: lobby.name}).then((updatedLobby) => {
       setMyLobby(null);
-      let ind = -1;
-      for (let i = 0; i < lobbies.length; i++) {
-        if (lobbies[i].name === lobby.name) {
-          ind = i;
-          break;
-        }
-      }
-      if (ind !== -1) {
-        if (lobby.users.length <= 1) {
-          const tempList = [...lobbies.slice(0, ind), ...lobbies.slice(ind+1)];
-          setLobbies(tempList);
-        } else {
-          const tempList = [...lobbies.slice(0, ind), updatedLobby, ...lobbies.slice(ind+1)];
-          setLobbies(tempList);
-        }
-      }
+      // let ind = -1;
+      // for (let i = 0; i < lobbies.length; i++) {
+      //   if (lobbies[i].name === lobby.name) {
+      //     ind = i;
+      //     break;
+      //   }
+      // }
+      // if (ind !== -1) {
+      //   if (lobby.users.length <= 1) {
+      //     const tempList = [...lobbies.slice(0, ind), ...lobbies.slice(ind+1)];
+      //     setLobbies(tempList);
+      //   } else {
+      //     const tempList = [...lobbies.slice(0, ind), updatedLobby, ...lobbies.slice(ind+1)];
+      //     setLobbies(tempList);
+      //   }
+      // }
     })
   }
 
   function tradeItem(item, state) {
     post("/api/tradeitem", {state: state, item: item}).then((updatedState) => {
+      console.log("traded!");
       setMyState(updatedState);
+    })
+  }
+
+  function receiveItem(state) {
+    post("/api/receiveitem", {state: state}).then((updatedState) => {
+      console.log("received!");
+      setMyState(updatedState);
+    })
+  }
+
+  function readyForNext(state) {
+    post("/api/readyfornext", {state: state}).then((updatedState) => {
+      console.log("readyyyyy");
+      console.log(updatedState);
+      if (updatedState) {
+        setMyState(updatedState);
+      }
     })
   }
 
@@ -247,12 +292,20 @@ const App = () => {
       />
       <Route
         path="/gameround"
-        element={
+        element={ (roundNo > maxRounds) ? <Navigate to="/fightscene" state={{}}/> :
           <GameRound
             myState={myState}
             tradeItem={tradeItem}
+            receiveItem={receiveItem}
+            readyForNext={readyForNext}
+            roundNo={roundNo}
+            receiveModal={receiveModal}
+            setReceiveModal={setReceiveModal}
           />
         }
+      />
+      <Route
+        path="/fightscene"
       />
       <Route path="*" element={<NotFound />} />
     </Routes>

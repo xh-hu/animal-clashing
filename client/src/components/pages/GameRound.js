@@ -2,19 +2,20 @@ import React, { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import ItemDisplay from "../modules/ItemDisplay";
 import TradeModal from "../modules/TradeModal";
+import ReceiveModal from "../modules/ReceiveModal";
 
 import "./GameRound.css";
 
 import { get, post } from "../../utilities";
 
 const GameRound = (props) => {
-    const {myState, tradeItem} = props ? props : useLocation().state;
-    console.log(useLocation().state);
+    const {myState, tradeItem, receiveItem, readyForNext, roundNo, receiveModal, setReceiveModal} = props ? props : useLocation().state;
+    console.log(myState);
+    const [tradeModal, setTradeModal] = useState(false);
+
     const maxRounds = 5;
     const roundDuration = 20;
-    const [roundNo, setRoundNo] = useState(1);
-    const [itemList, setItemList] = useState([]);
-    const [tradeModal, setTradeModal] = useState(false);
+    
     return (<>
         <div className="GameRound-roundNo">Round {roundNo}/{maxRounds}</div>
         <div className="textAlign">
@@ -33,21 +34,22 @@ const GameRound = (props) => {
                     />
                 ) : "There was a bug -- please restart the game!"}
                 <button onClick={() => {
-                    post("/api/readyfornext", {state: myState}).then((updatedState) => {
-                        // setRoundNo(roundNo + 1);
-                    })
+                    readyForNext(myState);
                 }} className="GameRound-button">KEEP</button>
                 <button onClick={() => {
                     setTradeModal(true);
-                    // setRoundNo(roundNo + 1);
                 }} className="GameRound-button">TRADE</button>
             </div>
             {tradeModal ? <TradeModal
-                tradeModal={tradeModal}
                 setTradeModal={setTradeModal}
-                itemList={itemList}
                 myState={myState}
                 tradeItem={tradeItem}
+                readyForNext={readyForNext}
+            /> : <div/>}
+            {receiveModal ? <ReceiveModal
+                setReceiveModal={setReceiveModal}
+                myState={myState}
+                receiveItem={receiveItem}
             /> : <div/>}
             </> : "Loading..."}
         </div> 

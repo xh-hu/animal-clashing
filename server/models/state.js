@@ -12,6 +12,7 @@ const StateSchema = new mongoose.Schema({
     alive: Boolean,
     items: [ItemSchema],
     trade: ItemSchema,
+    receive: ItemSchema,
     readyForNext: Boolean,
 })
 

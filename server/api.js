@@ -127,13 +127,13 @@ router.post("/removefromlobby", auth.ensureLoggedIn, async (req, res) => {
       const updatedLobby = await Lobby.findOneAndUpdate(
         { name: req.body.lobbyName},
         { $set: { users: tempList }},
-        { new: true}
+        { new: true },
       );
-      await socketManager.getIo().emit("removeFromLobby", updatedLobby);
+      await socketManager.getIo().emit("removeFromLobby", {oldLobby: lobby, newLobby: updatedLobby});
       res.send(updatedLobby);
     } else {
       await Lobby.findOneAndRemove({ name: req.body.lobbyName});
-      await socketManager.getIo().emit("removeFromLobby", null);
+      await socketManager.getIo().emit("removeFromLobby", {oldLobby: lobby, newLobby: null});
       res.send({});
     }
   } else {
@@ -141,9 +141,40 @@ router.post("/removefromlobby", auth.ensureLoggedIn, async (req, res) => {
   }
 })
 
+// Ref: https://stackoverflow.com/questions/2450954/how-to-randomize-shuffle-a-javascript-array
+// Randomize array in-place using Durstenfeld shuffle algorithm
+function shuffleArray(array) {
+  for (let i = array.length - 1; i > 0; i--) {
+      let j = Math.floor(Math.random() * (i + 1));
+      let temp = array[i];
+      array[i] = array[j];
+      array[j] = temp;
+  }
+  return array;
+}
+
+const shuffleItems = async () => {
+  const itemTypes = ["helmet", "sword", "shield", "armor", "boots"];
+  let resLists = [];
+  for (const itemType of itemTypes) {
+    const itemList = await Item.find({ name: itemType });
+    // console.log(itemList);
+    if (itemList) {
+      resLists.push(shuffleArray(itemList));
+    }
+  }
+  // console.log(resLists);
+  return resLists;
+}
+
 router.post("/startgame", auth.ensureLoggedIn, async (req, res) => {
   const lobby = req.body.lobby;
-  const stateList = await Promise.all(lobby.users.map(async (user) => {
+  await Lobby.findOneAndRemove({ name: lobby.name });
+  // TO REPLACE WITH ITEM RANDOM ASSIGN LOGIC
+  const itemLists = await shuffleItems();
+  let stateList = []
+  for (let i = 0; i < lobby.users.length; i++) {
+    const user = lobby.users[i];
     const newState = new State({
       name: user.name,
       user_id: user._id,
@@ -151,13 +182,14 @@ router.post("/startgame", auth.ensureLoggedIn, async (req, res) => {
       lobbyName: lobby.name,
       avatar: "PICTURE HERE",
       alive: true,
-      items: Item.find({}),
-      trade: undefined,
+      items: itemLists.map((itemList) => itemList[i]),
+      trade: new Item({name: "none", property: "none"}),
+      receive: new Item({name: "none", property: "none"}),
       readyForNext: false,
     });
-    newState.save();
-    return newState;
-  }));
+    await newState.save();
+    stateList.push(newState);
+  }
   await Promise.all(stateList.map(async (state) => {
     socketManager.getSocketFromUserID(state.user_id).emit("startGame", state);
   }));
@@ -165,40 +197,83 @@ router.post("/startgame", auth.ensureLoggedIn, async (req, res) => {
 })
 
 router.post("/readyfornext", auth.ensureLoggedIn, async (req, res) => {
+  const lobbyName = req.body.state.lobbyName;
   const newState = await State.findOneAndUpdate(
-    { user_id : req.body.state.user_id },
+    { user_id : req.body.state.user_id, lobbyName : lobbyName },
     { $set: {readyForNext: true} },
     { new: true },
   );
-  const friendStates = await State.find({lobbyName: req.body.state.lobbyName});
+  const friendStates = await State.find({lobbyName: lobbyName});
   let allPlayersReady = true
   for (let i = 0; i < friendStates.length; i++) {
+    if (friendStates[i].user_id === newState.user_id) {
+      continue;
+    }
     allPlayersReady = (allPlayersReady && friendStates[i].readyForNext);
   }
   if (allPlayersReady) {
-    const newStateList = await Promise.all(friendStates.map((state) => {
-      State.findOneAndUpdate(
-        { user_id: state.user_id },
-        { $set: {readyForNext: false} },
-        { $set: {trade: undefined} },
+    const itemTypes = ["helmet", "sword", "shield", "armor", "boots"];
+    for (const itemType of itemTypes) {
+      const tradeStates = await State.find({lobbyName: lobbyName, "trade.name": itemTypes});
+      console.log(tradeStates);
+      for (let i = 0; i < tradeStates.length; i++) {
+        await State.findOneAndUpdate(
+          { user_id: tradeStates[i].user_id, lobbyName: lobbyName },
+          { $set: {
+            trade: new Item({name: "none", property: "none"}),
+            receive: tradeStates[(i+1) % tradeStates.length].trade,
+          } },
+        )
+      }
+    }
+
+    let newStateList = [];
+    for (let i = 0; i < friendStates.length; i++) {
+      const newFriendState = await State.findOneAndUpdate(
+        { user_id: friendStates[i].user_id, lobbyName: req.body.state.lobbyName },
+        { $set: { readyForNext: false } },
         { new: true },
       );
-    }));
+      newStateList.push(newFriendState);
+    }
+    console.log(newStateList)
     await Promise.all(newStateList.map(async (state) => {
       socketManager.getSocketFromUserID(state.user_id).emit("readyForNext", state);
     }));
-    res.send({newState});
+  } else {
+    res.send(newState);
   }
 })
 
 router.post("/tradeitem", auth.ensureLoggedIn, async (req, res) => {
-  const tradedItem = await Item.findOne({ name: req.body.item.name, property: req.body.item.property });
+  const tradedItem = req.body.item;
   const newState = await State.findOneAndUpdate(
-    { user_id : req.body.state.user_id },
+    { user_id : req.body.state.user_id, lobbyName: req.body.state.lobbyName},
     { $set: {trade: tradedItem} },
     { new: true },
   );
-  res.send({newState});
+  res.send(newState);
+})
+
+router.post("/receiveitem", auth.ensureLoggedIn, async (req, res) => {
+  const blankItem = new Item({name: "none", property: "none"});
+  const oldItems = req.body.state.items;
+  let ind = -1;
+  for (let i = 0; i < oldItems.length; i++) {
+    if (oldItems[i].name === req.body.state.receive.name) {
+      ind = i;
+      break;
+    }
+  }
+  if (ind !== -1) {
+    const tempList = [...oldItems.slice(0, ind), req.body.state.receive, ...oldItems.slice(ind+1)];
+    const newState = await State.findOneAndUpdate(
+      { user_id : req.body.state.user_id, lobbyName: req.body.state.lobbyName},
+      { $set: {receive: blankItem, items: tempList} },
+      { new: true },
+    );
+    res.send(newState);
+  }
 })
 
 // anything else falls to this "not found" case

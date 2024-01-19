@@ -6,9 +6,9 @@ import "./ItemDisplay.css";
 function ItemDisplay(props) {
     const {item} = props;
     return (
-        <div className="ItemDisplay-container">
+        (item ? <div className="ItemDisplay-container">
             {item.name}: {item.property}
-        </div>
+        </div> : <div/>)
     );
 }
 

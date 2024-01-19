@@ -7,20 +7,20 @@ import "./TradeModal.css";
 import { get, post } from "../../utilities";
 
 function TradeModal(props) {
-    const {tradeModal, setTradeModal, itemList, myState, tradeItem} = props;
+    const {setTradeModal, myState, tradeItem, readyForNext} = props;
     return (
         <div className="TradeModal-container">
             <div className="TradeModal-text">Which of the items would you like to trade?</div>
-            {itemList ? itemList.map((item) => {
+            {myState.items ? myState.items.map((item) => 
                 <ItemTrade 
                     item={item}
                     state={myState}
                     tradeItem={tradeItem}
-                />
-            }) : "No items registered -- there may have been a bug."}
+                /> 
+            ) : "No items registered -- there may have been a bug."}
             <button onClick={() => {
                 setTradeModal(false);
-                post("/api/readyfornext", {state: myState});
+                readyForNext(myState);
             }} className="TradeModal-tradeButton">TRADE</button>
         </div>
     );
