@@ -157,7 +157,7 @@ const shuffleItems = async () => {
   const itemTypes = ["helmet", "sword", "shield", "armor", "boots"];
   let resLists = [];
   for (const itemType of itemTypes) {
-    const itemList = await Item.find({ name: itemType });
+    let itemList = await Item.find({ name: itemType });
     // console.log(itemList);
     if (itemList) {
       resLists.push(shuffleArray(itemList));
@@ -170,11 +170,13 @@ const shuffleItems = async () => {
 router.post("/startgame", auth.ensureLoggedIn, async (req, res) => {
   const lobby = req.body.lobby;
   await Lobby.findOneAndRemove({ name: lobby.name });
+  const oppList = shuffleArray(lobby.users.map((user) => user._id));
   // TO REPLACE WITH ITEM RANDOM ASSIGN LOGIC
   const itemLists = await shuffleItems();
   let stateList = []
   for (let i = 0; i < lobby.users.length; i++) {
     const user = lobby.users[i];
+    const opp_index = lobby.users.length - 1 - oppList.findIndex((id) => id === user._id);
     const newState = new State({
       name: user.name,
       user_id: user._id,
@@ -186,12 +188,13 @@ router.post("/startgame", auth.ensureLoggedIn, async (req, res) => {
       trade: new Item({name: "none", property: "none"}),
       receive: new Item({name: "none", property: "none"}),
       readyForNext: false,
+      opp_id: oppList[opp_index],
     });
     await newState.save();
     stateList.push(newState);
   }
   await Promise.all(stateList.map(async (state) => {
-    socketManager.getSocketFromUserID(state.user_id).emit("startGame", state);
+    socketManager.getSocketFromUserID(state.user_id).emit("startGame", state, lobby.users.length);
   }));
   res.send({});
 })
@@ -203,7 +206,7 @@ router.post("/readyfornext", auth.ensureLoggedIn, async (req, res) => {
     { $set: {readyForNext: true} },
     { new: true },
   );
-  const friendStates = await State.find({lobbyName: lobbyName});
+  const friendStates = await State.find({lobbyName: lobbyName, alive: true});
   let allPlayersReady = true
   for (let i = 0; i < friendStates.length; i++) {
     if (friendStates[i].user_id === newState.user_id) {
@@ -226,11 +229,11 @@ router.post("/readyfornext", auth.ensureLoggedIn, async (req, res) => {
         )
       }
     }
-
+    
     let newStateList = [];
     for (let i = 0; i < friendStates.length; i++) {
       const newFriendState = await State.findOneAndUpdate(
-        { user_id: friendStates[i].user_id, lobbyName: req.body.state.lobbyName },
+        { user_id: friendStates[i].user_id, lobbyName: lobbyName },
         { $set: { readyForNext: false } },
         { new: true },
       );
@@ -239,6 +242,43 @@ router.post("/readyfornext", auth.ensureLoggedIn, async (req, res) => {
     console.log(newStateList)
     await Promise.all(newStateList.map(async (state) => {
       socketManager.getSocketFromUserID(state.user_id).emit("readyForNext", state);
+    }));
+  } else {
+    res.send(newState);
+  }
+})
+
+router.post("/readyforBattle", auth.ensureLoggedIn, async (req, res) => {
+  const lobbyName = req.body.state.lobbyName;
+  const newState = await State.findOneAndUpdate(
+    { user_id : req.body.state.user_id, lobbyName : lobbyName },
+    { $set: {readyForBattle: true} },
+    { new: true },
+  );
+  const friendStates = await State.find({lobbyName: lobbyName, alive: true});
+  let allPlayersReady = true
+  for (let i = 0; i < friendStates.length; i++) {
+    if (friendStates[i].user_id === newState.user_id) {
+      continue;
+    }
+    allPlayersReady = (allPlayersReady && friendStates[i].readyForBattle);
+  }
+  if (allPlayersReady) {
+    let newStateList = [];
+    const oppList = shuffleArray(friendStates.map((state) => state.user_id));
+    for (let i = 0; i < friendStates.length; i++) {
+      const opp_index = friendStates.length - 1 - oppList.findIndex((id) => id === friendStates[i].user_id);
+      const newFriendState = await State.findOneAndUpdate(
+        { user_id: friendStates[i].user_id, lobbyName: lobbyName },
+        { $set: { opp_id: oppList[opp_index], readyForBattle: false } },
+        { new: true },
+      );
+      newStateList.push(newFriendState);
+    }
+    console.log(newStateList)
+
+    await Promise.all(newStateList.map(async (state) => {
+      socketManager.getSocketFromUserID(state.user_id).emit("readyForBattle", state);
     }));
   } else {
     res.send(newState);
@@ -274,6 +314,25 @@ router.post("/receiveitem", auth.ensureLoggedIn, async (req, res) => {
     );
     res.send(newState);
   }
+})
+
+router.post("/getopponent", auth.ensureLoggedIn, async (req, res) => {
+  const oppState = await State.findOne({lobbyName: req.body.state.lobbyName, user_id: req.body.state.opp_id});
+  res.send(oppState);
+})
+
+router.post("/reportfight", auth.ensureLoggedIn, async (req, res) => {
+  const newState = await State.findOneAndUpdate(
+    { lobbyName: req.body.state.lobbyName, user_id: req.body.state.user_id },
+    { $set: {alive: req.body.win} },
+    { new: true }
+  );
+
+  const friendStates = await State.find({lobbyName: req.body.state.lobbyName});
+  await Promise.all(friendStates.map(async (state) => {
+    socketManager.getSocketFromUserID(state.user_id).emit("reportFight", req.body.win);
+  }));
+  res.send(newState);
 })
 
 // anything else falls to this "not found" case

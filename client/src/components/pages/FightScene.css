@@ -1,0 +1,20 @@
+@import url("https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@100;400&display=swap");
+
+.FightScene-container {
+    position: absolute;
+    font-family: "Roboto Mono", monospace;
+    color: white;
+    padding: 0px 80px;
+    text-align: center;
+    vertical-align: middle;
+    margin: auto;
+    width: calc(100vw - 160px);
+    top: 100px;
+    background-color: rgb(57, 57, 57);
+}
+
+.FightScene-column {
+    float: left;
+    margin: 10px 20px 10px 20px;
+    width: 40vw;
+}

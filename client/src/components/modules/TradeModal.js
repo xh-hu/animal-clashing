@@ -20,7 +20,7 @@ function TradeModal(props) {
             ) : "No items registered -- there may have been a bug."}
             <button onClick={() => {
                 setTradeModal(false);
-                readyForNext(myState);
+                readyForNext(myState, false);
             }} className="TradeModal-tradeButton">TRADE</button>
         </div>
     );

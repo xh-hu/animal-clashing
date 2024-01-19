@@ -1,14 +1,15 @@
 import React, { useState, useEffect } from "react";
-import { Routes, Route, Navigate } from "react-router-dom";
+import { Routes, Route, Navigate, useNavigate } from "react-router-dom";
 import jwt_decode from "jwt-decode";
 
 import NotFound from "./pages/NotFound.js";
-// import Skeleton from "./pages/Skeleton.js";
 import StartScreen from "./pages/StartScreen.js";
 import Help from "./pages/Help.js";
 import LobbyFind from "./pages/LobbyFind.js";
 import GameRound from "./pages/GameRound.js";
 import LobbyWait from "./pages/LobbyWait.js";
+import FightScene from "./pages/FightScene.js";
+import ResultScene from "./pages/ResultScene.js";
 
 import "../utilities.css";
 import "./App.css";
@@ -25,10 +26,13 @@ const App = () => {
   const [lobbies, setLobbies] = useState([]);
   const [myLobby, setMyLobby] = useState(null);
   const [myState, setMyState] = useState(null);
+  const [turnsLeft, setTurnsLeft] = useState(1);
   const [roundNo, setRoundNo] = useState(1);
   const [receiveModal, setReceiveModal] = useState(false);
+  const [opponentState, setOpponentState] = useState(null);
+  const [battle, setBattle] = useState(false);
   
-  const maxRounds = 5;
+  const maxRounds = 1;
   const roundDuration = 20;
 
   useEffect(() => {
@@ -132,9 +136,10 @@ const App = () => {
   })
 
   useEffect(() => {
-    socket.once("startGame", (state) => {
+    socket.once("startGame", (state, playerNo) => {
       console.log("Starting game!");
       setMyState(state);
+      setTurnsLeft(Math.ceil(Math.log2(playerNo)));
       return () => {
         socket.off("startGame");
       }
@@ -146,11 +151,36 @@ const App = () => {
       console.log("Ready for next round");
       setMyState(state);
       setRoundNo(roundNo+1);
-      if (state.receive.name !== "none") {
-        setReceiveModal(true);
-      }
+      setReceiveModal(true);
       return () => {
         socket.off("readyForNext");
+      }
+    })
+  })
+
+  useEffect(() => {
+    socket.once("readyForBattle", (state) => {
+      console.log("Ready to fight");
+      setMyState(state);
+      setTurnsLeft(turnsLeft - 1);
+      setRoundNo(1);
+      post("/api/getopponent", {state: state}).then((oppState) => {
+        console.log("Opponent get?");
+        console.log(oppState);
+        setOpponentState(oppState);
+        setBattle(true);
+      })
+      return () => {
+        socket.off("readyForNext");
+      }
+    })
+  })
+
+  useEffect(() => {
+    socket.once("reportFight", (win) => {
+      console.log("fight win reported: " + win);
+      return () => {
+        socket.off("reportFight");
       }
     })
   })
@@ -234,6 +264,24 @@ const App = () => {
     })
   }
 
+  function readyForBattle(state) {
+    post("/api/readyforbattle", {state: state}).then((updatedState) => {
+      console.log("fightfightfight");
+      console.log(updatedState);
+      if (updatedState) {
+        setMyState(updatedState);
+      }
+    })
+  }
+
+  function reportFight(state, win) {
+    console.log("again")
+    post("/api/reportfight", {win: win, state: state}).then((updatedState) => {
+      console.log("and again...")
+      setMyState(updatedState);
+    });
+  }
+
   const handleLogin = (credentialResponse) => {
     const userToken = credentialResponse.credential;
     const decodedCredential = jwt_decode(userToken);
@@ -292,12 +340,13 @@ const App = () => {
       />
       <Route
         path="/gameround"
-        element={ (roundNo > maxRounds) ? <Navigate to="/fightscene" state={{}}/> :
+        element={ battle ? <Navigate to="/fightscene" state={{myState: myState, opponentState: opponentState}} /> : 
           <GameRound
             myState={myState}
             tradeItem={tradeItem}
             receiveItem={receiveItem}
             readyForNext={readyForNext}
+            readyForBattle={readyForBattle}
             roundNo={roundNo}
             receiveModal={receiveModal}
             setReceiveModal={setReceiveModal}
@@ -306,6 +355,25 @@ const App = () => {
       />
       <Route
         path="/fightscene"
+        element={
+          <FightScene
+            myState={myState}
+            opponentState={opponentState}
+            turnsLeft={turnsLeft}
+            reportFight={reportFight}
+            setBattle={setBattle}
+          />
+        }
+      />
+      <Route
+        path="/resultscene"
+        element={
+          <ResultScene
+            myState={myState}
+            turnsLeft={turnsLeft}
+            readyForNext={readyForNext}
+          />
+        }
       />
       <Route path="*" element={<NotFound />} />
     </Routes>

@@ -14,6 +14,8 @@ const StateSchema = new mongoose.Schema({
     trade: ItemSchema,
     receive: ItemSchema,
     readyForNext: Boolean,
+    readyForBattle: Boolean,
+    opp_id: String,
 })
 
 // compile model from schema
