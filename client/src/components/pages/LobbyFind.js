@@ -7,7 +7,7 @@ import "./LobbyFind.css";
 
 const LobbyFind = (props) => {
     const {lobbies, createLobby, addToLobby} = props;
-    console.log(lobbies);
+    // console.log(lobbies);
     return (
         <>
             <div className="textAlign">

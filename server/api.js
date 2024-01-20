@@ -27,12 +27,9 @@ const socketManager = require("./server-socket");
 router.post("/login", auth.login);
 router.post("/logout", auth.logout);
 router.get("/whoami", (req, res) => {
-  if (!req.user) {
-    // not logged in
-    return res.send({});
+  if (req.user) {
+    res.send(req.user);
   }
-
-  res.send(req.user);
 });
 
 router.post("/initsocket", (req, res) => {
@@ -57,7 +54,9 @@ router.get("/alllobbies", auth.ensureLoggedIn, (req, res) => {
 
 router.get("/mylobby", auth.ensureLoggedIn, (req, res) => {
   Lobby.findOne({users: req.body.user}).then((lobby) => {
-    res.send(lobby);
+    if (lobby) {
+      res.send(lobby);
+    }
   });
 })
 
@@ -84,7 +83,6 @@ router.post("/createlobby", auth.ensureLoggedIn, async (req, res) => {
     users: [req.body.user]
   });
   await newLobby.save();
-  await socketManager.getIo().emit("createLobby", newLobby);
   res.send(newLobby);
 })
 

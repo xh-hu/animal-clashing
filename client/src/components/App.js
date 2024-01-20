@@ -45,40 +45,23 @@ const App = () => {
   }, []);
 
   useEffect(() => {
-    if (user) {
+    async function getData() {
       get("/api/alllobbies").then((data) => {
-        setLobbies(data.filter((lobby) => (lobby.users.length > 0)));
+          setLobbies(data.filter((lobby) => (lobby.users.length > 0)));
       });
       get("/api/mylobby", {user: user}).then((data) => {
-        setMyLobby(data);
+          setMyLobby(data);
       });
     }
-  }, [])
-
-  useEffect(() => {
-    socket.once("createLobby", (lobby) => {
-      console.log("Create lobby " + lobby.name);
-      setLobbies([...lobbies, lobby])
-      return () => {
-        socket.off("createLobby");
-      }
-    })
+    
+    if (user) {
+      getData();
+    }
   })
 
   useEffect(() => {
     socket.once("addToLobby", (lobby) => {
       console.log("Add to lobby " + lobby.name);
-      let ind = -1;
-      for (let i = 0; i < lobbies.length; i++) {
-        if (lobbies[i].name === lobby.name) {
-          ind = i;
-          break;
-        }
-      }
-      if (ind !== -1) {
-        const tempList = [...lobbies.slice(0, ind), lobby, ...lobbies.slice(ind+1)];
-        setLobbies(tempList);
-      }
       if (myLobby) {
         if (myLobby.name === lobby.name) {
           setMyLobby(lobby);
@@ -94,17 +77,6 @@ const App = () => {
     socket.once("removeFromLobby", ({oldLobby, newLobby}) => {
       if (newLobby) {
         console.log("Remove from lobby " + newLobby.name);
-        let ind = -1;
-        for (let i = 0; i < lobbies.length; i++) {
-          if (lobbies[i].name === newLobby.name) {
-            ind = i;
-            break;
-          }
-        }
-        if (ind !== -1) {
-          const tempList = [...lobbies.slice(0, ind), newLobby, ...lobbies.slice(ind+1)];
-          setLobbies(tempList);
-        }
         if (myLobby) {
           if (myLobby.name === newLobby.name) {
             setMyLobby(newLobby);
@@ -112,17 +84,6 @@ const App = () => {
         }
       } else {
         console.log("Remove lobby " + oldLobby.name);
-        let ind = -1;
-        for (let i = 0; i < lobbies.length; i++) {
-          if (lobbies[i].name === oldLobby.name) {
-            ind = i;
-            break;
-          }
-        }
-        if (ind !== -1) {
-          const tempList = [...lobbies.slice(0, ind), ...lobbies.slice(ind+1)];
-          setLobbies(tempList);
-        }
         if (myLobby) {
           if (myLobby.name === oldLobby.name) {
             setMyLobby(null);
@@ -289,7 +250,7 @@ const App = () => {
     post("/api/login", { token: userToken }).then((user) => {
       setUser(user);
       post("/api/initsocket", { socketid: socket.id });
-    });
+    }, () => {console.error();});
   };
 
   const handleLogout = () => {
