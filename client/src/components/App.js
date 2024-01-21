@@ -47,9 +47,11 @@ const App = () => {
   useEffect(() => {
     async function getData() {
       get("/api/alllobbies").then((data) => {
+        console.log("lobbies")
           setLobbies(data.filter((lobby) => (lobby.users.length > 0)));
       });
       get("/api/mylobby", {user: user}).then((data) => {
+        console.log("mylobby");
           setMyLobby(data);
       });
     }
@@ -57,11 +59,32 @@ const App = () => {
     if (user) {
       getData();
     }
+  }, [user])
+
+  useEffect(() => {
+    socket.once("createLobby", (lobby) => {
+      console.log("Create lobby " + lobby.name);
+      setLobbies([...lobbies, lobby])
+      return () => {
+        socket.off("createLobby");
+      }
+    })
   })
 
   useEffect(() => {
     socket.once("addToLobby", (lobby) => {
       console.log("Add to lobby " + lobby.name);
+      let ind = -1;
+      for (let i = 0; i < lobbies.length; i++) {
+        if (lobbies[i].name === lobby.name) {
+          ind = i;
+          break;
+        }
+      }
+      if (ind !== -1) {
+        const tempList = [...lobbies.slice(0, ind), lobby, ...lobbies.slice(ind+1)];
+        setLobbies(tempList);
+      }
       if (myLobby) {
         if (myLobby.name === lobby.name) {
           setMyLobby(lobby);
@@ -77,6 +100,17 @@ const App = () => {
     socket.once("removeFromLobby", ({oldLobby, newLobby}) => {
       if (newLobby) {
         console.log("Remove from lobby " + newLobby.name);
+        let ind = -1;
+        for (let i = 0; i < lobbies.length; i++) {
+          if (lobbies[i].name === newLobby.name) {
+            ind = i;
+            break;
+          }
+        }
+        if (ind !== -1) {
+          const tempList = [...lobbies.slice(0, ind), newLobby, ...lobbies.slice(ind+1)];
+          setLobbies(tempList);
+        }
         if (myLobby) {
           if (myLobby.name === newLobby.name) {
             setMyLobby(newLobby);
@@ -84,6 +118,17 @@ const App = () => {
         }
       } else {
         console.log("Remove lobby " + oldLobby.name);
+        let ind = -1;
+        for (let i = 0; i < lobbies.length; i++) {
+          if (lobbies[i].name === oldLobby.name) {
+            ind = i;
+            break;
+          }
+        }
+        if (ind !== -1) {
+          const tempList = [...lobbies.slice(0, ind), ...lobbies.slice(ind+1)];
+          setLobbies(tempList);
+        }
         if (myLobby) {
           if (myLobby.name === oldLobby.name) {
             setMyLobby(null);

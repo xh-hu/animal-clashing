@@ -83,6 +83,7 @@ router.post("/createlobby", auth.ensureLoggedIn, async (req, res) => {
     users: [req.body.user]
   });
   await newLobby.save();
+  socketManager.getIo().emit("createLobby", newLobby);
   res.send(newLobby);
 })
 
