@@ -1,16 +1,21 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 import "./LobbyBlock.css";
 
 function LobbyBlock(props) {
     const {lobby, addToLobby} = props;
+    const navigate = useNavigate();
+
     return (
-        <Link to="/lobby">
-            <button onClick={() => {addToLobby(lobby)}} className="LobbyBlock-container">
+        <div className="LobbyBlock-container">
+            <button onClick={() => {
+                addToLobby(lobby);
+                navigate("/lobby");
+            }} className="LobbyBlock-lobby">
                 Lobby {lobby.name}: {lobby.users.length}/4
             </button>
-        </Link>
+        </div>
     );
 }
 

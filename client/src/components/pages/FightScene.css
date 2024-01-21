@@ -16,5 +16,46 @@
 .FightScene-column {
     float: left;
     margin: 10px 20px 10px 20px;
-    width: 40vw;
+    width: 42vw;
+    font-weight: 200;
+    font-size: 24px;
+}
+
+.FightScene-image {
+    position: absolute;
+    left: 70px;
+    width: 700px;
+    height: calc((700/556) * 417)px;
+}
+
+.FightScene-oppImage {
+    position: absolute;
+    right: 70px;
+    width: 700px;
+    height: calc((700/556) * 417)px;
+    transform: scaleX(-1);
+}
+
+.FightScene-avatar {
+    z-index: 20;
+}
+
+.FightScene-helmet {
+    z-index: 23;
+}
+
+.FightScene-sword {
+    z-index: 24;
+}
+
+.FightScene-shield {
+    z-index: 25;
+}
+
+.FightScene-armor {
+    z-index: 22;
+}
+
+.FightScene-boots {
+    z-index: 21;
 }

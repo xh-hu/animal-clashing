@@ -1,11 +1,15 @@
 @import url("https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@100;400&display=swap");
 
 .LobbyBlock-container {
+    padding: 5px;
+}
+
+.LobbyBlock-lobby {
     position: relative;
     font-family: "Roboto Mono", monospace;
     top: 20px;
     height: 80px;
-    width: 70vw;
+    width: calc(76vw - 100px);
     margin: 0vw 30px;
     text-align: left;
     padding: 25px;

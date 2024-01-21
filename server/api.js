@@ -175,6 +175,7 @@ router.post("/startgame", auth.ensureLoggedIn, async (req, res) => {
   const oppList = shuffleArray(lobby.users.map((user) => user._id));
   // TO REPLACE WITH ITEM RANDOM ASSIGN LOGIC
   const itemLists = await shuffleItems();
+  const avatarList = shuffleArray(["bunny", "otter", "cat", "fox", "wolf", "tiger", "deer", "dog"]);
   let stateList = []
   for (let i = 0; i < lobby.users.length; i++) {
     const user = lobby.users[i];
@@ -184,7 +185,7 @@ router.post("/startgame", auth.ensureLoggedIn, async (req, res) => {
       user_id: user._id,
       googleid: user.googleid,
       lobbyName: lobby.name,
-      avatar: "PICTURE HERE",
+      avatar: avatarList[i],
       alive: true,
       items: itemLists.map((itemList) => itemList[i]),
       trade: [],
@@ -358,17 +359,19 @@ router.post("/getopponent", auth.ensureLoggedIn, async (req, res) => {
 })
 
 router.post("/reportfight", auth.ensureLoggedIn, async (req, res) => {
-  const newState = await State.findOneAndUpdate(
-    { lobbyName: req.body.state.lobbyName, user_id: req.body.state.user_id },
-    { $set: {alive: req.body.win} },
-    { new: true }
-  );
-
-  const friendStates = await State.find({lobbyName: req.body.state.lobbyName});
-  await Promise.all(friendStates.map(async (state) => {
-    socketManager.getSocketFromUserID(state.user_id).emit("reportFight", req.body.win);
-  }));
-  res.send(newState);
+  if (req.body.state) {
+    const newState = await State.findOneAndUpdate(
+      { lobbyName: req.body.state.lobbyName, user_id: req.body.state.user_id },
+      { $set: {alive: req.body.win} },
+      { new: true }
+    );
+  
+    const friendStates = await State.find({lobbyName: req.body.state.lobbyName});
+    await Promise.all(friendStates.map(async (state) => {
+      socketManager.getSocketFromUserID(state.user_id).emit("reportFight", req.body.win);
+    }));
+    res.send(newState);
+  }
 })
 
 router.post("/deletestate", auth.ensureLoggedIn, async (req, res) => {

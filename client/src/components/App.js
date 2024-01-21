@@ -183,8 +183,6 @@ const App = () => {
     socket.once("readyForBattle", (state) => {
       console.log("Ready to fight");
       setMyState(state);
-      setTurnsLeft(turnsLeft - 1);
-      setRoundNo(1);
       post("/api/getopponent", {state: state}).then((oppState) => {
         console.log("Opponent get?");
         console.log(oppState);
@@ -305,8 +303,12 @@ const App = () => {
   }
 
   function reportFight(state, win) {
+    setMakingChanges(true);
     post("/api/reportfight", {win: win, state: state}).then((updatedState) => {
       setMyState(updatedState);
+      setTurnsLeft(turnsLeft - 1);
+      setRoundNo(1);
+      setMakingChanges(false);
     });
   }
 
