@@ -5,7 +5,7 @@ import "../../utilities.css";
 import "./ResultScene.css";
 
 const ResultScene = (props) => {
-    const {myState, turnsLeft, readyForNext} = props ? props : useLocation().state;
+    const {myState, turnsLeft, readyForNext, deleteState} = props ? props : useLocation().state;
 
     return (
         <>
@@ -16,7 +16,9 @@ const ResultScene = (props) => {
             {myState.avatar}
             {!myState.alive || turnsLeft === 0 ? <div className="textAlign">
                 <Link to="/">
-                    <button className="ResultScene-button">HOME</button>
+                    <button onclick={() => {
+                        deleteState(myState);
+                    }} className="ResultScene-button">HOME</button>
                 </Link>
             </div> : <div className="textAlign">
                 <Link to="/gameround">

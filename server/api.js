@@ -184,8 +184,8 @@ router.post("/startgame", auth.ensureLoggedIn, async (req, res) => {
       avatar: "PICTURE HERE",
       alive: true,
       items: itemLists.map((itemList) => itemList[i]),
-      trade: new Item({name: "none", property: "none"}),
-      receive: new Item({name: "none", property: "none"}),
+      trade: [],
+      receive: [],
       readyForNext: false,
       opp_id: oppList[opp_index],
     });
@@ -195,6 +195,7 @@ router.post("/startgame", auth.ensureLoggedIn, async (req, res) => {
   await Promise.all(stateList.map(async (state) => {
     socketManager.getSocketFromUserID(state.user_id).emit("startGame", state, lobby.users.length);
   }));
+  await socketManager.getIo().emit("removeFromLobby", {oldLobby: lobby, newLobby: null});
   res.send({});
 })
 
@@ -219,11 +220,17 @@ router.post("/readyfornext", auth.ensureLoggedIn, async (req, res) => {
       const tradeStates = await State.find({lobbyName: lobbyName, "trade.name": itemTypes});
       console.log(tradeStates);
       for (let i = 0; i < tradeStates.length; i++) {
+        const receiveState = tradeStates[(i+1) % tradeStates.length];
+        let ind = -1;
+        for (let j = 0; j < receiveState.trade.length; j++) {
+          if (receiveState.trade[j].name === itemType) {
+            ind = j;
+          }
+        }
         await State.findOneAndUpdate(
           { user_id: tradeStates[i].user_id, lobbyName: lobbyName },
-          { $set: {
-            trade: new Item({name: "none", property: "none"}),
-            receive: tradeStates[(i+1) % tradeStates.length].trade,
+          { $push: {
+            receive: receiveState.trade[ind],
           } },
         )
       }
@@ -233,7 +240,7 @@ router.post("/readyfornext", auth.ensureLoggedIn, async (req, res) => {
     for (let i = 0; i < friendStates.length; i++) {
       const newFriendState = await State.findOneAndUpdate(
         { user_id: friendStates[i].user_id, lobbyName: lobbyName },
-        { $set: { readyForNext: false } },
+        { $set: { readyForNext: false, trade: [] } },
         { new: true },
       );
       newStateList.push(newFriendState);
@@ -288,31 +295,35 @@ router.post("/tradeitem", auth.ensureLoggedIn, async (req, res) => {
   const tradedItem = req.body.item;
   const newState = await State.findOneAndUpdate(
     { user_id : req.body.state.user_id, lobbyName: req.body.state.lobbyName},
-    { $set: {trade: tradedItem} },
+    { $push: {trade: tradedItem} },
     { new: true },
   );
   res.send(newState);
 })
 
 router.post("/receiveitem", auth.ensureLoggedIn, async (req, res) => {
-  const blankItem = new Item({name: "none", property: "none"});
   const oldItems = req.body.state.items;
-  let ind = -1;
+  const receiveItems = req.body.state.receive;
+  let tempList = []
   for (let i = 0; i < oldItems.length; i++) {
-    if (oldItems[i].name === req.body.state.receive.name) {
-      ind = i;
-      break;
+    let ind = -1;
+    for (let j = 0; j < receiveItems.length; j++) {
+      if (receiveItems[j].name === oldItems[i].name) {
+        ind = j;
+      }
+    }
+    if (ind !== -1) {
+      tempList.push(receiveItems[ind]);
+    } else {
+      tempList.push(oldItems[i]);
     }
   }
-  if (ind !== -1) {
-    const tempList = [...oldItems.slice(0, ind), req.body.state.receive, ...oldItems.slice(ind+1)];
-    const newState = await State.findOneAndUpdate(
-      { user_id : req.body.state.user_id, lobbyName: req.body.state.lobbyName},
-      { $set: {receive: blankItem, items: tempList} },
-      { new: true },
-    );
-    res.send(newState);
-  }
+  const newState = await State.findOneAndUpdate(
+    { user_id : req.body.state.user_id, lobbyName: req.body.state.lobbyName},
+    { $set: {receive: [], items: tempList} },
+    { new: true },
+  );
+  res.send(newState);
 })
 
 router.post("/getopponent", auth.ensureLoggedIn, async (req, res) => {
@@ -332,6 +343,10 @@ router.post("/reportfight", auth.ensureLoggedIn, async (req, res) => {
     socketManager.getSocketFromUserID(state.user_id).emit("reportFight", req.body.win);
   }));
   res.send(newState);
+})
+
+router.post("/deletestate", auth.ensureLoggedIn, async (req, res) => {
+  await State.findOneAndRemove({user_id: req.body.state.user_id, lobbyName: req.body.state.lobbyName});
 })
 
 // anything else falls to this "not found" case

@@ -10,9 +10,11 @@ function ReceiveModal(props) {
     const maxRounds = 1;
     return (
         <div className="ReceiveModal-container">
-            {myState.receive.name !== "none" ? <>
+            {myState.receive.length > 0 ? <>
                 <div className="ReceiveModal-text">You got...</div>
-                <div className="ReceiveModal-text">{myState.receive.name}: {myState.receive.property}</div>
+                {myState.receive.map((item) => 
+                    <div className="ReceiveModal-text">{item.name}: {item.property}</div>
+                )}
             </> : <>
             <div className="ReceiveModal-text">You kept all your items!</div>
             </>}

@@ -144,6 +144,7 @@ const App = () => {
   useEffect(() => {
     socket.once("startGame", (state, playerNo) => {
       console.log("Starting game!");
+      setMyLobby(null);
       setMyState(state);
       setTurnsLeft(Math.ceil(Math.log2(playerNo)));
       return () => {
@@ -281,11 +282,16 @@ const App = () => {
   }
 
   function reportFight(state, win) {
-    console.log("again")
     post("/api/reportfight", {win: win, state: state}).then((updatedState) => {
-      console.log("and again...")
       setMyState(updatedState);
     });
+  }
+
+  function deleteState(state) {
+    post("/api/deletestate", state).then(() => {
+      console.log("clearing game state...");
+      setMyState(null);
+    })
   }
 
   const handleLogin = (credentialResponse) => {
@@ -378,6 +384,7 @@ const App = () => {
             myState={myState}
             turnsLeft={turnsLeft}
             readyForNext={readyForNext}
+            deleteState={deleteState}
           />
         }
       />
