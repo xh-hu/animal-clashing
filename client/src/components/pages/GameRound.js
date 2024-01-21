@@ -58,6 +58,7 @@ import fox from "../../public/assets/fox.png"
 import otter from "../../public/assets/otter.png"
 import tiger from "../../public/assets/tiger.png"
 import wolf from "../../public/assets/wolf.png"
+import PointManual from "../modules/PointManual";
 
 global.imgMap = {
     "armor_animal": armorAnimal,
@@ -114,6 +115,7 @@ const GameRound = (props) => {
     const {myState, tradeItem, receiveItem, readyForNext, readyForBattle, roundNo, receiveModal, setReceiveModal} = props ? props : useLocation().state;
     console.log(myState);
     const [tradeModal, setTradeModal] = useState(false);
+    const [pointManual, setPointManual] = useState(false);
 
     const maxRounds = 1;
     const roundDuration = 20;
@@ -121,7 +123,7 @@ const GameRound = (props) => {
     return (<>
         <div className="GameRound-roundNo">{roundNo > maxRounds ? "Preparing for battle" : <>Round {roundNo}/{maxRounds}</>}</div>
         <div className="textAlign">
-            <button className="GameRound-manual">Point Manual</button>
+            <button onClick={() => {setPointManual(true);}} className="GameRound-manual">Point Manual</button>
         </div>
         <div className="GameRound-container">
         {myState ? <>
@@ -162,6 +164,9 @@ const GameRound = (props) => {
                 myState={myState}
                 roundNo={roundNo}
                 receiveItem={receiveItem}
+            /> : <div/>}
+            {pointManual ? <PointManual 
+                setPointManual={setPointManual}
             /> : <div/>}
             </> : "Loading..."}
         </div> 
