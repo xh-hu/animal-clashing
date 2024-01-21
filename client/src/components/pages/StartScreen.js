@@ -1,6 +1,6 @@
 import React from "react";
 import { GoogleOAuthProvider, GoogleLogin, googleLogout } from "@react-oauth/google";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 import "../../utilities.css";
 import "./StartScreen.css";
@@ -9,6 +9,7 @@ import "./StartScreen.css";
 const GOOGLE_CLIENT_ID = "403610806352-6todi6649i18j0fn8sauqk7bpgsqghru.apps.googleusercontent.com";
 
 const StartScreen = ({ userId, handleLogin, handleLogout }) => {
+    const navigate = useNavigate();
   return (
     <div className="StartScreen-container">
         <GoogleOAuthProvider clientId={GOOGLE_CLIENT_ID}>
@@ -39,14 +40,14 @@ const StartScreen = ({ userId, handleLogin, handleLogout }) => {
             <h1>welcome to game!</h1>
             {userId ? <>
                 <div className="textAlign">
-                <Link to="/lobbyfind">
-                    <button className="StartScreen-button">PLAY</button>
-                </Link>
+                    <button onClick={() => {
+                        navigate("/lobbyfind")
+                    }} className="StartScreen-button">PLAY</button>
                 </div>
                 <div className="textAlign">
-                <Link to="/help">
-                    <button className="StartScreen-button">HELP</button>
-                </Link>
+                    <button onClick={() => {
+                        navigate("/help")
+                    }} className="StartScreen-button">HELP</button>
                 </div>
             </> : "please sign in to continue <3"
             }

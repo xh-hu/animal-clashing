@@ -11,13 +11,15 @@ function TradeModal(props) {
     return (
         <div className="TradeModal-container">
             <div className="TradeModal-text">Which of the items would you like to trade?</div>
-            {myState.items ? myState.items.map((item) => 
-                <ItemTrade 
-                    item={item}
-                    state={myState}
-                    tradeItem={tradeItem}
-                /> 
-            ) : "No items registered -- there may have been a bug."}
+            <div className="TradeModal-items">
+                {myState.items ? myState.items.map((item) => 
+                    <ItemTrade 
+                        item={item}
+                        state={myState}
+                        tradeItem={tradeItem}
+                    /> 
+                ) : "No items registered -- there may have been a bug."}
+            </div>
             <button onClick={() => {
                 setTradeModal(false);
                 readyForNext(myState);

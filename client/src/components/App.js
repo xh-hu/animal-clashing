@@ -10,6 +10,7 @@ import GameRound from "./pages/GameRound.js";
 import LobbyWait from "./pages/LobbyWait.js";
 import FightScene from "./pages/FightScene.js";
 import ResultScene from "./pages/ResultScene.js";
+import LoadScreen from "./modules/Loading.js";
 
 import "../utilities.css";
 import "./App.css";
@@ -31,6 +32,7 @@ const App = () => {
   const [receiveModal, setReceiveModal] = useState(false);
   const [opponentState, setOpponentState] = useState(null);
   const [battle, setBattle] = useState(false);
+  const [makingChanges, setMakingChanges] = useState(false);
   
   const maxRounds = 1;
   const roundDuration = 20;
@@ -142,11 +144,22 @@ const App = () => {
   })
 
   useEffect(() => {
+    socket.once("loading", () => {
+      console.log("loading...");
+      setMakingChanges(true);
+      return () => {
+        socket.off("loading");
+      }
+    })
+  })
+
+  useEffect(() => {
     socket.once("startGame", (state, playerNo) => {
       console.log("Starting game!");
       setMyLobby(null);
       setMyState(state);
       setTurnsLeft(Math.ceil(Math.log2(playerNo)));
+      setMakingChanges(false);
       return () => {
         socket.off("startGame");
       }
@@ -158,6 +171,7 @@ const App = () => {
       console.log("Ready for next round");
       setMyState(state);
       setRoundNo(roundNo+1);
+      setMakingChanges(false);
       setReceiveModal(true);
       return () => {
         socket.off("readyForNext");
@@ -176,6 +190,7 @@ const App = () => {
         console.log(oppState);
         setOpponentState(oppState);
         setBattle(true);
+        setMakingChanges(false);
       })
       return () => {
         socket.off("readyForNext");
@@ -193,6 +208,7 @@ const App = () => {
   })
 
   function createLobby() {
+    setMakingChanges(true);
     post("/api/createlobby", {user: user}).then((lobby) => {
       if (lobby) {
         if (lobbies) {
@@ -203,13 +219,16 @@ const App = () => {
         }
         setMyLobby(lobby);
       }
+      setMakingChanges(false);
     })
   }
 
   function addToLobby(lobby) {
+    setMakingChanges(true)
     post("/api/addtolobby", {user: user, lobbyName: lobby.name}).then((updatedLobby) => {
       if (updatedLobby) {
         setMyLobby(updatedLobby);
+        setMakingChanges(false);
         // let ind = -1;
         // for (let i = 0; i < lobbies.length; i++) {
         //   if (lobbies[i].name === lobby.name) {
@@ -226,8 +245,10 @@ const App = () => {
   }
 
   function removeFromLobby(lobby) {
+    setMakingChanges(true);
     post("/api/removefromlobby", {user: user, lobbyName: lobby.name}).then((updatedLobby) => {
       setMyLobby(null);
+      setMakingChanges(false);
       // let ind = -1;
       // for (let i = 0; i < lobbies.length; i++) {
       //   if (lobbies[i].name === lobby.name) {
@@ -262,6 +283,7 @@ const App = () => {
   }
 
   function readyForNext(state) {
+    setMakingChanges(true);
     post("/api/readyfornext", {state: state}).then((updatedState) => {
       console.log("readyyyyy");
       console.log(updatedState);
@@ -272,6 +294,7 @@ const App = () => {
   }
 
   function readyForBattle(state) {
+    setMakingChanges(true);
     post("/api/readyforbattle", {state: state}).then((updatedState) => {
       console.log("fightfightfight");
       console.log(updatedState);
@@ -288,9 +311,13 @@ const App = () => {
   }
 
   function deleteState(state) {
-    post("/api/deletestate", state).then(() => {
+    post("/api/deletestate", {state: state}).then(() => {
       console.log("clearing game state...");
       setMyState(null);
+      setBattle(false);
+      setRoundNo(1);
+      setTurnsLeft(1);
+      setOpponentState(null);
     })
   }
 
@@ -310,7 +337,8 @@ const App = () => {
   };
 
   return (
-    <>
+    <div>
+    {makingChanges ? <LoadScreen /> : <div/>}
     <div className="appContainer">
     <Routes>
       <Route
@@ -391,7 +419,7 @@ const App = () => {
       <Route path="*" element={<NotFound />} />
     </Routes>
     </div>
-    </>
+    </div>
   );
 };
 

@@ -168,6 +168,9 @@ const shuffleItems = async () => {
 
 router.post("/startgame", auth.ensureLoggedIn, async (req, res) => {
   const lobby = req.body.lobby;
+  await Promise.all(lobby.users.map((user) => {
+    socketManager.getSocketFromUserID(user._id).emit("loading");
+  }))
   await Lobby.findOneAndRemove({ name: lobby.name });
   const oppList = shuffleArray(lobby.users.map((user) => user._id));
   // TO REPLACE WITH ITEM RANDOM ASSIGN LOGIC
@@ -187,6 +190,7 @@ router.post("/startgame", auth.ensureLoggedIn, async (req, res) => {
       trade: [],
       receive: [],
       readyForNext: false,
+      readyForBattle: false,
       opp_id: oppList[opp_index],
     });
     await newState.save();
@@ -293,12 +297,30 @@ router.post("/readyforBattle", auth.ensureLoggedIn, async (req, res) => {
 
 router.post("/tradeitem", auth.ensureLoggedIn, async (req, res) => {
   const tradedItem = req.body.item;
-  const newState = await State.findOneAndUpdate(
-    { user_id : req.body.state.user_id, lobbyName: req.body.state.lobbyName},
-    { $push: {trade: tradedItem} },
-    { new: true },
-  );
-  res.send(newState);
+  const currentTrade = req.body.state.trade
+  let ind = -1;
+  for (let i = 0; i < currentTrade.length; i++) {
+    if (currentTrade[i].name === tradedItem.name) {
+      ind = i;
+    }
+  }
+  if (ind !== -1) {
+    console.log("untrading");
+    const tempList = [...req.body.state.trade.slice(0, ind), ...req.body.state.trade.slice(ind+1)];
+    const newState = await State.findOneAndUpdate(
+      { user_id : req.body.state.user_id, lobbyName: req.body.state.lobbyName},
+      { $set: {trade: tempList} },
+      { new: true },
+    );
+    res.send(newState);
+  } else {
+    const newState = await State.findOneAndUpdate(
+      { user_id : req.body.state.user_id, lobbyName: req.body.state.lobbyName},
+      { $push: {trade: tradedItem} },
+      { new: true },
+    );
+    res.send(newState);
+  }
 })
 
 router.post("/receiveitem", auth.ensureLoggedIn, async (req, res) => {
@@ -328,7 +350,11 @@ router.post("/receiveitem", auth.ensureLoggedIn, async (req, res) => {
 
 router.post("/getopponent", auth.ensureLoggedIn, async (req, res) => {
   const oppState = await State.findOne({lobbyName: req.body.state.lobbyName, user_id: req.body.state.opp_id});
-  res.send(oppState);
+  if (oppState) {
+    res.send(oppState);
+  } else {
+    res.send({});
+  }
 })
 
 router.post("/reportfight", auth.ensureLoggedIn, async (req, res) => {
@@ -347,6 +373,7 @@ router.post("/reportfight", auth.ensureLoggedIn, async (req, res) => {
 
 router.post("/deletestate", auth.ensureLoggedIn, async (req, res) => {
   await State.findOneAndRemove({user_id: req.body.state.user_id, lobbyName: req.body.state.lobbyName});
+  res.send({});
 })
 
 // anything else falls to this "not found" case

@@ -7,6 +7,8 @@ import "./ResultScene.css";
 const ResultScene = (props) => {
     const {myState, turnsLeft, readyForNext, deleteState} = props ? props : useLocation().state;
 
+    const navigate = useNavigate();
+
     return (
         <>
         <div className="ResultScene-container">
@@ -15,17 +17,15 @@ const ResultScene = (props) => {
             </> : <h1>You lost :&lt</h1>}
             {myState.avatar}
             {!myState.alive || turnsLeft === 0 ? <div className="textAlign">
-                <Link to="/">
-                    <button onclick={() => {
-                        deleteState(myState);
-                    }} className="ResultScene-button">HOME</button>
-                </Link>
+                <button onClick={() => {
+                    deleteState(myState);
+                    navigate("/");
+                }} className="ResultScene-button">HOME</button>
             </div> : <div className="textAlign">
-                <Link to="/gameround">
-                    <button onclick={() => {
-                        readyForNext(myState);
-                    }} className="ResultScene-button">CONTINUE</button>
-                </Link>
+                <button onclick={() => {
+                    readyForNext(myState);
+                    navigate("/gameround");
+                }} className="ResultScene-button">CONTINUE</button>
             </div>}
         </div>
         </>

@@ -6,7 +6,7 @@ function UserBlock(props) {
     const {username} = props;
     return (
         <div className="UserBlock-container">
-            {username}
+            <div className="UserBlock-user">{username}</div>
         </div>
     );
 }

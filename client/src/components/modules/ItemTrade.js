@@ -5,13 +5,21 @@ import "./ItemTrade.css";
 
 function ItemTrade(props) {
     const {item, state, tradeItem} = props;
-    console.log(item);
-    return ( item ? 
-        <button onClick={() => {
-            tradeItem(item, state);
-        }} className="ItemTrade-container">
-            {item.name}: {item.property}
-        </button> : <div/>
+    const [traded, setTraded] = useState(false);
+    return ( 
+        <div className="ItemTrade-container">
+            {item ? (traded ? <button onClick={() => {
+                setTraded(false);
+                tradeItem(item, state);
+            }} className="ItemTrade-untradeButton">
+                {item.name}: {item.property}
+            </button> : <button onClick={() => {
+                setTraded(true);
+                tradeItem(item, state);
+            }} className="ItemTrade-tradeButton">
+                {item.name}: {item.property}
+            </button>) : <div/>}
+        </div>
     );
 }
 

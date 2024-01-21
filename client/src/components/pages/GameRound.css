@@ -8,6 +8,7 @@
     vertical-align: middle;
     margin: auto;
     width: calc(100vw - 160px);
+    height: max-content;
     top: 100px;
     background-color: rgb(57, 57, 57);
 }
@@ -45,7 +46,7 @@
 
 .GameRound-items {
     /* position: relative; */
-    height: calc(450px + 10vw);
+    height: calc(600px);
     width: 850px;
     outline-style: solid;
     outline-color: white;
@@ -54,10 +55,10 @@
 
 .GameRound-button {
     position: relative;
-    bottom: -350px;
     font-family: "Roboto Mono", monospace;
     color: black;
     font-size: 18px;
+    top: 60px;
     height: 60px;
     font-weight: 1000;
     min-width: 120px;

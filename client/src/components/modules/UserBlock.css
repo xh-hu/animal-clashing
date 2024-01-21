@@ -1,6 +1,10 @@
 @import url("https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@100;400&display=swap");
 
 .UserBlock-container {
+    padding: 5px;
+}
+
+.UserBlock-user {
     position: relative;
     top: 20px;
     margin: 0vw 30px;

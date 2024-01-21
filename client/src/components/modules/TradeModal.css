@@ -4,7 +4,8 @@
     position: absolute;
     font-family: "Roboto Mono", monospace;
     left: calc((100vw - 500px)/2 - 80px);
-    height: calc(100vh - 300px);
+    top: -50px;
+    height: calc(100vh - 150px);
     width: 500px;
     text-align: center;
     padding: 25px;
@@ -19,13 +20,17 @@
     font-size: 24px;
 }
 
+.TradeModal-items {
+    text-align: center;
+}
+
 .TradeModal-tradeButton {
     position: relative;
-    top: 330px;
     font-family: "Roboto Mono", monospace;
     color: white;
     background-color: rgb(153, 153, 153);
     font-size: 18px;
+    top: 50px;
     height: 60px;
     font-weight: 1000;
     min-width: 120px;
