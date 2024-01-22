@@ -1,0 +1,41 @@
+@import url("https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@100;400&display=swap");
+
+.ItemTrade-container {
+    padding: 5px;
+}
+
+.ItemTrade-tradeButton {
+    position: relative;
+    font-family: "Roboto Mono", monospace;
+    top: 20px;
+    margin: 0vw 30px;
+    outline-style: solid;
+    text-align: left;
+    width: 400px;
+    padding: 25px;
+    border-radius: 50px;
+    font-weight: 1000;
+    font-size: 18px;
+    background-color: rgb(239, 239, 239);
+    color: rgb(57, 57, 57);
+}
+
+.ItemTrade-untradeButton {
+    position: relative;
+    font-family: "Roboto Mono", monospace;
+    top: 20px;
+    margin: 0vw 30px;
+    outline-style: solid;
+    text-align: left;
+    width: 400px;
+    padding: 25px;
+    border-radius: 50px;
+    font-weight: 1000;
+    font-size: 18px;
+    background-color: rgb(150, 150, 150);
+    color: rgb(57, 57, 57);
+}
+
+.ItemTrade-container:focus {
+    background-color: rgb(150, 150, 150);
+}

@@ -1,0 +1,18 @@
+@import url("https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@100;400&display=swap");
+
+.ItemDisplay-container {
+    padding: 5px;
+}
+
+.ItemDisplay-itembox {
+    position: relative;
+    top: 20px;
+    margin: 0vw 30px;
+    outline-style: solid;
+    outline-color: white;
+    text-align: left;
+    padding: 25px;
+    border-radius: 50px;
+    font-weight: 1000;
+    font-size: 18px;
+}

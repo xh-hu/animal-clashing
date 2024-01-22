@@ -1,0 +1,59 @@
+@import url("https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@100;400&display=swap");
+
+.ResultScene-container {
+    position: absolute;
+    font-family: "Roboto Mono", monospace;
+    color: white;
+    padding: 0px 80px;
+    text-align: center;
+    vertical-align: middle;
+    margin: auto;
+    width: calc(100vw - 160px);
+    top: 100px;
+    background-color: rgb(57, 57, 57);
+}
+
+.ResultScene-button {
+    position: absolute;
+    font-family: "Roboto Mono", monospace;
+    color: black;
+    font-size: 18px;
+    top: 600px;
+    left: calc(50vw - 60px);
+    height: 60px;
+    font-weight: 1000;
+    min-width: 120px;
+    border-radius: 50px;
+    cursor: pointer;
+}
+
+.ResultScene-image {
+    position: absolute;
+    left: calc((100vw - 556px)/2);
+    width: 556px;
+    height: 417px;
+}
+
+.ResultScene-avatar {
+    z-index: 20;
+}
+
+.ResultScene-helmet {
+    z-index: 23;
+}
+
+.ResultScene-sword {
+    z-index: 24;
+}
+
+.ResultScene-shield {
+    z-index: 25;
+}
+
+.ResultScene-armor {
+    z-index: 22;
+}
+
+.ResultScene-boots {
+    z-index: 21;
+}
