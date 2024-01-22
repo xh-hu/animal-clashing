@@ -37,7 +37,7 @@ const StartScreen = ({ userId, handleLogin, handleLogout }) => {
         )}
         </GoogleOAuthProvider>
         <div className="StartScreen-body">
-            <h1>welcome to game!</h1>
+            <h1>animal clashing</h1>
             {userId ? <>
                 <div className="textAlign">
                     <button onClick={() => {
