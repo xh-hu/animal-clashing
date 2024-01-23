@@ -159,6 +159,7 @@ const App = () => {
       setMyLobby(null);
       setMyState(state);
       setTurnsLeft(Math.ceil(Math.log2(playerNo)));
+      setRoundNo(1);
       setMakingChanges(false);
       return () => {
         socket.off("startGame");

@@ -70,10 +70,12 @@
     top: 10px;
     left: 50px;
 
+    color: white;
     font-style: normal;
     font-weight: 400;
     font-size: 20px;
     line-height: 67px;
+    z-index: 60;
 }
 
 .GameRound-image {
@@ -105,4 +107,11 @@
 
 .GameRound-boots {
     z-index: 21;
+}
+
+.GameRound-points {
+    position: relative;
+    top: 50px;
+    font-size: 16px;
+    font-weight: 400;
 }

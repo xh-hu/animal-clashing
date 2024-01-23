@@ -121,7 +121,7 @@ const GameRound = (props) => {
     const roundDuration = 20;
     
     return (<>
-        <div className="GameRound-roundNo">{roundNo > maxRounds ? "Preparing for battle" : <>Round {roundNo}/{maxRounds}</>}</div>
+        <div className="GameRound-roundNo">{roundNo > maxRounds ? "Preparing for battle" : <div>Round {roundNo}/{maxRounds}</div>}</div>
         <div className="textAlign">
             <button onClick={() => {setPointManual(true);}} className="GameRound-manual">Point Manual</button>
         </div>
@@ -142,6 +142,7 @@ const GameRound = (props) => {
                         item={item}
                     />
                 ) : "There was a bug -- please restart the game!"}
+                <div className="GameRound-points">total points: {pointCalc(myState.items, myState.avatar)}</div>
                 {roundNo > maxRounds ? <button onClick={() => {
                     readyForBattle(myState);
                 }} className="GameRound-button"> FIGHT! </button> : <>
