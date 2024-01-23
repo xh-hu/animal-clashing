@@ -14,6 +14,7 @@ const Lobby = require("./models/lobby");
 const User = require("./models/user");
 const Item = require("./models/item");
 const State = require("./models/state");
+const Achievement = require("./models/achievement");
 
 // import authentication library
 const auth = require("./auth");
@@ -58,6 +59,24 @@ router.get("/mylobby", auth.ensureLoggedIn, (req, res) => {
       res.send(lobby);
     }
   });
+})
+
+router.get("/achievements", auth.ensureLoggedIn, (req, res) => {
+  console.log(req.body.user);
+  Achievement.findOne({user: req.body.user}).then((achievements) => {
+    if (achievements) {
+      res.send(achievements);
+    } else {
+      const newAchievement = new Achievement({
+        user: req.body.user,
+        gameNo: 0,
+        fullSet: [],
+        wonGames: 0,
+      });
+      newAchievement.save();
+      res.send(newAchievement);
+    }
+  })
 })
 
 // generates random string of capitals length 5
@@ -385,6 +404,25 @@ router.post("/reportfight", auth.ensureLoggedIn, async (req, res) => {
 router.post("/deletestate", auth.ensureLoggedIn, async (req, res) => {
   await State.findOneAndRemove({user_id: req.body.state.user_id, lobbyName: req.body.state.lobbyName});
   res.send({});
+})
+
+router.post("/addfullset", auth.ensureLoggedIn, async (req, res) => {
+  const newAchievement = await Achievement.findOneAndUpdate(
+    { "user._id": req.body.user_id },
+    { $push: { fullSet: req.body.property}},
+    { new: true },
+  );
+  res.send(newAchievement);
+})
+
+router.post("/addgamestat", auth.ensureLoggedIn, async (req, res) => {
+  const oldAchievement = await Achievement.findOne({ user_id: req.body.state.user_id });
+  const newAchievement = await Achievement.findOneAndUpdate(
+    { "user._id": req.body.state.user_id },
+    { $set: { gameNo: oldAchievement.gameNo + 1, wonGames: oldAchievement.wonGames + (req.body.state.alive ? 1 : 0) } },
+    { new: true },
+  );
+  res.send(newAchievement);
 })
 
 // anything else falls to this "not found" case

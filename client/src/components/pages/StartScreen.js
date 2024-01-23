@@ -49,6 +49,11 @@ const StartScreen = ({ userId, handleLogin, handleLogout }) => {
                         navigate("/help")
                     }} className="StartScreen-button">HELP</button>
                 </div>
+                <div className="textAlign">
+                    <button onClick={() => {
+                        navigate("/achievements")
+                    }} className="StartScreen-button">ACHIEVEMENTS</button>
+                </div>
             </> : "please sign in to continue <3"
             }
         </div>

@@ -112,13 +112,26 @@ global.imgMap = {
 }
 
 const GameRound = (props) => {
-    const {myState, tradeItem, receiveItem, readyForNext, readyForBattle, roundNo, receiveModal, setReceiveModal} = props ? props : useLocation().state;
+    const {myState, tradeItem, receiveItem, readyForNext, readyForBattle, roundNo, receiveModal, setReceiveModal, setAchievements} = props ? props : useLocation().state;
     console.log(myState);
     const [tradeModal, setTradeModal] = useState(false);
     const [pointManual, setPointManual] = useState(false);
 
     const maxRounds = 1;
     const roundDuration = 20;
+
+    useEffect(() => {
+        const property = myState.items[0].property;
+        let sameProperty = true;
+        for (const item of myState.items) {
+            sameProperty = sameProperty && (property === item.property);
+        }
+        if (sameProperty) {
+            post("/api/addfullset", {user_id: myState.user_id, property: property}).then((achievement) => {
+                setAchievements(achievement);
+            });
+        }
+    }, [myState]);
     
     return (<>
         <div className="GameRound-roundNo">{roundNo > maxRounds ? "Preparing for battle" : <div>Round {roundNo}/{maxRounds}</div>}</div>
