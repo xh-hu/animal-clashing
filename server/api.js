@@ -238,9 +238,9 @@ router.post("/readyfornext", auth.ensureLoggedIn, async (req, res) => {
       // console.log(tradeStates);
       for (let i = 0; i < tradeStates.length; i++) {
         console.log(unusedItems);
-        const ind = Math.floor(Math.random() * unusedItems.length);
+        let ind = Math.floor(Math.random() * unusedItems.length);
         // jank method so they don't get their own if more than one person
-        if (unusedItems.length !== 1 && tradeStates[i].trade.includes(unusedItems[ind])) ind = (ind + 1) % unusedItems.length;
+        if (tradeStates[i].items[k].property === unusedItems[ind].property) ind = (ind + 1) % unusedItems.length;
         await State.findOneAndUpdate(
           { user_id: tradeStates[i].user_id, lobbyName: lobbyName },
           { $push: {
