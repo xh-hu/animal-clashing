@@ -112,16 +112,10 @@ global.imgMap = {
 }
 
 const GameRound = (props) => {
-    const {myState, tradeItem, receiveItem, readyForNext, readyForBattle, roundNo, receiveModal, setReceiveModal, setAchievements} = props ? props : useLocation().state;
+    const {myState, tradeItem, untradeItem, receiveItem, readyForNext, readyForBattle, roundNo, receiveModal, setReceiveModal, setAchievements} = props ? props : useLocation().state;
     console.log(myState);
     const [tradeModal, setTradeModal] = useState(false);
     const [pointManual, setPointManual] = useState(false);
-
-    const [tradeHelmet, setTradeHelmet] = useState(false);
-    const [tradeSword, setTradeSword] = useState(false);
-    const [tradeShield, setTradeShield] = useState(false);
-    const [tradeArmor, setTradeArmor] = useState(false);
-    const [tradeBoots, setTradeBoots] = useState(false);
 
     const maxRounds = 5;
     const roundDuration = 20;
@@ -179,17 +173,8 @@ const GameRound = (props) => {
                 setTradeModal={setTradeModal}
                 myState={myState}
                 tradeItem={tradeItem}
+                untradeItem={untradeItem}
                 readyForNext={readyForNext}
-                tradeHelmet={tradeHelmet}
-                tradeSword={tradeSword}
-                tradeShield={tradeShield}
-                tradeArmor={tradeArmor}
-                tradeBoots={tradeBoots}
-                setTradeHelmet={setTradeHelmet}
-                setTradeSword={setTradeSword}
-                setTradeShield={setTradeShield}
-                setTradeArmor={setTradeArmor}
-                setTradeBoots={setTradeBoots}
             /> : <div/>}
             {receiveModal ? <ReceiveModal
                 setReceiveModal={setReceiveModal}

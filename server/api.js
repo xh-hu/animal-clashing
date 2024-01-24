@@ -333,18 +333,33 @@ router.post("/tradeitem", auth.ensureLoggedIn, async (req, res) => {
     }
   }
   if (ind !== -1) {
+    console.log("already in trade list");
+    res.send(req.body.state);
+  } else {
+    const newState = await State.findOneAndUpdate(
+      { user_id : req.body.state.user_id, lobbyName: req.body.state.lobbyName},
+      { $push: {trade: tradedItem} },
+      { new: true },
+    );
+    res.send(newState);
+  }
+})
+
+router.post("/untradeitem", auth.ensureLoggedIn, async (req, res) => {
+  const tradedItem = req.body.item;
+  const currentTrade = req.body.state.trade
+  let ind = -1;
+  for (let i = 0; i < currentTrade.length; i++) {
+    if (currentTrade[i].name === tradedItem.name) {
+      ind = i;
+    }
+  }
+  if (ind !== -1) {
     console.log("untrading");
     const tempList = [...req.body.state.trade.slice(0, ind), ...req.body.state.trade.slice(ind+1)];
     const newState = await State.findOneAndUpdate(
       { user_id : req.body.state.user_id, lobbyName: req.body.state.lobbyName},
       { $set: {trade: tempList} },
-      { new: true },
-    );
-    res.send(newState);
-  } else {
-    const newState = await State.findOneAndUpdate(
-      { user_id : req.body.state.user_id, lobbyName: req.body.state.lobbyName},
-      { $push: {trade: tradedItem} },
       { new: true },
     );
     res.send(newState);

@@ -7,21 +7,7 @@ import "./TradeModal.css";
 import { get, post } from "../../utilities";
 
 function TradeModal(props) {
-    const {setTradeModal, myState, tradeItem, readyForNext, tradeHelmet, tradeSword, tradeShield, tradeArmor, tradeBoots, setTradeHelmet, setTradeSword, setTradeShield, setTradeArmor, setTradeBoots} = props;
-    let propMap = {
-        "helmet": tradeHelmet,
-        "sword": tradeSword,
-        "shield": tradeShield,
-        "armor": tradeArmor,
-        "boots": tradeBoots,
-    }
-    let funcMap = {
-        "helmet": setTradeHelmet,
-        "sword": setTradeSword,
-        "shield": setTradeShield,
-        "armor": setTradeArmor,
-        "boots": setTradeBoots,
-    }
+    const {setTradeModal, myState, tradeItem, untradeItem, readyForNext} = props;
     return (
         <div className="TradeModal-container">
             <button onClick={() => {setTradeModal(false);}} className="TradeModal-back">X</button>
@@ -32,8 +18,7 @@ function TradeModal(props) {
                         item={item}
                         state={myState}
                         tradeItem={tradeItem}
-                        traded={propMap[item.name]}
-                        setTraded={funcMap[item.name]}
+                        untradeItem={untradeItem}
                     /> 
                 ) : "No items registered -- there may have been a bug."}
             </div>

@@ -280,6 +280,13 @@ const App = () => {
     })
   }
 
+  function untradeItem(item, state) {
+    post("/api/untradeitem", {state: state, item: item}).then((updatedState) => {
+      console.log("untraded!");
+      setMyState(updatedState);
+    })
+  }
+
   function receiveItem(state) {
     post("/api/receiveitem", {state: state}).then((updatedState) => {
       console.log("received!");
@@ -404,6 +411,7 @@ const App = () => {
           <GameRound
             myState={myState}
             tradeItem={tradeItem}
+            untradeItem={untradeItem}
             receiveItem={receiveItem}
             readyForNext={readyForNext}
             readyForBattle={readyForBattle}
