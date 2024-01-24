@@ -147,6 +147,7 @@ const GameRound = (props) => {
                 <img src={imgMap[myState.items[3].name + "_" + myState.items[3].property]} className="GameRound-image GameRound-armor"/>
                 <img src={imgMap[myState.items[4].name + "_" + myState.items[4].property]} className="GameRound-image GameRound-boots"/>
                 <div className="GameRound-username">{myState.name}</div>
+                <div className="GameRound-character">Character: {myState.avatar}</div>
             </div>
             <div className="GameRound-column GameRound-items">
                 {myState.items ? myState.items.map((item) => 
@@ -154,7 +155,7 @@ const GameRound = (props) => {
                         item={item}
                     />
                 ) : "There was a bug -- please restart the game!"}
-                <div className="GameRound-points">total points: {pointCalc(myState.items, myState.avatar)}</div>
+                <div className="GameRound-points">Total Points: {pointCalc(myState.items, myState.avatar)}</div>
                 {roundNo > maxRounds ? <button onClick={() => {
                     if (!tradeModal && !receiveModal) {
                         readyForBattle(myState);

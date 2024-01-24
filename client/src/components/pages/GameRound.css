@@ -51,6 +51,19 @@
     border-radius: 50px;
 }
 
+.GameRound-username {
+    position: relative;
+    top: -10px;
+    font-size: 32px;
+    font-weight: 500;
+}
+
+.GameRound-character {
+    position: relative;
+    font-size: 20px;
+    font-weight: 300;
+}
+
 .GameRound-button {
     position: relative;
     font-family: "Roboto Mono", monospace;
@@ -80,9 +93,9 @@
 
 .GameRound-image {
     position: absolute;
-    left: 15px;
-    width: 556px;
-    height: 417px;
+    left: -40px;
+    width: 667.2px;
+    height: 500.4px;
 }
 
 .GameRound-avatar {

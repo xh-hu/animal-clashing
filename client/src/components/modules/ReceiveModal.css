@@ -17,7 +17,14 @@
 }
 
 .ReceiveModal-text {
+    text-align: left;
     font-size: 24px;
+}
+
+.ReceiveModal-itemtext {
+    text-align: center;
+    font-size: 20px;
+    font-weight: 900;
 }
 
 .ReceiveModal-confirmButton {

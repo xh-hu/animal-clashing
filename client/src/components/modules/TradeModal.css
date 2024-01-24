@@ -40,3 +40,16 @@
     border-color: rgb(153, 153, 153);
     cursor: pointer;
 }
+
+.TradeModal-back {
+    position: relative;
+    left: 230px;
+    top: -5px;
+    color: white;
+    background-color: rgb(57, 57, 57);
+    height: 40px;
+    width: 40px;
+    border-radius: 50px;
+    font-size: 16px;
+    cursor: pointer;
+}

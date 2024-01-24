@@ -13,7 +13,7 @@ function ReceiveModal(props) {
             {myState.receive.length > 0 ? <>
                 <div className="ReceiveModal-text">You got...</div>
                 {myState.receive.map((item) => 
-                    <div className="ReceiveModal-text">{item.name}: {item.property}</div>
+                    <div className="ReceiveModal-itemtext">{item.name}: {item.property}</div>
                 )}
             </> : <>
             <div className="ReceiveModal-text">You kept all your items!</div>
