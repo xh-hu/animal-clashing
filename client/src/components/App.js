@@ -11,6 +11,7 @@ import LobbyWait from "./pages/LobbyWait.js";
 import FightScene from "./pages/FightScene.js";
 import ResultScene from "./pages/ResultScene.js";
 import LoadScreen from "./modules/Loading.js";
+import Achievements from "./pages/Achievements.js";
 
 import "../utilities.css";
 import "./App.css";
@@ -24,6 +25,7 @@ import { get, post } from "../utilities";
  */
 const App = () => {
   const [user, setUser] = useState(undefined);
+  const [achievements, setAchievements] = useState(null);
   const [lobbies, setLobbies] = useState([]);
   const [myLobby, setMyLobby] = useState(null);
   const [myState, setMyState] = useState(null);
@@ -49,13 +51,17 @@ const App = () => {
   useEffect(() => {
     async function getData() {
       get("/api/alllobbies").then((data) => {
-        console.log("lobbies")
-          setLobbies(data.filter((lobby) => (lobby.users.length > 0)));
+        console.log("lobbies");
+        setLobbies(data.filter((lobby) => (lobby.users.length > 0)));
       });
       get("/api/mylobby", {user: user}).then((data) => {
         console.log("mylobby");
-          setMyLobby(data);
+        setMyLobby(data);
       });
+      get("/api/achievements", {user: user}).then((data) => {
+        console.log("achievements");
+        setAchievements(data);
+      })
     }
     
     if (user) {
@@ -159,6 +165,7 @@ const App = () => {
       setMyLobby(null);
       setMyState(state);
       setTurnsLeft(Math.ceil(Math.log2(playerNo)));
+      setRoundNo(1);
       setMakingChanges(false);
       return () => {
         socket.off("startGame");
@@ -313,6 +320,9 @@ const App = () => {
   }
 
   function deleteState(state) {
+    post("/api/addgamestat", {state: state}).then((achievement) => {
+      setAchievements(achievement);
+    })
     post("/api/deletestate", {state: state}).then(() => {
       console.log("clearing game state...");
       setMyState(null);
@@ -361,6 +371,14 @@ const App = () => {
         }
       />
       <Route
+        path="/achievements"
+        element={
+          <Achievements
+            achievements={achievements}
+          />
+        }
+      />
+      <Route
         path="/lobbyfind"
         element={
           <LobbyFind 
@@ -392,6 +410,7 @@ const App = () => {
             roundNo={roundNo}
             receiveModal={receiveModal}
             setReceiveModal={setReceiveModal}
+            setAchievements={setAchievements}
           />
         }
       />

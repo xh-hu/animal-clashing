@@ -4,6 +4,68 @@ import { Link, useNavigate } from "react-router-dom";
 import "../../utilities.css";
 import "./FightScene.css";
 
+global.pointCalc = (items, avatar) => {
+    const propertyPointMap = {
+        "animal": 950,
+        "athlete": 1050,
+        "dancer": 1000,
+        "musician": 950,
+        "royal": 1100,
+        "scholar": 1000,
+        "special": 900,
+        "viking": 1050,
+    }
+
+    let points = 0;
+    let countMap = new Map([
+        ["animal", 0],
+        ["athlete", 0],
+        ["dancer", 0],
+        ["musician", 0],
+        ["royal", 0],
+        ["scholar", 0],
+        ["special", 0],
+        ["viking", 0],
+    ]);
+    for (const item of items) {
+        console.log(item);
+        countMap.set(item.property, countMap.get(item.property)+1);
+    }
+    console.log(countMap);
+    let countList = [];
+    countMap.forEach((value, key, map) => {
+        countList.push({"property": key, "count": value});
+    });
+    console.log(countList);
+    countList.sort((a, b) => {
+        if (a.count === b.count) {
+            return propertyPointMap[a.property] < propertyPointMap[b.property] ? 1 : propertyPointMap[a.property] > propertyPointMap[b.property] ? -1 : 0;
+        }
+        return a.count < b.count ? 1 : -1;
+    });
+    console.log(countList);
+    for (let i = 0; i < countList.length; i++) {
+        if (i === 0) {
+            points += countList[i].count * propertyPointMap[countList[i].property];
+        } else {
+            points += countList[i].count * propertyPointMap[countList[i].property] / 2;
+        }
+    }
+    if (avatar === "bunny" && items.includes({"name": "sword", "property": "special"})) points *= 1.5;
+    else if (avatar === "cat" && items.includes({"name": "helmet", "property": "animal"})) points *= 1.5;
+    else if (avatar === "deer" && items.includes({"name": "boots", "property": "animal"})) points *= 1.5;
+    else if (avatar === "dog" && items.includes({"name": "sword", "property": "animal"})) points *= 1.5;
+    else if (avatar === "fox" && items.includes({"name": "armor", "property": "special"})) points *= 1.5;
+    else if (avatar === "otter" && items.includes({"name": "shield", "property": "animal"})) points *= 1.5;
+    else if (avatar === "tiger" && items.includes({"name": "armor", "property": "animal"})) points *= 1.5;
+    else if (avatar === "wolf" && items.includes({"name": "shield", "property": "special"})) points *= 1.5;
+
+    if (items.includes({"name": "boots", "property": "special"})) points *= 1.2;
+    else if (items.includes({"name": "helmet", "property": "special"})) points *= 0.8;
+
+    return points;
+}
+
 const FightScene = (props) => {
     const {myState, opponentState, turnsLeft, reportFight, setBattle} = props ? props : useLocation().state;
     const navigate = useNavigate();
@@ -12,8 +74,8 @@ const FightScene = (props) => {
     useEffect(() => {
         if (myState) {
             setTimeout(() => {
-                const myScore = 2000;
-                const opponentScore = 1000;
+                const myScore = pointCalc(myState.items, myState.avatar);
+                const opponentScore = pointCalc(opponentState.items, opponentState.avatar);
                 console.log("reporting")
                 reportFight(myState, myScore > opponentScore);
                 navigate("/resultScene", { state: { myState: myState, turnsLeft: turnsLeft} });

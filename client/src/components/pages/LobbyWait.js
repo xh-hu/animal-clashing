@@ -28,9 +28,9 @@ const LobbyWait = (props) => {
                             />
                         ) : "No users in lobby"}
                     </div>
-                    <button onClick={() => {
+                    {myLobby.users.length > 1 ? <button onClick={() => {
                         post("/api/startgame", {lobby: myLobby});
-                    }} className="LobbyWait-button">START</button>
+                    }} className="LobbyWait-button">START</button> : <div/>}
                 </> : "You are not in a lobby yet! Please return to the main page"}
             </div>
         </>

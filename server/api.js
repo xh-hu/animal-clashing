@@ -14,6 +14,7 @@ const Lobby = require("./models/lobby");
 const User = require("./models/user");
 const Item = require("./models/item");
 const State = require("./models/state");
+const Achievement = require("./models/achievement");
 
 // import authentication library
 const auth = require("./auth");
@@ -58,6 +59,24 @@ router.get("/mylobby", auth.ensureLoggedIn, (req, res) => {
       res.send(lobby);
     }
   });
+})
+
+router.get("/achievements", auth.ensureLoggedIn, (req, res) => {
+  console.log(req.body.user);
+  Achievement.findOne({user: req.body.user}).then((achievements) => {
+    if (achievements) {
+      res.send(achievements);
+    } else {
+      const newAchievement = new Achievement({
+        user: req.body.user,
+        gameNo: 0,
+        fullSet: [],
+        wonGames: 0,
+      });
+      newAchievement.save();
+      res.send(newAchievement);
+    }
+  })
 })
 
 // generates random string of capitals length 5
@@ -221,23 +240,31 @@ router.post("/readyfornext", auth.ensureLoggedIn, async (req, res) => {
   }
   if (allPlayersReady) {
     const itemTypes = ["helmet", "sword", "shield", "armor", "boots"];
-    for (const itemType of itemTypes) {
-      const tradeStates = await State.find({lobbyName: lobbyName, "trade.name": itemTypes});
-      console.log(tradeStates);
+    for (let k = 0; k < itemTypes.length; k++) {
+      const itemType = itemTypes[k];
+      const tradeStates = await State.find({lobbyName: lobbyName, "trade.name": itemType});
+      let unusedItems = await Item.find({name: itemType, property: {$nin: friendStates.map((state) => state.items[k].property)}});
+      console.log(unusedItems);
+
+      for (const state of tradeStates) {
+        unusedItems.push(state.items[k]);
+      }
+
+      console.log(unusedItems);
+
+      // console.log(tradeStates);
       for (let i = 0; i < tradeStates.length; i++) {
-        const receiveState = tradeStates[(i+1) % tradeStates.length];
-        let ind = -1;
-        for (let j = 0; j < receiveState.trade.length; j++) {
-          if (receiveState.trade[j].name === itemType) {
-            ind = j;
-          }
-        }
+        console.log(unusedItems);
+        const ind = Math.floor(Math.random() * unusedItems.length);
+        // jank method so they don't get their own if more than one person
+        if (unusedItems.length !== 1 && tradeStates[i].trade.includes({name: unusedItems[ind].name, property: unusedItems[ind].property})) ind = (ind + 1) % unusedItems.length;
         await State.findOneAndUpdate(
           { user_id: tradeStates[i].user_id, lobbyName: lobbyName },
           { $push: {
-            receive: receiveState.trade[ind],
+            receive: unusedItems[ind],
           } },
         )
+        unusedItems.splice(ind, 1);
       }
     }
     
@@ -377,6 +404,25 @@ router.post("/reportfight", auth.ensureLoggedIn, async (req, res) => {
 router.post("/deletestate", auth.ensureLoggedIn, async (req, res) => {
   await State.findOneAndRemove({user_id: req.body.state.user_id, lobbyName: req.body.state.lobbyName});
   res.send({});
+})
+
+router.post("/addfullset", auth.ensureLoggedIn, async (req, res) => {
+  const newAchievement = await Achievement.findOneAndUpdate(
+    { "user._id": req.body.user_id },
+    { $push: { fullSet: req.body.property}},
+    { new: true },
+  );
+  res.send(newAchievement);
+})
+
+router.post("/addgamestat", auth.ensureLoggedIn, async (req, res) => {
+  const oldAchievement = await Achievement.findOne({ user_id: req.body.state.user_id });
+  const newAchievement = await Achievement.findOneAndUpdate(
+    { "user._id": req.body.state.user_id },
+    { $set: { gameNo: oldAchievement.gameNo + 1, wonGames: oldAchievement.wonGames + (req.body.state.alive ? 1 : 0) } },
+    { new: true },
+  );
+  res.send(newAchievement);
 })
 
 // anything else falls to this "not found" case
