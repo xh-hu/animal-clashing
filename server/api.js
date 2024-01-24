@@ -61,24 +61,6 @@ router.get("/mylobby", auth.ensureLoggedIn, (req, res) => {
   });
 })
 
-router.get("/achievements", auth.ensureLoggedIn, (req, res) => {
-  console.log(req.body.user);
-  Achievement.findOne({user: req.body.user}).then((achievements) => {
-    if (achievements) {
-      res.send(achievements);
-    } else {
-      const newAchievement = new Achievement({
-        user: req.body.user,
-        gameNo: 0,
-        fullSet: [],
-        wonGames: 0,
-      });
-      newAchievement.save();
-      res.send(newAchievement);
-    }
-  })
-})
-
 // generates random string of capitals length 5
 const randomCharString = () => {
   let res = "";
@@ -422,6 +404,25 @@ router.post("/deletestate", auth.ensureLoggedIn, async (req, res) => {
   res.send({});
 })
 
+router.post("/achievements", auth.ensureLoggedIn, async (req, res) => {
+  console.log(req.body.user);
+  const achievements = await Achievement.findOne({user: req.body.user});
+  if (achievements) {
+    console.log(achievements);
+    res.send(achievements);
+  } else {
+    const newAchievement = new Achievement({
+      user: req.body.user,
+      gameNo: 0,
+      fullSet: [],
+      wonGames: 0,
+    });
+    await newAchievement.save();
+    console.log(newAchievement);
+    res.send(newAchievement);
+  }
+})
+
 router.post("/addfullset", auth.ensureLoggedIn, async (req, res) => {
   const newAchievement = await Achievement.findOneAndUpdate(
     { "user._id": req.body.user_id },
@@ -433,12 +434,16 @@ router.post("/addfullset", auth.ensureLoggedIn, async (req, res) => {
 
 router.post("/addgamestat", auth.ensureLoggedIn, async (req, res) => {
   const oldAchievement = await Achievement.findOne({ "user._id": req.body.state.user_id });
-  const newAchievement = await Achievement.findOneAndUpdate(
-    { "user._id": req.body.state.user_id },
-    { $set: { gameNo: oldAchievement.gameNo + 1, wonGames: oldAchievement.wonGames + (req.body.state.alive ? 1 : 0) } },
-    { new: true },
-  );
-  res.send(newAchievement);
+  console.log(oldAchievement);
+  console.log(await Achievement.find({}));
+  if (oldAchievement) {
+    const newAchievement = await Achievement.findOneAndUpdate(
+      { "user._id": req.body.state.user_id },
+      { $set: { gameNo: oldAchievement.gameNo + 1, wonGames: oldAchievement.wonGames + (req.body.state.alive ? 1 : 0) } },
+      { new: true },
+    );
+    res.send(newAchievement);
+  }
 })
 
 // anything else falls to this "not found" case

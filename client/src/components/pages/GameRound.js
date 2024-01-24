@@ -112,13 +112,12 @@ global.imgMap = {
 }
 
 const GameRound = (props) => {
-    const {myState, tradeItem, untradeItem, receiveItem, readyForNext, readyForBattle, roundNo, receiveModal, setReceiveModal, setAchievements} = props ? props : useLocation().state;
+    const {myState, tradeItem, untradeItem, receiveItem, readyForNext, readyForBattle, roundNo, maxRounds, receiveModal, setReceiveModal, setMyAchievements} = props ? props : useLocation().state;
     console.log(myState);
     const [tradeModal, setTradeModal] = useState(false);
     const [pointManual, setPointManual] = useState(false);
 
-    const maxRounds = 5;
-    const roundDuration = 20;
+    const roundDuration = 30;
 
     useEffect(() => {
         const property = myState.items[0].property;
@@ -128,7 +127,7 @@ const GameRound = (props) => {
         }
         if (sameProperty) {
             post("/api/addfullset", {user_id: myState.user_id, property: property}).then((achievement) => {
-                setAchievements(achievement);
+                setMyAchievements(achievement);
             });
         }
     }, [myState]);
@@ -157,15 +156,19 @@ const GameRound = (props) => {
                 ) : "There was a bug -- please restart the game!"}
                 <div className="GameRound-points">total points: {pointCalc(myState.items, myState.avatar)}</div>
                 {roundNo > maxRounds ? <button onClick={() => {
-                    readyForBattle(myState);
+                    if (!tradeModal && !receiveModal) {
+                        readyForBattle(myState);
+                    }
                 }} className="GameRound-button"> FIGHT! </button> : <>
                     <button onClick={() => {
-                        if (!tradeModal) {
+                        if (!tradeModal && !receiveModal) {
                             readyForNext(myState);
                         }
                     }} className="GameRound-button">KEEP</button>
                     <button onClick={() => {
-                        setTradeModal(true);
+                        if (!tradeModal && !receiveModal) {
+                            setTradeModal(true);
+                        }
                     }} className="GameRound-button">TRADE</button>
                 </>}
             </div>

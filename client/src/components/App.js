@@ -25,7 +25,7 @@ import { get, post } from "../utilities";
  */
 const App = () => {
   const [user, setUser] = useState(undefined);
-  const [achievements, setAchievements] = useState(null);
+  const [myAchievements, setMyAchievements] = useState(null);
   const [lobbies, setLobbies] = useState([]);
   const [myLobby, setMyLobby] = useState(null);
   const [myState, setMyState] = useState(null);
@@ -35,8 +35,7 @@ const App = () => {
   const [opponentState, setOpponentState] = useState(null);
   const [battle, setBattle] = useState(false);
   const [makingChanges, setMakingChanges] = useState(false);
-  
-  const maxRounds = 5;
+  const [maxRounds, setMaxRounds] = useState(3);
   const roundDuration = 20;
 
   useEffect(() => {
@@ -44,6 +43,10 @@ const App = () => {
       if (user) {
         // they are registed in the database, and currently logged in.
         setUser(user);
+        post("/api/achievements", {user: user}).then((achievement) => {
+          console.log(achievement);
+          setMyAchievements(achievement);
+        })
       }
     });
   }, []);
@@ -58,10 +61,6 @@ const App = () => {
         console.log("mylobby");
         setMyLobby(data);
       });
-      get("/api/achievements", {user: user}).then((data) => {
-        console.log("achievements");
-        setAchievements(data);
-      })
     }
     
     if (user) {
@@ -166,6 +165,7 @@ const App = () => {
       setMyState(state);
       setTurnsLeft(Math.ceil(Math.log2(playerNo)));
       setRoundNo(1);
+      setMaxRounds(Math.min(playerNo, 5));
       setMakingChanges(false);
       return () => {
         socket.off("startGame");
@@ -328,7 +328,7 @@ const App = () => {
 
   function deleteState(state) {
     post("/api/addgamestat", {state: state}).then((achievement) => {
-      setAchievements(achievement);
+      setMyAchievements(achievement);
     })
     post("/api/deletestate", {state: state}).then(() => {
       console.log("clearing game state...");
@@ -381,7 +381,7 @@ const App = () => {
         path="/achievements"
         element={
           <Achievements
-            achievements={achievements}
+            myAchievements={myAchievements}
           />
         }
       />
@@ -416,9 +416,10 @@ const App = () => {
             readyForNext={readyForNext}
             readyForBattle={readyForBattle}
             roundNo={roundNo}
+            maxRounds={maxRounds}
             receiveModal={receiveModal}
             setReceiveModal={setReceiveModal}
-            setAchievements={setAchievements}
+            setMyAchievements={setMyAchievements}
           />
         }
       />

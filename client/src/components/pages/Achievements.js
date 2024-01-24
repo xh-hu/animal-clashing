@@ -5,7 +5,8 @@ import "../../utilities.css";
 import "./Achievements.css";
 
 const Achievements = (props) => {
-    const {achievements} = props;
+    const {myAchievements} = props;
+    console.log(myAchievements);
     return (
         <>
         <Link to="/">
@@ -13,13 +14,14 @@ const Achievements = (props) => {
         </Link>
         <div className="Achievements-container">
             <h1>ACHIEVEMENTS</h1>
+            {myAchievements ? 
             <div className="Achievements-box">
                 <div className="leftAlign">
-                    <p>No. of games played: {achievements.gameNo}</p>
-                    <p>No. of games won: {achievements.wonGames}</p>
-                    <p>No. of full sets: {achievements.fullSet.length} ({achievements.fullSet.join(", ")})</p>
+                    <p>No. of games played: {myAchievements.gameNo}</p>
+                    <p>No. of games won: {myAchievements.wonGames}</p>
+                    <p>No. of full sets: {myAchievements.fullSet.length} ({myAchievements.fullSet.join(", ")})</p>
                 </div>
-            </div>
+            </div> : "Loading achievements..."}
         </div>
         </>
     );
