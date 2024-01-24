@@ -4,8 +4,8 @@ import { get, post } from "../../utilities.js";
 import "./ItemTrade.css";
 
 function ItemTrade(props) {
-    const {item, state, tradeItem} = props;
-    const [traded, setTraded] = useState(false);
+    const {item, state, tradeItem, traded, setTraded} = props;
+    // const [traded, setTraded] = useState(false);
     return ( 
         <div className="ItemTrade-container">
             {item ? (traded ? <button onClick={() => {

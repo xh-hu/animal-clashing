@@ -257,7 +257,7 @@ router.post("/readyfornext", auth.ensureLoggedIn, async (req, res) => {
         console.log(unusedItems);
         const ind = Math.floor(Math.random() * unusedItems.length);
         // jank method so they don't get their own if more than one person
-        if (unusedItems.length !== 1 && tradeStates[i].trade.includes({name: unusedItems[ind].name, property: unusedItems[ind].property})) ind = (ind + 1) % unusedItems.length;
+        if (unusedItems.length !== 1 && tradeStates[i].trade.includes(unusedItems[ind])) ind = (ind + 1) % unusedItems.length;
         await State.findOneAndUpdate(
           { user_id: tradeStates[i].user_id, lobbyName: lobbyName },
           { $push: {
@@ -416,7 +416,7 @@ router.post("/addfullset", auth.ensureLoggedIn, async (req, res) => {
 })
 
 router.post("/addgamestat", auth.ensureLoggedIn, async (req, res) => {
-  const oldAchievement = await Achievement.findOne({ user_id: req.body.state.user_id });
+  const oldAchievement = await Achievement.findOne({ "user._id": req.body.state.user_id });
   const newAchievement = await Achievement.findOneAndUpdate(
     { "user._id": req.body.state.user_id },
     { $set: { gameNo: oldAchievement.gameNo + 1, wonGames: oldAchievement.wonGames + (req.body.state.alive ? 1 : 0) } },

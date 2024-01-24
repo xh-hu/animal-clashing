@@ -10,10 +10,14 @@ function LobbyBlock(props) {
     return (
         <div className="LobbyBlock-container">
             <button onClick={() => {
-                addToLobby(lobby);
-                navigate("/lobby");
+                if (lobby.users.length < 8) {
+                    addToLobby(lobby);
+                    navigate("/lobby");
+                } else {
+                    alert("Lobby is full! Please choose a different one.");
+                }
             }} className="LobbyBlock-lobby">
-                Lobby {lobby.name}: {lobby.users.length}/4
+                Lobby {lobby.name}: {lobby.users.length}/8
             </button>
         </div>
     );

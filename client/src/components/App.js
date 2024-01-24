@@ -36,7 +36,7 @@ const App = () => {
   const [battle, setBattle] = useState(false);
   const [makingChanges, setMakingChanges] = useState(false);
   
-  const maxRounds = 1;
+  const maxRounds = 5;
   const roundDuration = 20;
 
   useEffect(() => {

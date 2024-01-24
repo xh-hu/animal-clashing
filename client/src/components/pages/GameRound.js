@@ -117,7 +117,13 @@ const GameRound = (props) => {
     const [tradeModal, setTradeModal] = useState(false);
     const [pointManual, setPointManual] = useState(false);
 
-    const maxRounds = 1;
+    const [tradeHelmet, setTradeHelmet] = useState(false);
+    const [tradeSword, setTradeSword] = useState(false);
+    const [tradeShield, setTradeShield] = useState(false);
+    const [tradeArmor, setTradeArmor] = useState(false);
+    const [tradeBoots, setTradeBoots] = useState(false);
+
+    const maxRounds = 5;
     const roundDuration = 20;
 
     useEffect(() => {
@@ -160,7 +166,9 @@ const GameRound = (props) => {
                     readyForBattle(myState);
                 }} className="GameRound-button"> FIGHT! </button> : <>
                     <button onClick={() => {
-                        readyForNext(myState);
+                        if (!tradeModal) {
+                            readyForNext(myState);
+                        }
                     }} className="GameRound-button">KEEP</button>
                     <button onClick={() => {
                         setTradeModal(true);
@@ -172,6 +180,16 @@ const GameRound = (props) => {
                 myState={myState}
                 tradeItem={tradeItem}
                 readyForNext={readyForNext}
+                tradeHelmet={tradeHelmet}
+                tradeSword={tradeSword}
+                tradeShield={tradeShield}
+                tradeArmor={tradeArmor}
+                tradeBoots={tradeBoots}
+                setTradeHelmet={setTradeHelmet}
+                setTradeSword={setTradeSword}
+                setTradeShield={setTradeShield}
+                setTradeArmor={setTradeArmor}
+                setTradeBoots={setTradeBoots}
             /> : <div/>}
             {receiveModal ? <ReceiveModal
                 setReceiveModal={setReceiveModal}
