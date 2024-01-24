@@ -51,17 +51,17 @@ global.pointCalc = (items, avatar) => {
             points += countList[i].count * propertyPointMap[countList[i].property] / 2;
         }
     }
-    if (avatar === "bunny" && items.includes({"name": "sword", "property": "special"})) points *= 1.5;
-    else if (avatar === "cat" && items.includes({"name": "helmet", "property": "animal"})) points *= 1.5;
-    else if (avatar === "deer" && items.includes({"name": "boots", "property": "animal"})) points *= 1.5;
-    else if (avatar === "dog" && items.includes({"name": "sword", "property": "animal"})) points *= 1.5;
-    else if (avatar === "fox" && items.includes({"name": "armor", "property": "special"})) points *= 1.5;
-    else if (avatar === "otter" && items.includes({"name": "shield", "property": "animal"})) points *= 1.5;
-    else if (avatar === "tiger" && items.includes({"name": "armor", "property": "animal"})) points *= 1.5;
-    else if (avatar === "wolf" && items.includes({"name": "shield", "property": "special"})) points *= 1.5;
+    if (avatar === "bunny" && items[1].name === "sword" && items[1].property === "special") points *= 1.5;
+    else if (avatar === "cat" && items[0].name === "helmet" && items[0].property === "animal") points *= 1.5;
+    else if (avatar === "deer" && items[4].name === "boots" && items[1].property === "animal") points *= 1.5;
+    else if (avatar === "dog" && items[1].name === "sword" && items[1].property === "animal") points *= 1.5;
+    else if (avatar === "fox" && items[3].name === "armor" && items[1].property === "special") points *= 1.5;
+    else if (avatar === "otter" && items[2].name === "shield" && items[1].property === "animal") points *= 1.5;
+    else if (avatar === "tiger" && items[3].name === "armor" && items[1].property === "animal") points *= 1.5;
+    else if (avatar === "wolf" && items[2].name === "shield" && items[1].property === "special") points *= 1.5;
 
-    if (items.includes({"name": "boots", "property": "special"})) points *= 1.2;
-    else if (items.includes({"name": "helmet", "property": "special"})) points *= 0.8;
+    if (items[4].name === "boots" && items[4].property === "special") points *= 1.2;
+    else if (items[0].name === "helmet" && items[0].property === "special") points *= 0.8;
 
     return points;
 }

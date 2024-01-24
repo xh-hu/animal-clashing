@@ -243,14 +243,15 @@ router.post("/readyfornext", auth.ensureLoggedIn, async (req, res) => {
     for (let k = 0; k < itemTypes.length; k++) {
       const itemType = itemTypes[k];
       const tradeStates = await State.find({lobbyName: lobbyName, "trade.name": itemType});
-      let unusedItems = await Item.find({name: itemType, property: {$nin: friendStates.map((state) => state.items[k].property)}});
-      console.log(unusedItems);
+      // let unusedItems = await Item.find({name: itemType, property: {$nin: friendStates.map((state) => state.items[k].property)}});
+      // console.log(unusedItems);
+      let unusedItems = [];
 
       for (const state of tradeStates) {
         unusedItems.push(state.items[k]);
       }
 
-      console.log(unusedItems);
+      // console.log(unusedItems);
 
       // console.log(tradeStates);
       for (let i = 0; i < tradeStates.length; i++) {
