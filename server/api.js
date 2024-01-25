@@ -434,8 +434,8 @@ router.post("/addfullset", auth.ensureLoggedIn, async (req, res) => {
 
 router.post("/addgamestat", auth.ensureLoggedIn, async (req, res) => {
   const oldAchievement = await Achievement.findOne({ "user._id": req.body.state.user_id });
-  console.log(oldAchievement);
-  console.log(await Achievement.find({}));
+  // console.log(oldAchievement);
+  // console.log(await Achievement.find({}));
   if (oldAchievement) {
     const newAchievement = await Achievement.findOneAndUpdate(
       { "user._id": req.body.state.user_id },

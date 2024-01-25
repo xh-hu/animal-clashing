@@ -177,9 +177,11 @@ const App = () => {
     socket.once("readyForNext", (state) => {
       console.log("Ready for next round");
       setMyState(state);
+      if (roundNo > 0) {
+        setReceiveModal(true);
+      }
       setRoundNo(roundNo+1);
       setMakingChanges(false);
-      setReceiveModal(true);
       return () => {
         socket.off("readyForNext");
       }
@@ -319,9 +321,12 @@ const App = () => {
   function reportFight(state, win) {
     setMakingChanges(true);
     post("/api/reportfight", {win: win, state: state}).then((updatedState) => {
+      console.log("foughttt");
       setMyState(updatedState);
+      setBattle(false);
+      setOpponentState(null);
       setTurnsLeft(turnsLeft - 1);
-      setRoundNo(1);
+      setRoundNo(0);
       setMakingChanges(false);
     });
   }

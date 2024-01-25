@@ -69,12 +69,13 @@
     font-family: "Roboto Mono", monospace;
     color: black;
     font-size: 18px;
-    top: 60px;
+    bottom: -120px;
     height: 60px;
     font-weight: 1000;
     min-width: 120px;
     margin: 30px 1vw;
     border-radius: 50px;
+    z-index: 10;
     cursor: pointer;
 }
 
@@ -123,8 +124,22 @@
 }
 
 .GameRound-points {
-    position: relative;
-    top: 50px;
+    position: absolute;
+    top: 625px;
+    left: 210px;
     font-size: 16px;
     font-weight: 400;
+}
+
+.GameRound-multiplierbox {
+    text-align: left;
+    font-size: 16px;
+}
+
+.GameRound-multiplier {
+    position: relative;
+    text-align: left;
+    font-size: 16px;
+    top: 50px;
+    left: 50px;
 }
