@@ -28,7 +28,7 @@ const ResultScene = (props) => {
                         navigate("/");
                     }} className="ResultScene-button">HOME</button>
                 </div> : <div className="textAlign">
-                    <button onclick={() => {
+                    <button onClick={() => {
                         readyForNext(myState);
                         navigate("/gameround");
                     }} className="ResultScene-button">CONTINUE</button>
