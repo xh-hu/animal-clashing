@@ -28,7 +28,6 @@ global.pointCalc = (items, avatar) => {
         ["viking", 0],
     ]);
     for (const item of items) {
-        console.log(item);
         countMap.set(item.property, countMap.get(item.property)+1);
     }
     console.log(countMap);
@@ -36,14 +35,12 @@ global.pointCalc = (items, avatar) => {
     countMap.forEach((value, key, map) => {
         countList.push({"property": key, "count": value});
     });
-    console.log(countList);
     countList.sort((a, b) => {
         if (a.count === b.count) {
             return propertyPointMap[a.property] < propertyPointMap[b.property] ? 1 : propertyPointMap[a.property] > propertyPointMap[b.property] ? -1 : 0;
         }
         return a.count < b.count ? 1 : -1;
     });
-    console.log(countList);
     for (let i = 0; i < countList.length; i++) {
         if (i === 0) {
             points += countList[i].count * propertyPointMap[countList[i].property];

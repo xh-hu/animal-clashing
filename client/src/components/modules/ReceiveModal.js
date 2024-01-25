@@ -6,7 +6,7 @@ import "./ReceiveModal.css";
 import { get, post } from "../../utilities";
 
 function ReceiveModal(props) {
-    const {setReceiveModal, myState, roundNo, receiveItem} = props;
+    const {setReceiveModal, myState, roundNo, receiveItem, setPause, setSeconds} = props;
     const maxRounds = 1;
     return (
         <div className="ReceiveModal-container">
@@ -20,6 +20,7 @@ function ReceiveModal(props) {
             </>}
             <button onClick={() => {
                 setReceiveModal(false);
+                setPause(false);
                 receiveItem(myState);
             }} className="ReceiveModal-confirmButton"> CONFIRM </button>
         </div>

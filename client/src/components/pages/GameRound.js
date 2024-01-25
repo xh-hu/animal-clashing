@@ -112,12 +112,24 @@ global.imgMap = {
 }
 
 const GameRound = (props) => {
-    const {myState, tradeItem, untradeItem, receiveItem, readyForNext, readyForBattle, roundNo, maxRounds, receiveModal, setReceiveModal, setMyAchievements} = props ? props : useLocation().state;
+    const {myState, tradeItem, untradeItem, receiveItem, readyForNext, readyForBattle, roundNo, maxRounds, receiveModal, setReceiveModal, setMyAchievements, seconds, setSeconds, pause, setPause, currentTimer} = props ? props : useLocation().state;
     console.log(myState);
     const [tradeModal, setTradeModal] = useState(false);
     const [pointManual, setPointManual] = useState(false);
 
     const roundDuration = 30;
+
+    useEffect(() => {
+        if (seconds > 0) return;
+    
+        clearInterval(currentTimer);
+        if (roundNo > maxRounds) {
+            readyForBattle(myState);
+        } else {
+            readyForNext(myState);
+        }
+        setPause(true);
+    }, [currentTimer, seconds]);
 
     useEffect(() => {
         const property = myState.items[0].property;
@@ -134,6 +146,7 @@ const GameRound = (props) => {
     
     return (<>
         <div className="GameRound-roundNo">{roundNo > maxRounds ? "Preparing for battle" : <div>Round {roundNo}/{maxRounds}</div>}</div>
+        <div>Time left: {seconds}</div>
         <div className="textAlign">
             <button onClick={() => {setPointManual(true);}} className="GameRound-manual">Point Manual</button>
         </div>
@@ -220,11 +233,13 @@ const GameRound = (props) => {
                 </div>
                 {roundNo > maxRounds ? <button onClick={() => {
                     if (!tradeModal && !receiveModal) {
+                        setPause(true);
                         readyForBattle(myState);
                     }
                 }} className="GameRound-button"> FIGHT! </button> : <>
                     <button onClick={() => {
                         if (!tradeModal && !receiveModal) {
+                            setPause(true);
                             readyForNext(myState);
                         }
                     }} className="GameRound-button">KEEP</button>
@@ -241,12 +256,15 @@ const GameRound = (props) => {
                 tradeItem={tradeItem}
                 untradeItem={untradeItem}
                 readyForNext={readyForNext}
+                setPause={setPause}
             /> : <div/>}
             {receiveModal ? <ReceiveModal
                 setReceiveModal={setReceiveModal}
                 myState={myState}
                 roundNo={roundNo}
                 receiveItem={receiveItem}
+                setPause={setPause}
+                setSeconds={setSeconds}
             /> : <div/>}
             {pointManual ? <PointManual 
                 setPointManual={setPointManual}

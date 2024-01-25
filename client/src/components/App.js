@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Routes, Route, Navigate, useNavigate } from "react-router-dom";
 import jwt_decode from "jwt-decode";
 
@@ -36,7 +36,26 @@ const App = () => {
   const [battle, setBattle] = useState(false);
   const [makingChanges, setMakingChanges] = useState(false);
   const [maxRounds, setMaxRounds] = useState(3);
+  const [seconds, setSeconds] = useState(30);
+  const [pause, setPause] = useState(false);
   const roundDuration = 20;
+
+  const timer = useRef(null);
+
+  useEffect(() => {
+    if (!pause) {
+      // useRef value stored in .current property
+      console.log("AWAWAWAWAWAWA");
+      setSeconds(30);
+      timer.current = setInterval(() => setSeconds((v) => v - 1), 1000);
+    } else {
+      clearInterval(timer.current);
+    }
+    // clear on component unmount
+    return () => {
+      clearInterval(timer.current);
+    };
+  }, [pause]);
 
   useEffect(() => {
     get("/api/whoami").then((user) => {
@@ -165,6 +184,7 @@ const App = () => {
       setMyState(state);
       setTurnsLeft(Math.ceil(Math.log2(playerNo)));
       setRoundNo(1);
+      setSeconds(30);
       setMaxRounds(Math.min(playerNo, 5));
       setMakingChanges(false);
       return () => {
@@ -340,6 +360,7 @@ const App = () => {
       setMyState(null);
       setBattle(false);
       setRoundNo(1);
+      setSeconds(30);
       setTurnsLeft(1);
       setOpponentState(null);
     })
@@ -425,6 +446,11 @@ const App = () => {
             receiveModal={receiveModal}
             setReceiveModal={setReceiveModal}
             setMyAchievements={setMyAchievements}
+            seconds={seconds}
+            setSeconds={setSeconds}
+            pause={pause}
+            setPause={setPause}
+            currentTimer={timer.current}
           />
         }
       />
