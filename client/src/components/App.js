@@ -12,6 +12,7 @@ import FightScene from "./pages/FightScene.js";
 import ResultScene from "./pages/ResultScene.js";
 import LoadScreen from "./modules/Loading.js";
 import Achievements from "./pages/Achievements.js";
+import GameTutorial from "./pages/GameTutorial.js";
 
 import "../utilities.css";
 import "./App.css";
@@ -199,6 +200,8 @@ const App = () => {
       setMyState(state);
       if (roundNo > 0) {
         setReceiveModal(true);
+      } else {
+        setPause(false);
       }
       setRoundNo(roundNo+1);
       setMakingChanges(false);
@@ -366,6 +369,12 @@ const App = () => {
     })
   }
 
+  function completeTutorial(user) {
+    post("/api/tutorialcomplete", {user: user}).then((achievement) => {
+      setMyAchievements(achievement);
+    })
+  }
+
   const handleLogin = (credentialResponse) => {
     const userToken = credentialResponse.credential;
     const decodedCredential = jwt_decode(userToken);
@@ -394,6 +403,7 @@ const App = () => {
             handleLogin={handleLogin}
             handleLogout={handleLogout}
             userId={user ? user._id : null}
+            tutorial={myAchievements ? myAchievements.tutorial : false}
           />
         }
       />
@@ -474,6 +484,15 @@ const App = () => {
             turnsLeft={turnsLeft}
             readyForNext={readyForNext}
             deleteState={deleteState}
+          />
+        }
+      />
+      <Route
+        path="/gametutorial"
+        element={
+          <GameTutorial
+            user={user}
+            completeTutorial={completeTutorial}
           />
         }
       />

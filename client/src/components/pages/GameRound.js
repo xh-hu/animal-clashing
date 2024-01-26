@@ -3,6 +3,7 @@ import { Link, useLocation } from "react-router-dom";
 import ItemDisplay from "../modules/ItemDisplay";
 import TradeModal from "../modules/TradeModal";
 import ReceiveModal from "../modules/ReceiveModal";
+import PointManual from "../modules/PointManual";
 
 import "./GameRound.css";
 
@@ -58,7 +59,6 @@ import fox from "../../public/assets/fox.png"
 import otter from "../../public/assets/otter.png"
 import tiger from "../../public/assets/tiger.png"
 import wolf from "../../public/assets/wolf.png"
-import PointManual from "../modules/PointManual";
 
 global.imgMap = {
     "armor_animal": armorAnimal,

@@ -5,6 +5,7 @@ const UserSchema = UserModel.schema;
 
 const AchievementSchema = new mongoose.Schema({
   user: UserSchema,
+  tutorial: Boolean,
   gameNo: Number,
   fullSet: [String],
   wonGames: Number,

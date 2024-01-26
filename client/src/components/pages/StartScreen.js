@@ -8,7 +8,7 @@ import "./StartScreen.css";
 //TODO: REPLACE WITH YOUR OWN CLIENT_ID
 const GOOGLE_CLIENT_ID = "403610806352-6todi6649i18j0fn8sauqk7bpgsqghru.apps.googleusercontent.com";
 
-const StartScreen = ({ userId, handleLogin, handleLogout }) => {
+const StartScreen = ({ userId, handleLogin, handleLogout, tutorial }) => {
     const navigate = useNavigate();
   return (
     <div className="StartScreen-container">
@@ -41,7 +41,11 @@ const StartScreen = ({ userId, handleLogin, handleLogout }) => {
             {userId ? <>
                 <div className="textAlign">
                     <button onClick={() => {
-                        navigate("/lobbyfind");
+                        if (!tutorial) {
+                            navigate("/gametutorial");
+                        } else {
+                            navigate("/lobbyfind");
+                        }
                     }} className="StartScreen-button">PLAY</button>
                 </div>
                 <div className="textAlign">
