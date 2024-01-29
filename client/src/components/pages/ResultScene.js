@@ -9,6 +9,12 @@ const ResultScene = (props) => {
 
     const navigate = useNavigate();
 
+    useEffect(() => {
+        post("/api/addgamestat", {state: state}).then((achievement) => {
+            setMyAchievements(achievement);
+        })
+    })
+
     return (
         <>
         <div className="ResultScene-container">

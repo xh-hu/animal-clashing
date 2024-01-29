@@ -355,9 +355,6 @@ const App = () => {
   }
 
   function deleteState(state) {
-    post("/api/addgamestat", {state: state}).then((achievement) => {
-      setMyAchievements(achievement);
-    })
     post("/api/deletestate", {state: state}).then(() => {
       console.log("clearing game state...");
       setMyState(null);

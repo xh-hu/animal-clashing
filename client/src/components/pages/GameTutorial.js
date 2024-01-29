@@ -3,6 +3,7 @@ import { Link, useLocation } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import ItemDisplay from "../modules/ItemDisplay";
 import PointManual from "../modules/PointManual";
+import TutorialModal from "../modules/TutorialModal";
 
 import "./GameTutorial.css";
 import "./FightScene.css"
@@ -43,7 +44,7 @@ function ItemTrade(props) {
 }
 
 function TradeModal(props) {
-    const {setTradeModal, items, setReceiveModal} = props;
+    const {setTradeModal, items, setReceiveModal, setPostTrade} = props;
     return (
         <div className="TradeModal-container">
             <button className="TradeModal-back">X</button>
@@ -58,13 +59,14 @@ function TradeModal(props) {
             <button onClick={() => {
                 setTradeModal(false);
                 setReceiveModal(true);
+                setPostTrade(true);
             }} className="TradeModal-tradeButton">TRADE</button>
         </div>
     );
 }
 
 function ReceiveModal(props) {
-    const {setReceiveModal, setPostTrade} = props;
+    const {setReceiveModal, setPostReceive} = props;
     return (
         <div className="ReceiveModal-container">
             { <div>
@@ -73,7 +75,7 @@ function ReceiveModal(props) {
             </div> }
             <button onClick={() => {
                 setReceiveModal(false);
-                setPostTrade(true);
+                setPostReceive(true);
             }} className="ReceiveModal-confirmButton"> CONFIRM </button>
         </div>
     );
@@ -148,6 +150,7 @@ const GameTutorial = (props) => {
     const {user, completeTutorial} = props ? props : useLocation().state;
     const [tradeModal, setTradeModal] = useState(false);
     const [pointManual, setPointManual] = useState(false);
+    const [postReceive, setPostReceive] = useState(false);
     const [postTrade, setPostTrade] = useState(false);
     const [receiveModal, setReceiveModal] = useState(false);
     const [fight, setFight] = useState(false);
@@ -157,7 +160,7 @@ const GameTutorial = (props) => {
             completeTutorial(user);
             navigate("/");
         }} className="GameTutorial-skip">SKIP</button>
-        <div className="GameTutorial-roundNo">{postTrade ? "Preparing for battle" : <div>Round 1/1</div>}</div>
+        <div className="GameTutorial-roundNo">{postReceive ? "Preparing for battle" : <div>Round 1/1</div>}</div>
         <div>Time left: 20</div>
         <div className="textAlign">
             <button onClick={() => {setPointManual(true);}} className="GameTutorial-manual">Point Manual</button>
@@ -166,7 +169,7 @@ const GameTutorial = (props) => {
         {user ? <>
             <div className="GameTutorial-column GameTutorial-profile">
                 <img src={imgMap["bunny"]} className="GameTutorial-image GameTutorial-avatar"/>
-                <img src={postTrade ? imgMap["helmet_viking"] : imgMap["helmet_special"]} className="GameTutorial-image GameTutorial-helmet"/>
+                <img src={postReceive ? imgMap["helmet_viking"] : imgMap["helmet_special"]} className="GameTutorial-image GameTutorial-helmet"/>
                 <img src={imgMap["sword_viking"]} className="GameTutorial-image GameTutorial-sword"/>
                 <img src={imgMap["shield_viking"]} className="GameTutorial-image GameTutorial-shield"/>
                 <img src={imgMap["armor_viking"]} className="GameTutorial-image GameTutorial-armor"/>
@@ -174,11 +177,11 @@ const GameTutorial = (props) => {
                 <div className="GameTutorial-username">{user.name}</div>
                 <div className="GameTutorial-character">Character: bunny</div>
                 <div className="GameTutorial-points">
-                    Total Points: {pointCalc((postTrade ? itemsAfter : itemsBefore), "bunny")}
+                    Total Points: {pointCalc((postReceive ? itemsAfter : itemsBefore), "bunny")}
                 </div>
             </div>
             <div className="GameTutorial-column GameTutorial-items">
-                {postTrade ? itemsAfter.map((item) => 
+                {postReceive ? itemsAfter.map((item) => 
                     <ItemDisplay
                         item={item}
                     />
@@ -188,14 +191,14 @@ const GameTutorial = (props) => {
                     />
                 )}
                 <div className="GameTutorial-multiplierbox">
-                    {!postTrade ?
+                    {!postReceive ?
                         <div className="GameTutorial-multiplier">
                             <div><b>Clown: all points x0.8</b></div>
                             <div><i>Can anyone really take you seriously like that?</i></div>
                         </div>
                     : <div/>}
                 </div>
-                {postTrade ? <button onClick={() => {
+                {postReceive ? <button onClick={() => {
                     if (!tradeModal && !receiveModal) {
                         setFight(true);
                     }
@@ -208,14 +211,21 @@ const GameTutorial = (props) => {
                     }} className="GameTutorial-button">TRADE</button>
                 </>}
             </div>
+            <TutorialModal
+                postTrade={postTrade}
+                postReceive={postReceive}
+                receiveModal={receiveModal}
+                fight={fight}
+            />
             {tradeModal ? <TradeModal
                 setTradeModal={setTradeModal}
                 items={itemsBefore}
                 setReceiveModal={setReceiveModal}
+                setPostTrade={setPostTrade}
             /> : <div/>}
             {receiveModal ? <ReceiveModal
                 setReceiveModal={setReceiveModal}
-                setPostTrade={setPostTrade}
+                setPostReceive={setPostReceive}
             /> : <div/>}
             {pointManual ? <PointManual 
                 setPointManual={setPointManual}
