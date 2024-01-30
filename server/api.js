@@ -392,6 +392,7 @@ router.post("/achievements", auth.ensureLoggedIn, async (req, res) => {
   } else {
     const newAchievement = new Achievement({
       user: req.body.user,
+      tutorial: false,
       gameNo: 0,
       fullSet: [],
       wonGames: 0,
@@ -412,13 +413,27 @@ router.post("/addfullset", auth.ensureLoggedIn, async (req, res) => {
 })
 
 router.post("/addgamestat", auth.ensureLoggedIn, async (req, res) => {
-  const oldAchievement = await Achievement.findOne({ "user._id": req.body.state.user_id });
-  // console.log(oldAchievement);
-  // console.log(await Achievement.find({}));
+  if (req.body.state) {
+    const oldAchievement = await Achievement.findOne({ "user._id": req.body.state.user_id });
+    // console.log(oldAchievement);
+    // console.log(await Achievement.find({}));
+    if (oldAchievement) {
+      const newAchievement = await Achievement.findOneAndUpdate(
+        { "user._id": req.body.state.user_id },
+        { $set: { gameNo: oldAchievement.gameNo + 1, wonGames: oldAchievement.wonGames + (req.body.win ? 1 : 0) } },
+        { new: true },
+      );
+      res.send(newAchievement);
+    }
+  }
+})
+
+router.post("/tutorialcomplete", auth.ensureLoggedIn, async (req, res) => {
+  const oldAchievement = await Achievement.findOne({ "user._id": req.body.user._id });
   if (oldAchievement) {
     const newAchievement = await Achievement.findOneAndUpdate(
-      { "user._id": req.body.state.user_id },
-      { $set: { gameNo: oldAchievement.gameNo + 1, wonGames: oldAchievement.wonGames + (req.body.win ? 1 : 0) } },
+      { "user._id": req.body.user._id },
+      { $set: { tutorial: true } },
       { new: true },
     );
     res.send(newAchievement);

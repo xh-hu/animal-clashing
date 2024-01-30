@@ -10,7 +10,7 @@ import GameRound from "./pages/GameRound.js";
 import LobbyWait from "./pages/LobbyWait.js";
 import FightScene from "./pages/FightScene.js";
 import ResultScene from "./pages/ResultScene.js";
-import LoadScreen from "./modules/Loading.js";
+import {LoadScreen, WaitScreen} from "./modules/Loading.js";
 import Achievements from "./pages/Achievements.js";
 import PointPage from "./pages/PointPage.js";
 
@@ -37,6 +37,7 @@ const App = () => {
   const [battle, setBattle] = useState(false);
   const [makingChanges, setMakingChanges] = useState(false);
   const [maxRounds, setMaxRounds] = useState(3);
+  const [waiting, setWaiting] = useState(false);
   const roundDuration = 20;
 
   useEffect(() => {
@@ -181,7 +182,7 @@ const App = () => {
         setReceiveModal(true);
       }
       setRoundNo(roundNo+1);
-      setMakingChanges(false);
+      setWaiting(false);
       return () => {
         socket.off("readyForNext");
       }
@@ -199,7 +200,7 @@ const App = () => {
           setAllStates(allStates);
         }
         setBattle(true);
-        setMakingChanges(false);
+        setWaiting(false);
       })
       return () => {
         socket.off("readyForNext");
@@ -290,7 +291,7 @@ const App = () => {
   }
 
   function readyForNext(state) {
-    setMakingChanges(true);
+    setWaiting(true);
     post("/api/readyfornext", {state: state}).then((updatedState) => {
       console.log("readyyyyy");
       console.log(updatedState);
@@ -301,7 +302,7 @@ const App = () => {
   }
 
   function readyForBattle(state) {
-    setMakingChanges(true);
+    setWaiting(true);
     post("/api/readyforbattle", {state: state}).then((updatedState) => {
       console.log("fightfightfight");
       console.log(updatedState);
@@ -343,6 +344,7 @@ const App = () => {
   return (
     <div>
     {makingChanges ? <LoadScreen /> : <div/>}
+    {waiting ? <WaitScreen /> : <div/>}
     <div className="appContainer">
     <Routes>
       <Route

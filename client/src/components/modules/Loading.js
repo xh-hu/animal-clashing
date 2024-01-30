@@ -11,4 +11,12 @@ function LoadScreen() {
     );
 }
 
-export default LoadScreen;
+function WaitScreen() {
+    return (
+        <div className="LoadScreen-container">
+            <div className="LoadScreen-text">Waiting for other players...</div>
+        </div>
+    );
+}
+
+export {LoadScreen, WaitScreen};
