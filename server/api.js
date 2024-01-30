@@ -224,29 +224,15 @@ router.post("/readyfornext", auth.ensureLoggedIn, async (req, res) => {
     for (let k = 0; k < itemTypes.length; k++) {
       const itemType = itemTypes[k];
       const tradeStates = await State.find({lobbyName: lobbyName, "trade.name": itemType});
-      // let unusedItems = await Item.find({name: itemType, property: {$nin: friendStates.map((state) => state.items[k].property)}});
-      // console.log(unusedItems);
-      let unusedItems = [];
 
-      for (const state of tradeStates) {
-        unusedItems.push(state.items[k]);
-      }
-
-      // console.log(unusedItems);
-
-      // console.log(tradeStates);
       for (let i = 0; i < tradeStates.length; i++) {
-        console.log(unusedItems);
-        let ind = Math.floor(Math.random() * unusedItems.length);
-        // jank method so they don't get their own if more than one person
-        if (tradeStates[i].items[k].property === unusedItems[ind].property) ind = (ind + 1) % unusedItems.length;
+        let ind = (i + 1) % tradeStates.length;
         await State.findOneAndUpdate(
           { user_id: tradeStates[i].user_id, lobbyName: lobbyName },
           { $push: {
-            receive: unusedItems[ind],
+            receive: tradeStates[ind].items[k],
           } },
         )
-        unusedItems.splice(ind, 1);
       }
     }
     

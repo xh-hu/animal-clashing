@@ -5,16 +5,33 @@ import "./ReceiveModal.css";
 
 import { get, post } from "../../utilities";
 
+function itemInArray(item, array) {
+    for (const element of array) {
+        if (element.name === item.name && element.property === item.property){
+            return true;
+        }
+    }
+    return false;
+}
+
 function ReceiveModal(props) {
     const {setReceiveModal, myState, roundNo, receiveItem} = props;
     const maxRounds = 1;
     return (
         <div className="ReceiveModal-container">
             {myState.receive.length > 0 ? <>
-                <div className="ReceiveModal-text">You got...</div>
-                {myState.receive.map((item) => 
-                    <div className="ReceiveModal-itemtext">{item.name}: {item.property}</div>
-                )}
+                {myState.receive.filter((item) => !itemInArray(item, myState.items)).length > 0 ? <div>
+                    <div className="ReceiveModal-text">You got...</div>
+                    {myState.receive.filter((item) => !itemInArray(item, myState.items)).map((item) => 
+                        <div className="ReceiveModal-itemtext">{item.name}: {item.property}</div>
+                    )}
+                </div> : <div/>}
+                {myState.receive.filter((item) => itemInArray(item, myState.items)).length > 0 ? <div>
+                    <div className="ReceiveModal-text">You kept...</div>
+                    {myState.receive.filter((item) => itemInArray(item, myState.items)).map((item) => 
+                        <div className="ReceiveModal-itemtext">{item.name}: {item.property}</div>
+                    )}
+                </div> : <div/>}
             </> : <>
             <div className="ReceiveModal-text">You kept all your items!</div>
             </>}
