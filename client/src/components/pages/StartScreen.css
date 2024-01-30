@@ -3,22 +3,26 @@
 .StartScreen-container {
   position: absolute;
   font-family: "Roboto Mono", monospace;
-  color: white;
+  color: #3d4a61;
   top: 20px;
   height: 80px;
   width: calc(100vw - 40px);
   padding: 20px;
-  background-color: rgb(57, 57, 57);
+  background-color: rgb(201, 203, 221);
 }
 
 .StartScreen-login {
   position: absolute;
   font-family: "Roboto Mono", monospace;
   font-weight: 100px;
+  color: #3d4a61;
   height: 40px;
   width: 80px;
   right: 100px;
+  border-style: solid;
   border-radius: 10px;
+  border-width: 2px;
+  border-color: #3d4a61;
   top: 20px;
   opacity: 100%;
   z-index: 10;
@@ -36,14 +40,18 @@
 
 .StartScreen-button {
   font-family: "Roboto Mono", monospace;
-  color: black;
+  color: #3d4a61;
   font-size: 24px;
   height: 75px;
   font-weight: 1000;
   min-width: 250px;
   border-radius: 50px;
+  border-width: 4px;
+  border-style: solid;
+  border-color: #3d4a61;
   margin: 1.25vw 0vw;
   cursor: pointer;
+  background-color: white;
 }
 
 .textAlign {

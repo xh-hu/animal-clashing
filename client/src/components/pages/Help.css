@@ -2,7 +2,7 @@
 
 .Help-container {
   position: absolute;
-  color: white;
+  color: rgb(253, 174, 203);
   height: 80px;
   padding: 20px;
   text-align: center;
@@ -15,7 +15,7 @@
 .Help-back {
   position: absolute;
   font-family: "Roboto Mono", monospace;
-  color: black;
+  color: rgb(253, 174, 203);
   font-size: 1.5vw;
   height: 4vw;
   top: 20px;
@@ -23,19 +23,25 @@
   font-weight: 1000;
   min-width: 8vw;
   border-radius: 50px;
+  border-style: solid;
+  border-width: 3px;
+  border-color: rgb(253, 174, 203);
   cursor: pointer;
   z-index: 3;
+  background-color: white;
 }
 
 .Help-box {
   height: 60vh;
   margin: 0vw 12vw;
   outline-style: solid;
-  outline-color: white;
+  outline-color: rgb(253, 174, 203);
+  outline-width: 8px;
   text-align: left;
   padding: 30px;
   border-radius: 50px;
-  overflow: scroll;
+  overflow-x: clip;
+  overflow-y: scroll;
 }
 
 p.indent {

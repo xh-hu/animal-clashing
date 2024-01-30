@@ -189,7 +189,7 @@ const GameRound = (props) => {
                     {myState.avatar === "fox" && myState.items[3].name === "armor" && myState.items[3].property === "special" ?
                         <div className="GameRound-multiplier">
                             <div><b>Fox + grapes: all points x1.5</b></div>
-                            <div><i>And the fox realised how sweet the grapes were</i></div>
+                            <div><i>And the fox realized how sweet the grapes were</i></div>
                         </div>
                     : <div/>}
                     {myState.avatar === "otter" && myState.items[2].name === "shield" && myState.items[2].property === "animal" ?
