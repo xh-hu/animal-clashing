@@ -9,13 +9,11 @@ const StateSchema = new mongoose.Schema({
     googleid: String,
     lobbyName: String,
     avatar: String,
-    alive: Boolean,
     items: [ItemSchema],
     trade: [ItemSchema],
     receive: [ItemSchema],
     readyForNext: Boolean,
     readyForBattle: Boolean,
-    opp_id: String,
 })
 
 // compile model from schema

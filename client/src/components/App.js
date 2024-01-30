@@ -29,10 +29,10 @@ const App = () => {
   const [lobbies, setLobbies] = useState([]);
   const [myLobby, setMyLobby] = useState(null);
   const [myState, setMyState] = useState(null);
-  const [turnsLeft, setTurnsLeft] = useState(1);
   const [roundNo, setRoundNo] = useState(1);
   const [receiveModal, setReceiveModal] = useState(false);
-  const [opponentState, setOpponentState] = useState(null);
+  const [allStates, setAllStates] = useState(null);
+  const [winState, setWinState] = useState(null);
   const [battle, setBattle] = useState(false);
   const [makingChanges, setMakingChanges] = useState(false);
   const [maxRounds, setMaxRounds] = useState(3);
@@ -43,10 +43,6 @@ const App = () => {
       if (user) {
         // they are registed in the database, and currently logged in.
         setUser(user);
-        post("/api/achievements", {user: user}).then((achievement) => {
-          console.log(achievement);
-          setMyAchievements(achievement);
-        })
       }
     });
   }, []);
@@ -61,6 +57,10 @@ const App = () => {
         console.log("mylobby");
         setMyLobby(data);
       });
+      post("/api/achievements", {user: user}).then((achievement) => {
+        console.log(achievement);
+        setMyAchievements(achievement);
+      })
     }
     
     if (user) {
@@ -163,7 +163,6 @@ const App = () => {
       console.log("Starting game!");
       setMyLobby(null);
       setMyState(state);
-      setTurnsLeft(Math.ceil(Math.log2(playerNo)));
       setRoundNo(1);
       setMaxRounds(Math.min(playerNo, 5));
       setMakingChanges(false);
@@ -192,24 +191,17 @@ const App = () => {
     socket.once("readyForBattle", (state) => {
       console.log("Ready to fight");
       setMyState(state);
-      post("/api/getopponent", {state: state}).then((oppState) => {
-        console.log("Opponent get?");
-        console.log(oppState);
-        setOpponentState(oppState);
+      post("/api/getopponent", {state: state}).then((allStates) => {
+        console.log("States get?");
+        console.log(allStates);
+        if (allStates) {
+          setAllStates(allStates);
+        }
         setBattle(true);
         setMakingChanges(false);
       })
       return () => {
         socket.off("readyForNext");
-      }
-    })
-  })
-
-  useEffect(() => {
-    socket.once("reportFight", (win) => {
-      console.log("fight win reported: " + win);
-      return () => {
-        socket.off("reportFight");
       }
     })
   })
@@ -318,30 +310,17 @@ const App = () => {
     })
   }
 
-  function reportFight(state, win) {
-    setMakingChanges(true);
-    post("/api/reportfight", {win: win, state: state}).then((updatedState) => {
-      console.log("foughttt");
-      setMyState(updatedState);
-      setBattle(false);
-      setOpponentState(null);
-      setTurnsLeft(turnsLeft - 1);
-      setRoundNo(0);
-      setMakingChanges(false);
-    });
-  }
-
   function deleteState(state) {
-    post("/api/addgamestat", {state: state}).then((achievement) => {
+    post("/api/addgamestat", {state: state, win: (state.user_id === winState.user_id)}).then((achievement) => {
       setMyAchievements(achievement);
-    })
-    post("/api/deletestate", {state: state}).then(() => {
-      console.log("clearing game state...");
-      setMyState(null);
-      setBattle(false);
-      setRoundNo(1);
-      setTurnsLeft(1);
-      setOpponentState(null);
+      post("/api/deletestate", {state: state}).then(() => {
+        console.log("clearing game state...");
+        setMyState(null);
+        setBattle(false);
+        setRoundNo(1);
+        setAllStates(null);
+        setWinState(null);
+      })
     })
   }
 
@@ -412,7 +391,7 @@ const App = () => {
       />
       <Route
         path="/gameround"
-        element={ battle ? <Navigate to="/fightscene" state={{myState: myState, opponentState: opponentState}} /> : 
+        element={ battle ? <Navigate to="/fightscene" state={{myState: myState, allStates: allStates}} /> : 
           <GameRound
             myState={myState}
             tradeItem={tradeItem}
@@ -433,10 +412,9 @@ const App = () => {
         element={
           <FightScene
             myState={myState}
-            opponentState={opponentState}
-            turnsLeft={turnsLeft}
-            reportFight={reportFight}
+            allStates={allStates}
             setBattle={setBattle}
+            setWinState={setWinState}
           />
         }
       />
@@ -445,8 +423,7 @@ const App = () => {
         element={
           <ResultScene
             myState={myState}
-            turnsLeft={turnsLeft}
-            readyForNext={readyForNext}
+            winState={winState}
             deleteState={deleteState}
           />
         }
