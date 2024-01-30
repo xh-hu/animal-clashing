@@ -13,6 +13,7 @@ import ResultScene from "./pages/ResultScene.js";
 import {LoadScreen, WaitScreen} from "./modules/Loading.js";
 import Achievements from "./pages/Achievements.js";
 import PointPage from "./pages/PointPage.js";
+import BackgroundMusic from "../public/general_bgm.mp3"
 
 import "../utilities.css";
 import "./App.css";
@@ -38,6 +39,7 @@ const App = () => {
   const [makingChanges, setMakingChanges] = useState(false);
   const [maxRounds, setMaxRounds] = useState(3);
   const [waiting, setWaiting] = useState(false);
+  const [bgm, setBgm] = useState(new Audio(BackgroundMusic));
   const roundDuration = 20;
 
   useEffect(() => {
@@ -47,6 +49,13 @@ const App = () => {
         setUser(user);
       }
     });
+  }, []);
+
+  useEffect(() => {
+    // console.log(bgm.muted);
+    bgm.loop = true;
+    bgm.muted = false;
+    // console.log(bgm.muted);
   }, []);
 
   useEffect(() => {
@@ -413,6 +422,7 @@ const App = () => {
             receiveModal={receiveModal}
             setReceiveModal={setReceiveModal}
             setMyAchievements={setMyAchievements}
+            bgm={bgm}
           />
         }
       />
@@ -434,6 +444,7 @@ const App = () => {
             myState={myState}
             winState={winState}
             deleteState={deleteState}
+            bgm={bgm}
           />
         }
       />

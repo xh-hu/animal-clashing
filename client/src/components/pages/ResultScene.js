@@ -5,7 +5,7 @@ import "../../utilities.css";
 import "./ResultScene.css";
 
 const ResultScene = (props) => {
-    const {myState, winState, deleteState} = props ? props : useLocation().state;
+    const {myState, winState, deleteState, bgm} = props ? props : useLocation().state;
 
     const navigate = useNavigate();
 
@@ -23,6 +23,7 @@ const ResultScene = (props) => {
                 <div className="textAlign">
                     <button onClick={() => {
                         deleteState(myState);
+                        bgm.pause();
                         navigate("/");
                     }} className="ResultScene-button">HOME</button>
                 </div>

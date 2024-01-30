@@ -56,6 +56,10 @@ module.exports = {
           },
         ],
       },
+      {
+        test: /\.(mp3|wav)$/i,
+        type: 'asset/resource',
+      },
     ],
   },
   resolve: {

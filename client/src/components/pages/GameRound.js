@@ -113,13 +113,17 @@ global.imgMap = {
 }
 
 const GameRound = (props) => {
-    const {myState, tradeItem, untradeItem, receiveItem, readyForNext, readyForBattle, roundNo, maxRounds, receiveModal, setReceiveModal, setMyAchievements} = props ? props : useLocation().state;
+    const {myState, tradeItem, untradeItem, receiveItem, readyForNext, readyForBattle, roundNo, maxRounds, receiveModal, setReceiveModal, setMyAchievements, bgm} = props ? props : useLocation().state;
     console.log(myState);
     const [tradeModal, setTradeModal] = useState(false);
     const [pointManual, setPointManual] = useState(false);
     const [rulesManual, setRulesManual] = useState(false);
 
     const roundDuration = 30;
+
+    useEffect(() => {
+        bgm.play();
+    }, []);
 
     useEffect(() => {
         const property = myState.items[0].property;
