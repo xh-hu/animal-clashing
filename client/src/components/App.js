@@ -334,17 +334,14 @@ const App = () => {
   }
 
   function deleteState(state) {
-    post("/api/addgamestat", {state: state, win: (state.user_id === winState.user_id)}).then((achievement) => {
-      setMyAchievements(achievement);
-      post("/api/deletestate", {state: state}).then(() => {
-        console.log("clearing game state...");
-        setMyState(null);
-        setBattle(false);
-        setRoundNo(1);
-        setSeconds(30);
-        setAllStates(null);
-        setWinState(null);
-      })
+    post("/api/deletestate", {state: state}).then(() => {
+      console.log("clearing game state...");
+      setMyState(null);
+      setBattle(false);
+      setRoundNo(1);
+      setSeconds(30);
+      setAllStates(null);
+      setWinState(null);
     })
   }
 
@@ -461,6 +458,7 @@ const App = () => {
             myState={myState}
             winState={winState}
             deleteState={deleteState}
+            setMyAchievements={setMyAchievements}
           />
         }
       />

@@ -4,16 +4,18 @@ import { Link, useNavigate } from "react-router-dom";
 import "../../utilities.css";
 import "./ResultScene.css";
 
+import { get, post } from "../../utilities";
+
 const ResultScene = (props) => {
-    const {myState, winState, deleteState} = props ? props : useLocation().state;
+    const {myState, winState, deleteState, setMyAchievements} = props ? props : useLocation().state;
 
     const navigate = useNavigate();
 
     useEffect(() => {
-        post("/api/addgamestat", {state: state}).then((achievement) => {
+        post("/api/addgamestat", {state: myState}).then((achievement) => {
             setMyAchievements(achievement);
         })
-    })
+    }, [])
 
     return (
         <>
