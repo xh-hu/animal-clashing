@@ -1,0 +1,43 @@
+@import url("https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@100;400&display=swap");
+
+.PointPage-container {
+  position: absolute;
+  color: white;
+  height: 80px;
+  padding: 20px;
+  text-align: center;
+  vertical-align: middle;
+  margin: auto;
+  width: calc(100vw - 40px);
+  top: 3vw;
+}
+
+.PointPage-back {
+  position: absolute;
+  font-family: "Roboto Mono", monospace;
+  color: black;
+  font-size: 1.5vw;
+  height: 4vw;
+  top: 20px;
+  left: 20px;
+  font-weight: 1000;
+  min-width: 8vw;
+  border-radius: 50px;
+  cursor: pointer;
+  z-index: 3;
+}
+
+.PointPage-box {
+  height: 60vh;
+  margin: 0vw 12vw;
+  outline-style: solid;
+  outline-color: white;
+  text-align: left;
+  padding: 30px;
+  border-radius: 50px;
+  overflow: scroll;
+}
+
+p.indent {
+  margin-left: 30px;
+}

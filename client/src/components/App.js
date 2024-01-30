@@ -12,6 +12,7 @@ import FightScene from "./pages/FightScene.js";
 import ResultScene from "./pages/ResultScene.js";
 import LoadScreen from "./modules/Loading.js";
 import Achievements from "./pages/Achievements.js";
+import PointPage from "./pages/PointPage.js";
 
 import "../utilities.css";
 import "./App.css";
@@ -359,6 +360,12 @@ const App = () => {
         path="/help"
         element={
           <Help />
+        }
+      />
+      <Route
+        path="/pointpage"
+        element={
+          <PointPage />
         }
       />
       <Route

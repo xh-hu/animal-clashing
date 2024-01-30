@@ -47,7 +47,12 @@ const StartScreen = ({ userId, handleLogin, handleLogout }) => {
                 <div className="textAlign">
                     <button onClick={() => {
                         navigate("/help");
-                    }} className="StartScreen-button">HELP</button>
+                    }} className="StartScreen-button">RULES</button>
+                </div>
+                <div className="textAlign">
+                    <button onClick={() => {
+                        navigate("/pointpage");
+                    }} className="StartScreen-button">POINT MANUAL</button>
                 </div>
                 <div className="textAlign">
                     <button onClick={() => {
