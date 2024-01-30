@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Routes, Route, Navigate, useNavigate } from "react-router-dom";
 import jwt_decode from "jwt-decode";
 
@@ -13,6 +13,7 @@ import ResultScene from "./pages/ResultScene.js";
 import {LoadScreen, WaitScreen} from "./modules/Loading.js";
 import Achievements from "./pages/Achievements.js";
 import PointPage from "./pages/PointPage.js";
+import GameTutorial from "./pages/GameTutorial.js";
 
 import "../utilities.css";
 import "./App.css";
@@ -34,11 +35,32 @@ const App = () => {
   const [receiveModal, setReceiveModal] = useState(false);
   const [allStates, setAllStates] = useState(null);
   const [winState, setWinState] = useState(null);
+  const [allStates, setAllStates] = useState(null);
+  const [winState, setWinState] = useState(null);
   const [battle, setBattle] = useState(false);
   const [makingChanges, setMakingChanges] = useState(false);
   const [maxRounds, setMaxRounds] = useState(3);
   const [waiting, setWaiting] = useState(false);
+  const [seconds, setSeconds] = useState(30);
+  const [pause, setPause] = useState(false);
   const roundDuration = 20;
+
+  const timer = useRef(null);
+
+  useEffect(() => {
+    if (!pause) {
+      // useRef value stored in .current property
+      console.log("AWAWAWAWAWAWA");
+      setSeconds(30);
+      timer.current = setInterval(() => setSeconds((v) => v - 1), 1000);
+    } else {
+      clearInterval(timer.current);
+    }
+    // clear on component unmount
+    return () => {
+      clearInterval(timer.current);
+    };
+  }, [pause]);
 
   useEffect(() => {
     get("/api/whoami").then((user) => {
@@ -59,6 +81,10 @@ const App = () => {
         console.log("mylobby");
         setMyLobby(data);
       });
+      post("/api/achievements", {user: user}).then((achievement) => {
+        console.log(achievement);
+        setMyAchievements(achievement);
+      })
       post("/api/achievements", {user: user}).then((achievement) => {
         console.log(achievement);
         setMyAchievements(achievement);
@@ -166,6 +192,7 @@ const App = () => {
       setMyLobby(null);
       setMyState(state);
       setRoundNo(1);
+      setSeconds(30);
       setMaxRounds(Math.min(playerNo, 5));
       setMakingChanges(false);
       return () => {
@@ -180,8 +207,11 @@ const App = () => {
       setMyState(state);
       if (roundNo > 0) {
         setReceiveModal(true);
+      } else {
+        setPause(false);
       }
       setRoundNo(roundNo+1);
+      setMakingChanges(false);
       setWaiting(false);
       return () => {
         socket.off("readyForNext");
@@ -193,6 +223,12 @@ const App = () => {
     socket.once("readyForBattle", (state) => {
       console.log("Ready to fight");
       setMyState(state);
+      post("/api/getopponent", {state: state}).then((allStates) => {
+        console.log("States get?");
+        console.log(allStates);
+        if (allStates) {
+          setAllStates(allStates);
+        }
       post("/api/getopponent", {state: state}).then((allStates) => {
         console.log("States get?");
         console.log(allStates);
@@ -323,6 +359,20 @@ const App = () => {
         setAllStates(null);
         setWinState(null);
       })
+    post("/api/deletestate", {state: state}).then(() => {
+      console.log("clearing game state...");
+      setMyState(null);
+      setBattle(false);
+      setRoundNo(1);
+      setSeconds(30);
+      setAllStates(null);
+      setWinState(null);
+    })
+  }
+
+  function completeTutorial(user) {
+    post("/api/tutorialcomplete", {user: user}).then((achievement) => {
+      setMyAchievements(achievement);
     })
   }
 
@@ -355,6 +405,7 @@ const App = () => {
             handleLogin={handleLogin}
             handleLogout={handleLogout}
             userId={user ? user._id : null}
+            tutorial={myAchievements ? myAchievements.tutorial : false}
           />
         }
       />
@@ -401,6 +452,7 @@ const App = () => {
       <Route
         path="/gameround"
         element={ battle ? <Navigate to="/fightscene" state={{myState: myState, allStates: allStates}} /> : 
+        element={ battle ? <Navigate to="/fightscene" state={{myState: myState, allStates: allStates}} /> : 
           <GameRound
             myState={myState}
             tradeItem={tradeItem}
@@ -413,6 +465,11 @@ const App = () => {
             receiveModal={receiveModal}
             setReceiveModal={setReceiveModal}
             setMyAchievements={setMyAchievements}
+            seconds={seconds}
+            setSeconds={setSeconds}
+            pause={pause}
+            setPause={setPause}
+            currentTimer={timer.current}
           />
         }
       />
@@ -421,6 +478,7 @@ const App = () => {
         element={
           <FightScene
             myState={myState}
+            allStates={allStates}
             allStates={allStates}
             setBattle={setBattle}
             setWinState={setWinState}
@@ -434,6 +492,16 @@ const App = () => {
             myState={myState}
             winState={winState}
             deleteState={deleteState}
+            setMyAchievements={setMyAchievements}
+          />
+        }
+      />
+      <Route
+        path="/gametutorial"
+        element={
+          <GameTutorial
+            user={user}
+            completeTutorial={completeTutorial}
           />
         }
       />
