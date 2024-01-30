@@ -148,6 +148,7 @@ const GameRound = (props) => {
                 <img src={imgMap[myState.items[4].name + "_" + myState.items[4].property]} className="GameRound-image GameRound-boots"/>
                 <div className="GameRound-username">{myState.name}</div>
                 <div className="GameRound-character">Character: {myState.avatar}</div>
+                <div className="GameRound-points">Total Points: {pointCalc(myState.items, myState.avatar)}</div>
             </div>
             <div className="GameRound-column GameRound-items">
                 {myState.items ? myState.items.map((item) => 
@@ -155,7 +156,68 @@ const GameRound = (props) => {
                         item={item}
                     />
                 ) : "There was a bug -- please restart the game!"}
-                <div className="GameRound-points">Total Points: {pointCalc(myState.items, myState.avatar)}</div>
+                <div className="GameRound-multiplierbox">
+                    {myState.avatar === "bunny" && myState.items[1].name === "sword" && myState.items[1].property === "special" ?
+                        <div className="GameRound-multiplier">
+                            <div><b>Bunny + carrot: all points x1.5</b></div>
+                            <div><i>I had a carrot this big no lie</i></div>
+                        </div>
+                    : <div/>}
+                    {myState.avatar === "cat" && myState.items[0].name === "helmet" && myState.items[0].property === "animal" ?
+                        <div className="GameRound-multiplier">
+                            <div><b>Cat combo: all points x1.5</b></div>
+                            <div><i>The original start of the trend</i></div>
+                        </div>
+                    : <div/>}
+                    {myState.avatar === "dog" && myState.items[1].name === "sword" && myState.items[1].property === "animal" ?
+                        <div className="GameRound-multiplier">
+                            <div><b>Dog combo: all points x1.5</b></div>
+                            <div><i>Perfectly balanced as all things should be</i></div>
+                        </div>
+                    : <div/>}
+                    {myState.avatar === "deer" && myState.items[4].name === "boots" && myState.items[4].property === "animal" ?
+                        <div className="GameRound-multiplier">
+                            <div><b>Deer combo: all points x1.5</b></div>
+                            <div><i>Finally... the real shoes</i></div>
+                        </div>
+                    : <div/>}
+                    {myState.avatar === "fox" && myState.items[3].name === "armor" && myState.items[3].property === "special" ?
+                        <div className="GameRound-multiplier">
+                            <div><b>Fox + grapes: all points x1.5</b></div>
+                            <div><i>And the fox realised how sweet the grapes were</i></div>
+                        </div>
+                    : <div/>}
+                    {myState.avatar === "otter" && myState.items[2].name === "shield" && myState.items[2].property === "animal" ?
+                        <div className="GameRound-multiplier">
+                            <div><b>Otter combo: all points x1.5</b></div>
+                            <div><i>Holding hands helps with a more peaceful sleep</i></div>
+                        </div>
+                    : <div/>}
+                    {myState.avatar === "tiger" && myState.items[3].name === "armor" && myState.items[3].property === "animal" ?
+                        <div className="GameRound-multiplier">
+                            <div><b>Tiger combo: all points x1.5</b></div>
+                            <div><i>More stripes = more confidence!</i></div>
+                        </div>
+                    : <div/>}
+                    {myState.avatar === "wolf" && myState.items[2].name === "shield" && myState.items[2].property === "special" ?
+                        <div className="GameRound-multiplier">
+                            <div><b>Wolf + moon: all points x1.5</b></div>
+                            <div><i>The quietest he's ever been</i></div>
+                        </div>
+                    : <div/>}
+                    {myState.items[4].name === "boots" && myState.items[4].property === "special" ?
+                        <div className="GameRound-multiplier">
+                            <div><b>Iron man boots: all points x1.2</b></div>
+                            <div><i>The power of technology</i></div>
+                        </div>
+                    : <div/>}
+                    {myState.items[0].name === "helmet" && myState.items[0].property === "special" ?
+                        <div className="GameRound-multiplier">
+                            <div><b>Clown: all points x0.8</b></div>
+                            <div><i>Can anyone really take you seriously like that?</i></div>
+                        </div>
+                    : <div/>}
+                </div>
                 {roundNo > maxRounds ? <button onClick={() => {
                     if (!tradeModal && !receiveModal) {
                         readyForBattle(myState);

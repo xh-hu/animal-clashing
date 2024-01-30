@@ -53,12 +53,12 @@ global.pointCalc = (items, avatar) => {
     }
     if (avatar === "bunny" && items[1].name === "sword" && items[1].property === "special") points *= 1.5;
     else if (avatar === "cat" && items[0].name === "helmet" && items[0].property === "animal") points *= 1.5;
-    else if (avatar === "deer" && items[4].name === "boots" && items[1].property === "animal") points *= 1.5;
+    else if (avatar === "deer" && items[4].name === "boots" && items[4].property === "animal") points *= 1.5;
     else if (avatar === "dog" && items[1].name === "sword" && items[1].property === "animal") points *= 1.5;
-    else if (avatar === "fox" && items[3].name === "armor" && items[1].property === "special") points *= 1.5;
-    else if (avatar === "otter" && items[2].name === "shield" && items[1].property === "animal") points *= 1.5;
-    else if (avatar === "tiger" && items[3].name === "armor" && items[1].property === "animal") points *= 1.5;
-    else if (avatar === "wolf" && items[2].name === "shield" && items[1].property === "special") points *= 1.5;
+    else if (avatar === "fox" && items[3].name === "armor" && items[3].property === "special") points *= 1.5;
+    else if (avatar === "otter" && items[2].name === "shield" && items[2].property === "animal") points *= 1.5;
+    else if (avatar === "tiger" && items[3].name === "armor" && items[3].property === "animal") points *= 1.5;
+    else if (avatar === "wolf" && items[2].name === "shield" && items[2].property === "special") points *= 1.5;
 
     if (items[4].name === "boots" && items[4].property === "special") points *= 1.2;
     else if (items[0].name === "helmet" && items[0].property === "special") points *= 0.8;
