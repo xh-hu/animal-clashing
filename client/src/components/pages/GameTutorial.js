@@ -38,7 +38,7 @@ function ItemTrade(props) {
                 setTraded(true);
             }} className="ItemTrade-tradeButton">
                 {item.name}: {item.property}
-            </button>) : <div className="ItemTrade-tradeButton">{item.name}: {item.property}</div>}
+            </button>) : <button className="ItemTrade-tradeButton">{item.name}: {item.property}</button>}
         </div>
     );
 }
