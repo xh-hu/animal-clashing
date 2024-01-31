@@ -14,6 +14,7 @@ import {LoadScreen, WaitScreen} from "./modules/Loading.js";
 import Achievements from "./pages/Achievements.js";
 import PointPage from "./pages/PointPage.js";
 import GameTutorial from "./pages/GameTutorial.js";
+import BackgroundMusic from "../public/general_bgm.mp3"
 
 import "../utilities.css";
 import "./App.css";
@@ -35,14 +36,13 @@ const App = () => {
   const [receiveModal, setReceiveModal] = useState(false);
   const [allStates, setAllStates] = useState(null);
   const [winState, setWinState] = useState(null);
-  const [allStates, setAllStates] = useState(null);
-  const [winState, setWinState] = useState(null);
   const [battle, setBattle] = useState(false);
   const [makingChanges, setMakingChanges] = useState(false);
   const [maxRounds, setMaxRounds] = useState(3);
   const [waiting, setWaiting] = useState(false);
   const [seconds, setSeconds] = useState(30);
   const [pause, setPause] = useState(false);
+  const [bgm, setBgm] = useState(new Audio(BackgroundMusic));
   const roundDuration = 20;
 
   const timer = useRef(null);
@@ -69,6 +69,13 @@ const App = () => {
         setUser(user);
       }
     });
+  }, []);
+
+  useEffect(() => {
+    // console.log(bgm.muted);
+    bgm.loop = true;
+    bgm.muted = false;
+    // console.log(bgm.muted);
   }, []);
 
   useEffect(() => {
@@ -229,12 +236,6 @@ const App = () => {
         if (allStates) {
           setAllStates(allStates);
         }
-      post("/api/getopponent", {state: state}).then((allStates) => {
-        console.log("States get?");
-        console.log(allStates);
-        if (allStates) {
-          setAllStates(allStates);
-        }
         setBattle(true);
         setWaiting(false);
       })
@@ -351,14 +352,6 @@ const App = () => {
   function deleteState(state) {
     post("/api/addgamestat", {state: state, win: (state.user_id === winState.user_id)}).then((achievement) => {
       setMyAchievements(achievement);
-      post("/api/deletestate", {state: state}).then(() => {
-        console.log("clearing game state...");
-        setMyState(null);
-        setBattle(false);
-        setRoundNo(1);
-        setAllStates(null);
-        setWinState(null);
-      })
     post("/api/deletestate", {state: state}).then(() => {
       console.log("clearing game state...");
       setMyState(null);
@@ -368,7 +361,7 @@ const App = () => {
       setAllStates(null);
       setWinState(null);
     })
-  }
+  })
 
   function completeTutorial(user) {
     post("/api/tutorialcomplete", {user: user}).then((achievement) => {
@@ -452,7 +445,6 @@ const App = () => {
       <Route
         path="/gameround"
         element={ battle ? <Navigate to="/fightscene" state={{myState: myState, allStates: allStates}} /> : 
-        element={ battle ? <Navigate to="/fightscene" state={{myState: myState, allStates: allStates}} /> : 
           <GameRound
             myState={myState}
             tradeItem={tradeItem}
@@ -470,6 +462,7 @@ const App = () => {
             pause={pause}
             setPause={setPause}
             currentTimer={timer.current}
+            bgm={bgm}
           />
         }
       />
@@ -502,6 +495,7 @@ const App = () => {
           <GameTutorial
             user={user}
             completeTutorial={completeTutorial}
+            bgm={bgm}
           />
         }
       />
