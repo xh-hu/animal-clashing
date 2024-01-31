@@ -6,7 +6,7 @@
   color: #3d4a61;
   top: 20px;
   height: 80px;
-  width: calc(100vw - 40px);
+  width: 1000px;
   padding: 20px;
   background-color: rgb(201, 203, 221);
 }
@@ -18,7 +18,7 @@
   color: #3d4a61;
   height: 40px;
   width: 80px;
-  right: 100px;
+  left: 1400px;
   border-style: solid;
   border-radius: 10px;
   border-width: 2px;
@@ -37,7 +37,7 @@
   width: calc(100vw - 40px);
   font-size: 24px;
   font-weight: 1000;
-  top: 25vw;
+  top: 400px;
 }
 
 .StartScreen-button {
@@ -57,9 +57,9 @@
 }
 
 .StartScreen-title {
-  position: relative;
+  position: absolute;
   left: 310px;
-  top: -150px;
+  top: -130px;
   width: 867.4px;
   height: 650.5px;
   z-index: 0;
@@ -70,32 +70,31 @@
 }
 
 .textAlign-play {
-  position: relative;
-  left: 26vw;
+  position: absolute;
+  left: 380px;
   z-index: 30;
   display: flex
 }
 
 .textAlign-achieve {
-  position: relative;
-  left: 26vw;
-  top: -26vh;
+  position: absolute;
+  left: 380px;
+  top: 120px;
   z-index: 12;
   display: flex
 }
 
 .textAlign-rules {
-  position: relative;
-  top: -14vh;
-  left: 52vw;
+  position: absolute;
+  left: 780px;
   z-index: 80;
   display: flex
 }
 
 .textAlign-points {
-  position: relative;
-  left: 52vw;
-  top: -12.1vh;
+  position: absolute;
+  left: 780px;
+  top: 120px;
   z-index: 14;
   display: flex
 }

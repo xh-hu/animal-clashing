@@ -50,13 +50,13 @@ function TutorialModal(props) {
         <div className="TutorialModal-blackout3">
             <div className="TutorialModal-container TutorialModal-3">
                 Full sets of items with the same property usually gives you more points! Since you have the most items from the viking set, each viking item you own is worth its full point value of 1050. 
-                For items of any other property, they are worth half points. So the helmet from the random set is worth half of its usual 900 point value. 
+                For items of any other property, they are worth half points. So the helmet from the special set is worth half of its usual 900 point value. 
                 <button onClick={()=>{setModal4(false); setModal5(true)}} className="TutorialModal-nextbutton TutorialModal-nextbutton3">&gt;&gt;</button>
             </div>
         </div> : modal5 ?
         <div className="TutorialModal-blackout5">
             <div className="TutorialModal-container TutorialModal-5">
-                There are some special items lying around too. If you happen to have one of them, their effect will be shown here. You currently have the clown mask (helmet: random), which is giving you a 0.8x point multiplier :\
+                There are some special items lying around too. If you happen to have one of them, their effect will be shown here. You currently have the clown mask, which is giving you a 0.8x point multiplier :\
                 <button onClick={()=>{setModal5(false); setModal6(true)}} className="TutorialModal-nextbutton TutorialModal-nextbutton5">&gt;&gt;</button>
             </div>
         </div> : modal6 ?
@@ -82,7 +82,7 @@ function TutorialModal(props) {
         </div> : modal9 ?
         <div className="TutorialModal-blackout9">
             <div className="TutorialModal-container TutorialModal-9">
-                Now, let's try to trade something away! Looks like the clown makeup (helmet: random) is giving you a bad multiplier. Click the trade button and select the helmet to trade it away. 
+                Now, let's try to trade something away! Looks like the clown makeup (helmet: special) is giving you a bad multiplier. Click the trade button and select the helmet to trade it away. 
                 We only want to trade one item this time, but remember that you can trade away as many items as you want each round!
             </div>
         </div> : modal10 && postTrade ?
