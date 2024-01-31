@@ -5,7 +5,6 @@ import "../../utilities.css";
 import "./FightScene.css";
 
 import FightCloud from "../../public/assets/fight_cloud.gif"
-import DrumRoll from "../../public/drum_roll.mp3"
 
 global.pointCalc = (items, avatar) => {
     const propertyPointMap = {
@@ -67,10 +66,8 @@ global.pointCalc = (items, avatar) => {
 }
 
 const FightScene = (props) => {
-    const {myState, allStates, setBattle, setWinState} = props ? props : useLocation().state;
+    const {myState, allStates, setBattle, setWinState, drumroll} = props ? props : useLocation().state;
     const navigate = useNavigate();
-
-    const [drumroll, setDrumRoll] = useState(new Audio(DrumRoll));
 
     useEffect(() => {
         setBattle(false);
@@ -94,7 +91,11 @@ const FightScene = (props) => {
     useEffect(() => {
         drumroll.muted = false;
         drumroll.play();
-    }, [drumroll]);
+
+        return () => {
+            drumroll.pause();
+        }
+    }, []);
 
     return (
         <>

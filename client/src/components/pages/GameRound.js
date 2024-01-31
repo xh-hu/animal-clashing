@@ -6,8 +6,6 @@ import ReceiveModal from "../modules/ReceiveModal";
 import PointManual from "../modules/PointManual";
 import RulesManual from "../modules/RulesManual";
 
-import BackgroundMusic from "../../public/general_bgm.mp3"
-
 import "./GameRound.css";
 
 import { get, post } from "../../utilities";
@@ -126,12 +124,11 @@ global.emojiMap = {
 }
 
 const GameRound = (props) => {
-    const {myState, tradeItem, untradeItem, receiveItem, readyForNext, readyForBattle, roundNo, maxRounds, receiveModal, setReceiveModal, setMyAchievements, seconds, setSeconds, pause, setPause, currentTimer} = props ? props : useLocation().state;
+    const {myState, tradeItem, untradeItem, receiveItem, readyForNext, readyForBattle, roundNo, maxRounds, receiveModal, setReceiveModal, setMyAchievements, seconds, setSeconds, pause, setPause, currentTimer, bgm} = props ? props : useLocation().state;
     console.log(myState);
     const [tradeModal, setTradeModal] = useState(false);
     const [pointManual, setPointManual] = useState(false);
     const [rulesManual, setRulesManual] = useState(false);
-    const [bgm, setBgm] = useState(new Audio(BackgroundMusic));
 
     const roundDuration = 45;
 
