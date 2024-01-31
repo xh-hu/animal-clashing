@@ -5,7 +5,7 @@ import "./TutorialModal.css";
 import { get, post } from "../../utilities";
 
 function TutorialModal(props) {
-    const {postTrade, postReceive, receiveModal, fight} = props;
+    const {postTrade, postReceive, receiveModal, fight, modal9, setModal9} = props;
     const [modal1, setModal1] = useState(true);
     const [modal2, setModal2] = useState(false);
     const [modal3, setModal3] = useState(false);
@@ -14,7 +14,6 @@ function TutorialModal(props) {
     const [modal6, setModal6] = useState(false);
     const [modal7, setModal7] = useState(false);
     const [modal8, setModal8] = useState(false);
-    const [modal9, setModal9] = useState(false);
     const [modal10, setModal10] = useState(true);
     const [modal11, setModal11] = useState(true);
 

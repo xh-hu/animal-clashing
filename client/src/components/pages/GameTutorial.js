@@ -29,8 +29,7 @@ const itemsAfter = [
 ]
 
 function ItemTrade(props) {
-    const {item} = props;
-    const [traded, setTraded] = useState(false);
+    const {item, traded ,setTraded} = props;
     return (
         <div className="ItemTrade-container">
             {item.name === "helmet" ? (traded ? <button className="ItemTrade-untradeButton">
@@ -46,6 +45,7 @@ function ItemTrade(props) {
 
 function TradeModal(props) {
     const {setTradeModal, items, setReceiveModal, setPostTrade} = props;
+    const [traded, setTraded] = useState(false);
     return (
         <div className="TradeModal-container">
             <button className="TradeModal-back">X</button>
@@ -54,13 +54,17 @@ function TradeModal(props) {
                 {items ? items.map((item) => 
                     <ItemTrade 
                         item={item}
+                        traded={traded}
+                        setTraded={setTraded}
                     /> 
                 ) : "No items registered -- there may have been a bug."}
             </div>
             <button onClick={() => {
-                setTradeModal(false);
-                setReceiveModal(true);
-                setPostTrade(true);
+                if (traded) {
+                    setTradeModal(false);
+                    setReceiveModal(true);
+                    setPostTrade(true);
+                }
             }} className="TradeModal-tradeButton">TRADE</button>
         </div>
     );
@@ -156,6 +160,9 @@ const GameTutorial = (props) => {
     const [postTrade, setPostTrade] = useState(false);
     const [receiveModal, setReceiveModal] = useState(false);
     const [fight, setFight] = useState(false);
+
+    const [modal9, setModal9] = useState(false);
+    const navigate = useNavigate();
     
     return (<>
         <button onClick={() => {
@@ -165,10 +172,10 @@ const GameTutorial = (props) => {
         <div className="GameTutorial-roundNo">{postReceive ? "Preparing for battle" : <div>Round 1/1</div>}</div>
         <div className="GameTutorial-time">Time left: 30</div>
         <div className="textAlign">
-            <button onClick={() => {setPointManual(true);}} className="GameTutorial-pointmanual">Point Manual</button>
+            <button onClick={() => {}} className="GameTutorial-pointmanual">Point Manual</button>
         </div>
         <div className="textAlign">
-            <button onClick={() => {setRulesManual(true);}} className="GameTutorial-rules">Rules Manual</button>
+            <button onClick={() => {}} className="GameTutorial-rules">Rules Manual</button>
         </div>
         <div className="GameTutorial-container">
         {user ? <>
@@ -210,7 +217,7 @@ const GameTutorial = (props) => {
                 }} className="GameTutorial-button"> FIGHT! </button> : <>
                     <button className="GameTutorial-button">KEEP</button>
                     <button onClick={() => {
-                        if (!tradeModal && !receiveModal) {
+                        if (!tradeModal && !receiveModal && modal9) {
                             setTradeModal(true);
                         }
                     }} className="GameTutorial-button">TRADE</button>
@@ -221,6 +228,8 @@ const GameTutorial = (props) => {
                 postReceive={postReceive}
                 receiveModal={receiveModal}
                 fight={fight}
+                modal9={modal9}
+                setModal9={setModal9}
             />
             {tradeModal ? <TradeModal
                 setTradeModal={setTradeModal}
