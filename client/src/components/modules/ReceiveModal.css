@@ -1,8 +1,9 @@
 @import url("https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@100;400&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Cute+Font&display=swap');
 
 .ReceiveModal-container {
     position: absolute;
-    font-family: "Roboto Mono", monospace;
+    font-family: "Cute Font", monospace;
     left: calc((110vw - 500px)/2 - 25px);
     top: 120px;
     height: calc(90vh - 100px);
@@ -31,7 +32,7 @@
 .ReceiveModal-confirmButton {
     position: relative;
     top: 330px;
-    font-family: "Roboto Mono", monospace;
+    font-family: "Cute Font", monospace;
     color: #3d4a61;
     background-color: white;
     font-size: 18px;

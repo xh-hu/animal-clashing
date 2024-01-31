@@ -20,7 +20,7 @@ const LobbyWait = (props) => {
             </div>
             <div className="LobbyWait-container">
                 {myLobby ? <>
-                    <h1>LOBBY {myLobby.name}</h1>
+                    <h1 className="LobbyWait-heading">LOBBY {myLobby.name}</h1>
                     <div className="LobbyWait-box">
                         {myLobby.users ? myLobby.users.map((user) => 
                             <UserBlock

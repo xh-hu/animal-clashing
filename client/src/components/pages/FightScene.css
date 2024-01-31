@@ -1,8 +1,9 @@
 @import url("https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@100;400&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Cute+Font&display=swap');
 
 .FightScene-container {
     position: absolute;
-    font-family: "Roboto Mono", monospace;
+    font-family: "Cute Font", monospace;
     color: #3d4a61;
     padding: 0px 80px;
     text-align: center;

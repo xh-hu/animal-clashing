@@ -11,7 +11,7 @@ const PointPage = () => {
         <button className="PointPage-back">BACK</button>
       </Link>
       <div className="PointPage-container">
-        <h1>POINTS</h1>
+        <h1 className = "PointPage-heading">POINTS</h1>
         <div className="PointPage-box">
         <p>
           Each item is assigned has a base number of points based on their property using the following system:

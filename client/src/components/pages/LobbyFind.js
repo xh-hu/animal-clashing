@@ -17,7 +17,7 @@ const LobbyFind = (props) => {
                 }} className="LobbyFind-back">BACK</button>
             </div>
             <div className="LobbyFind-container">
-                <h1>LOBBY SELECT</h1>
+                <h1 className="LobbyFind-heading">LOBBY SELECT</h1>
                 <div className="LobbyFind-box">
                     {(lobbies && lobbies.length > 0) ? lobbies.map((lobby) => 
                         <LobbyBlock 

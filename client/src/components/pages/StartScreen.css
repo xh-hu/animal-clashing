@@ -1,8 +1,9 @@
 @import url("https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@100;400&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Cute+Font&display=swap');
 
 .StartScreen-container {
   position: absolute;
-  font-family: "Roboto Mono", monospace;
+  font-family: "Cute Font", monospace;
   color: #3d4a61;
   top: 20px;
   height: 80px;
@@ -34,18 +35,18 @@
   position: absolute;
   text-align: center;
   margin: auto;
-  width: calc(100vw - 40px);
-  font-size: 24px;
+  width: 1536px;
+  font-size: 56px;
   font-weight: 1000;
   top: 400px;
 }
 
 .StartScreen-button {
-  font-family: "Roboto Mono", monospace;
+  font-family: "Cute Font", monospace;
   color: #3d4a61;
-  font-size: 24px;
+  font-size: 40px;
   height: 60px;
-  font-weight: 1000;
+  font-weight: 2000;
   width: 300px;
   border-radius: 50px;
   border-width: 4px;

@@ -1,4 +1,5 @@
 @import url("https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@100;400&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Cute+Font&display=swap');
 
 .Help-container {
   position: absolute;
@@ -8,20 +9,20 @@
   text-align: center;
   vertical-align: middle;
   margin: auto;
-  width: calc(100vw - 40px);
-  top: 3vw;
+  width: 1500px;
+  top: -30px;
 }
 
 .Help-back {
   position: absolute;
-  font-family: "Roboto Mono", monospace;
+  font-family: "Cute Font", monospace;
   color: #3d4a61;
-  font-size: 1.5vw;
-  height: 3.5vw;
+  font-size: 36px;
+  height: 55px;
   top: 20px;
   left: 20px;
   font-weight: 1000;
-  min-width: 8vw;
+  min-width: 120px;
   border-radius: 50px;
   border-style: solid;
   border-width: 4px;
@@ -31,13 +32,18 @@
   background-color: white;
 }
 
+.Help-heading{
+  font-size: 64px
+}
+
 .Help-box {
-  height: 60vh;
-  margin: 0vw 12vw;
+  height: 450px;
+  margin: 0px 200px;
   outline-style: solid;
   outline-color: #3d4a61;
   outline-width: 8px;
   text-align: left;
+  font-size: 34px;
   padding: 30px;
   border-radius: 50px;
   overflow-x: clip;

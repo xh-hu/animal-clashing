@@ -13,13 +13,14 @@ const Achievements = (props) => {
             <button className="Achievements-back">BACK</button>
         </Link>
         <div className="Achievements-container">
-            <h1>ACHIEVEMENTS</h1>
+            <h1 className="Achievements-heading">ACHIEVEMENTS</h1>
             {myAchievements ? 
             <div className="Achievements-box">
                 <div className="leftAlign">
-                    <p>No. of games played: {myAchievements.gameNo}</p>
-                    <p>No. of games won: {myAchievements.wonGames}</p>
-                    <p>No. of full sets: {myAchievements.fullSet.length} ({myAchievements.fullSet.join(", ")})</p>
+                    <p className="Achievements-block">Finished Tutorial: {myAchievements.tutorial ? "yes" : "no"}</p>                
+                    <p className="Achievements-block">No. of games played: {myAchievements.gameNo}</p>
+                    <p className="Achievements-block">No. of games won: {myAchievements.wonGames}</p>
+                    <p className="Achievements-block">No. of full sets: {myAchievements.fullSet.length} ({myAchievements.fullSet.join(", ")})</p>
                 </div>
             </div> : "Loading achievements..."}
         </div>

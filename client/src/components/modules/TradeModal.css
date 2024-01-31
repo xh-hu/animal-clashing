@@ -1,8 +1,9 @@
 @import url("https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@100;400&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Cute+Font&display=swap');
 
 .TradeModal-container {
     position: absolute;
-    font-family: "Roboto Mono", monospace;
+    font-family: "Cute Font", monospace;
     left: calc((110vw - 500px)/2 - 25px);
     top: 120px;
     height: calc(90vh - 100px);
@@ -27,7 +28,7 @@
 
 .TradeModal-tradeButton {
     position: relative;
-    font-family: "Roboto Mono", monospace;
+    font-family: "Cute Font", monospace;
     color: #3d4a61;
     background-color: white;
     font-size: 18px;
@@ -53,6 +54,6 @@
     border-style: solid;
     border-radius: 50px;
     border-color: #3d4a61;
-    font-size: 16px;
+    font-size: 36px;
     cursor: pointer;
 }

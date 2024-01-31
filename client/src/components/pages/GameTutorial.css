@@ -1,4 +1,5 @@
 @import url("https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@100;400&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Cute+Font&display=swap');
 
 .GameTutorial-container {
     position: absolute;
@@ -15,7 +16,7 @@
 
 .GameTutorial-pointmanual {
     position: absolute;
-    font-family: "Roboto Mono", monospace;
+    font-family: "Cute Font", monospace;
     color: #3d4a61;
     font-size: 20px;
     height: 40px;
@@ -35,7 +36,7 @@
 
 .GameTutorial-rules {
     position: absolute;
-    font-family: "Roboto Mono", monospace;
+    font-family: "Cute Font", monospace;
     color: #3d4a61;
     font-size: 20px;
     height: 40px;
@@ -95,7 +96,7 @@
 
 .GameTutorial-button {
     position: relative;
-    font-family: "Roboto Mono", monospace;
+    font-family: "Cute Font", monospace;
     color: #3d4a61;
     font-size: 18px;
     bottom: -120px;
@@ -191,7 +192,7 @@
 
 .GameTutorial-skip {
     position: absolute;
-    font-family: "Roboto Mono", monospace;
+    font-family: "Cute Font", monospace;
     font-weight: 100px;
     color: #3d4a61;
     height: 30px;
