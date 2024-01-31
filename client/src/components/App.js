@@ -483,6 +483,7 @@ const App = () => {
             winState={winState}
             deleteState={deleteState}
             setMyAchievements={setMyAchievements}
+            bgm={bgm}
           />
         }
       />
