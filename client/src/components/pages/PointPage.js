@@ -12,6 +12,7 @@ const PointPage = () => {
       </Link>
       <div className="PointPage-container">
         <h1>POINTS</h1>
+        <div className="PointPage-box">
         <p>
           For the set that you have the most items in (or the one with the highest point value if
           there's a tie), you get full points. For all other items, you get half points.
@@ -42,6 +43,7 @@ const PointPage = () => {
         <p class="indent">Tiger Buff: Animal armor (striped armor)</p>
         <p class="indent">Otter Buff: Animal shield (small round otter)</p>
         <p class="indent">Dog Buff: Animal weapon (small angry dog)</p>
+      </div>
       </div>
     </>
   );

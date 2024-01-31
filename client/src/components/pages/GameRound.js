@@ -4,6 +4,7 @@ import ItemDisplay from "../modules/ItemDisplay";
 import TradeModal from "../modules/TradeModal";
 import ReceiveModal from "../modules/ReceiveModal";
 import PointManual from "../modules/PointManual";
+import RulesManual from "../modules/RulesManual";
 
 import "./GameRound.css";
 
@@ -59,7 +60,6 @@ import fox from "../../public/assets/fox.png"
 import otter from "../../public/assets/otter.png"
 import tiger from "../../public/assets/tiger.png"
 import wolf from "../../public/assets/wolf.png"
-import RulesManual from "../modules/RulesManual";
 
 global.imgMap = {
     "armor_animal": armorAnimal,
@@ -153,7 +153,7 @@ const GameRound = (props) => {
         <div className="GameRound-roundNo">{roundNo > maxRounds ? "Preparing for battle" : <div>Round {roundNo}/{maxRounds}</div>}</div>
         <div>Time left: {seconds}</div>
         <div className="textAlign">
-            <button onClick={() => {setPointManual(true);}} className="GameRound-manual">Point Manual</button>
+            <button onClick={() => {setPointManual(true);}} className="GameRound-pointmanual">Point Manual</button>
         </div>
         <div className="textAlign">
             <button onClick={() => {setRulesManual(true);}} className="GameRound-rules">Rules Manual</button>

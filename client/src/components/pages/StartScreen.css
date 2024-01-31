@@ -25,26 +25,28 @@
   border-color: #3d4a61;
   top: 20px;
   opacity: 100%;
-  z-index: 10;
+  z-index: 100;
   background-color: white;
+  cursor: pointer;
 }
 
 .StartScreen-body {
   position: absolute;
   text-align: center;
-  vertical-align: middle;
   margin: auto;
   width: calc(100vw - 40px);
-  top: 15vw;
+  font-size: 24px;
+  font-weight: 1000;
+  top: 25vw;
 }
 
 .StartScreen-button {
   font-family: "Roboto Mono", monospace;
   color: #3d4a61;
   font-size: 24px;
-  height: 75px;
+  height: 60px;
   font-weight: 1000;
-  min-width: 250px;
+  width: 300px;
   border-radius: 50px;
   border-width: 4px;
   border-style: solid;
@@ -54,6 +56,46 @@
   background-color: white;
 }
 
-.textAlign {
+.StartScreen-title {
+  position: relative;
+  left: 310px;
+  top: -150px;
+  width: 867.4px;
+  height: 650.5px;
+  z-index: 0;
+}
+
+.textAlign{
   text-align: center;
+}
+
+.textAlign-play {
+  position: relative;
+  left: 26vw;
+  z-index: 30;
+  display: flex
+}
+
+.textAlign-achieve {
+  position: relative;
+  left: 26vw;
+  top: -26vh;
+  z-index: 12;
+  display: flex
+}
+
+.textAlign-rules {
+  position: relative;
+  top: -14vh;
+  left: 52vw;
+  z-index: 80;
+  display: flex
+}
+
+.textAlign-points {
+  position: relative;
+  left: 52vw;
+  top: -12.1vh;
+  z-index: 14;
+  display: flex
 }

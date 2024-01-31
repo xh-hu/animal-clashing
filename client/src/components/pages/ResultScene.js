@@ -18,7 +18,6 @@ const ResultScene = (props) => {
     }, [])
 
     return (
-        <>
         <div className="ResultScene-container">
             {winState ? <div>
                 <h1>{winState.name} won!</h1>
@@ -37,7 +36,6 @@ const ResultScene = (props) => {
                 </div>
             </div> : <div/> }
         </div>
-        </>
     );
   };
   

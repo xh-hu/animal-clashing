@@ -3,6 +3,7 @@ import { Link, useLocation } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import ItemDisplay from "../modules/ItemDisplay";
 import PointManual from "../modules/PointManual";
+import RulesManual from "../modules/RulesManual";
 import TutorialModal from "../modules/TutorialModal";
 
 import "./GameTutorial.css";
@@ -150,6 +151,7 @@ const GameTutorial = (props) => {
     const {user, completeTutorial} = props ? props : useLocation().state;
     const [tradeModal, setTradeModal] = useState(false);
     const [pointManual, setPointManual] = useState(false);
+    const [rulesManual, setRulesManual] = useState(false);
     const [postReceive, setPostReceive] = useState(false);
     const [postTrade, setPostTrade] = useState(false);
     const [receiveModal, setReceiveModal] = useState(false);
@@ -159,11 +161,14 @@ const GameTutorial = (props) => {
         <button onClick={() => {
             completeTutorial(user);
             navigate("/");
-        }} className="GameTutorial-skip">SKIP</button>
+        }} className="GameTutorial-skip">SKIP TUTORIAL</button>
         <div className="GameTutorial-roundNo">{postReceive ? "Preparing for battle" : <div>Round 1/1</div>}</div>
-        <div>Time left: 20</div>
+        <div className="GameTutorial-time">Time left: 30</div>
         <div className="textAlign">
-            <button onClick={() => {setPointManual(true);}} className="GameTutorial-manual">Point Manual</button>
+            <button onClick={() => {setPointManual(true);}} className="GameTutorial-pointmanual">Point Manual</button>
+        </div>
+        <div className="textAlign">
+            <button onClick={() => {setRulesManual(true);}} className="GameTutorial-rules">Rules Manual</button>
         </div>
         <div className="GameTutorial-container">
         {user ? <>
@@ -229,6 +234,9 @@ const GameTutorial = (props) => {
             /> : <div/>}
             {pointManual ? <PointManual 
                 setPointManual={setPointManual}
+            /> : <div/>}
+            {rulesManual ? <RulesManual 
+                setRulesManual={setRulesManual}
             /> : <div/>}
             {fight ? <FightScene
                 user={user}

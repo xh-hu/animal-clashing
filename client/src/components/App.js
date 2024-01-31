@@ -47,6 +47,7 @@ const App = () => {
 
   const timer = useRef(null);
 
+
   useEffect(() => {
     if (!pause) {
       // useRef value stored in .current property
