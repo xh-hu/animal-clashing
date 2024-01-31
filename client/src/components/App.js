@@ -14,7 +14,6 @@ import {LoadScreen, WaitScreen} from "./modules/Loading.js";
 import Achievements from "./pages/Achievements.js";
 import PointPage from "./pages/PointPage.js";
 import GameTutorial from "./pages/GameTutorial.js";
-import BackgroundMusic from "../public/general_bgm.mp3"
 
 import "../utilities.css";
 import "./App.css";
@@ -42,7 +41,6 @@ const App = () => {
   const [waiting, setWaiting] = useState(false);
   const [seconds, setSeconds] = useState(45);
   const [pause, setPause] = useState(false);
-  const [bgm, setBgm] = useState(new Audio(BackgroundMusic));
   const roundDuration = 20;
 
   const timer = useRef(null);
@@ -70,13 +68,6 @@ const App = () => {
         setUser(user);
       }
     });
-  }, []);
-
-  useEffect(() => {
-    // console.log(bgm.muted);
-    bgm.loop = true;
-    bgm.muted = false;
-    // console.log(bgm.muted);
   }, []);
 
   useEffect(() => {
@@ -459,7 +450,6 @@ const App = () => {
             pause={pause}
             setPause={setPause}
             currentTimer={timer.current}
-            bgm={bgm}
           />
         }
       />
@@ -482,7 +472,6 @@ const App = () => {
             winState={winState}
             deleteState={deleteState}
             setMyAchievements={setMyAchievements}
-            bgm={bgm}
           />
         }
       />
@@ -492,7 +481,6 @@ const App = () => {
           <GameTutorial
             user={user}
             completeTutorial={completeTutorial}
-            bgm={bgm}
           />
         }
       />

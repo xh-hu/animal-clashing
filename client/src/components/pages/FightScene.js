@@ -4,6 +4,9 @@ import { Link, useNavigate } from "react-router-dom";
 import "../../utilities.css";
 import "./FightScene.css";
 
+import FightCloud from "../../public/assets/fight_cloud.gif"
+import DrumRoll from "../../public/drum_roll.mp3"
+
 global.pointCalc = (items, avatar) => {
     const propertyPointMap = {
         "animal": 950,
@@ -67,8 +70,10 @@ const FightScene = (props) => {
     const {myState, allStates, setBattle, setWinState} = props ? props : useLocation().state;
     const navigate = useNavigate();
 
-    setBattle(false);
+    const [drumroll, setDrumRoll] = useState(new Audio(DrumRoll));
+
     useEffect(() => {
+        setBattle(false);
         if (myState) {
             setTimeout(() => {
                 let maxScore = 0;
@@ -82,26 +87,23 @@ const FightScene = (props) => {
                 }
                 setWinState(winner);
                 navigate("/resultScene", { state: { myState: myState, winState: winner } });
-            }, 3000);
+            }, 4100);
         }
     }, [])
+
+    useEffect(() => {
+        if (myState) {
+            drumroll.muted = false;
+            drumroll.play();
+        }
+    }, [drumroll]);
 
     return (
         <>
         <div className="FightScene-container">
             {allStates ? <>
                 <h1>FIGHT FIGHT FIGHT!</h1>
-                {allStates.map((state) =>
-                    <div className="FightScene-column">
-                        {state.name}
-                        <img src={imgMap[state.avatar]} className="FightScene-oppImage FightScene-avatar"/>
-                        <img src={imgMap[state.items[0].name + "_" + state.items[0].property]} className="FightScene-oppImage FightScene-helmet"/>
-                        <img src={imgMap[state.items[1].name + "_" + state.items[1].property]} className="FightScene-oppImage FightScene-sword"/>
-                        <img src={imgMap[state.items[2].name + "_" + state.items[2].property]} className="FightScene-oppImage FightScene-shield"/>
-                        <img src={imgMap[state.items[3].name + "_" + state.items[3].property]} className="FightScene-oppImage FightScene-armor"/>
-                        <img src={imgMap[state.items[4].name + "_" + state.items[4].property]} className="FightScene-oppImage FightScene-boots"/>
-                    </div>
-                )}
+                <img src={FightCloud} className="FightScene-cloud"/>
             </> : "Luckily you're exempted!"}
         </div>
         </>

@@ -62,3 +62,11 @@
 .FightScene-boots {
     z-index: 21;
 }
+
+.FightScene-cloud {
+    scale: 0.7;
+    position: absolute;
+    left: 100px;
+    top: -150px;
+    z-index: 30;
+}
