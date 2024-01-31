@@ -2,7 +2,7 @@
 
 .Achievements-container {
     position: absolute;
-    color: white;
+    color: #3d4a61;
     height: 80px;
     padding: 20px;
     text-align: center;
@@ -15,7 +15,7 @@
 .Achievements-back {
     position: absolute;
     font-family: "Roboto Mono", monospace;
-    color: black;
+    color: #3d4a61;
     font-size: 1.5vw;
     height: 4vw;
     top: 20px;
@@ -23,17 +23,25 @@
     font-weight: 1000;
     min-width: 8vw;
     border-radius: 50px;
+    border-style: solid;
+    border-width: 3px;
+    border-color: #3d4a61;
     cursor: pointer;
     z-index: 3;
+    background-color: white;
 }
 
 .Achievements-box {
     height: 60vh;
     margin: 0vw 12vw;
     outline-style: solid;
-    outline-color: white;
-    text-align: left;
-    padding: 30px;
+    outline-color: #3d4a61;
+    outline-width: 8px;
     border-radius: 50px;
-    overflow: scroll ;
+    border-width: 20px;
+    font-weight: 500;
+    font-size: 20px;
+    overflow-x: clip;
+    overflow-y: scroll;
+    background-color: white;
 }

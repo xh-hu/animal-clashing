@@ -15,8 +15,7 @@ function itemInArray(item, array) {
 }
 
 function ReceiveModal(props) {
-    const {setReceiveModal, myState, roundNo, receiveItem} = props;
-    const maxRounds = 1;
+    const {setReceiveModal, myState, roundNo, receiveItem, setPause, setSeconds} = props;
     return (
         <div className="ReceiveModal-container">
             {myState.receive.length > 0 ? <>
@@ -37,6 +36,7 @@ function ReceiveModal(props) {
             </>}
             <button onClick={() => {
                 setReceiveModal(false);
+                setPause(false);
                 receiveItem(myState);
             }} className="ReceiveModal-confirmButton"> CONFIRM </button>
         </div>

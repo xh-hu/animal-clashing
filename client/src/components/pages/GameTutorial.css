@@ -1,0 +1,209 @@
+@import url("https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@100;400&display=swap");
+
+.GameTutorial-container {
+    position: absolute;
+    color: #3d4a61;
+    padding: 100px 80px;
+    text-align: center;
+    vertical-align: middle;
+    margin: auto;
+    width: 100vw;
+    height: max-content;
+    background-color: rgb(201, 203, 221);
+}
+
+
+.GameTutorial-pointmanual {
+    position: absolute;
+    font-family: "Roboto Mono", monospace;
+    color: #3d4a61;
+    font-size: 20px;
+    height: 40px;
+    top: 20px;
+    right: 20px;
+    font-weight: 1000;
+    width: 12vw;
+    min-width: 180px;
+    border-radius: 50px;
+    border-style: solid;
+    border-width: 4px;
+    border-color: #3d4a61;
+    cursor: pointer;
+    z-index: 3;
+    background-color: white;
+}
+
+.GameTutorial-rules {
+    position: absolute;
+    font-family: "Roboto Mono", monospace;
+    color: #3d4a61;
+    font-size: 20px;
+    height: 40px;
+    top: 20px;
+    right: 220px;
+    font-weight: 1000;
+    width: 12vw;
+    min-width: 180px;
+    border-radius: 50px;
+    border-style: solid;
+    border-width: 4px;
+    border-color: #3d4a61;
+    cursor: pointer;
+    z-index: 3;
+    background-color: white;
+}
+
+.GameTutorial-column {
+    float: left;
+    margin: 10px 20px 10px 20px;
+}
+
+.GameTutorial-profile {
+    height: 450px;
+    width: 250px;
+    outline-style: solid;
+    outline-color: #3d4a61;
+    outline-width: 8px;
+    border-radius: 50px;
+    padding: 75px;
+    background-color: white
+}
+
+.GameTutorial-items {
+    /* position: relative; */
+    height: 600px;
+    width: 850px;
+    outline-style: solid;
+    outline-color: #3d4a61;
+    outline-width: 8px;
+    border-radius: 50px;
+    background-color: white;
+}
+
+.GameTutorial-username {
+    position: relative;
+    top: -10px;
+    font-size: 32px;
+    font-weight: 500;
+}
+
+.GameTutorial-character {
+    position: relative;
+    font-size: 20px;
+    font-weight: 300;
+}
+
+.GameTutorial-button {
+    position: relative;
+    font-family: "Roboto Mono", monospace;
+    color: #3d4a61;
+    font-size: 18px;
+    bottom: -120px;
+    height: 60px;
+    font-weight: 1000;
+    min-width: 120px;
+    margin: 30px 1vw;
+    border-radius: 50px;
+    border-style: solid;
+    border-width: 4px;
+    border-color: #3d4a61;
+    z-index: 10;
+    cursor: pointer;
+    background-color: rgb(224, 225, 238);
+}
+
+.GameTutorial-roundNo {
+    position: absolute;
+    top: 10px;
+    left: 50px;
+    color: #3d4a61;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 20px;
+    line-height: 67px;
+    z-index: 60;
+}
+
+.GameTutorial-time{
+    position: absolute;
+    top: 40px;
+    left: 50px;
+    color: #3d4a61;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 20px;
+    line-height: 67px;
+    z-index: 60;
+}
+
+.GameTutorial-image {
+    position: absolute;
+    left: -40px;
+    width: 667.2px;
+    height: 500.4px;
+}
+
+.GameTutorial-avatar {
+    z-index: 20;
+}
+
+.GameTutorial-helmet {
+    z-index: 23;
+}
+
+.GameTutorial-sword {
+    z-index: 24;
+}
+
+.GameTutorial-shield {
+    z-index: 25;
+}
+
+.GameTutorial-armor {
+    z-index: 22;
+}
+
+.GameTutorial-boots {
+    z-index: 21;
+}
+
+.GameTutorial-points {
+    position: absolute;
+    top: 625px;
+    left: 210px;
+    font-size: 16px;
+    font-weight: 400;
+}
+
+
+.GameTutorial-multiplierbox {
+    text-align: left;
+    font-size: 16px;
+}
+
+.GameTutorial-multiplier {
+    position: relative;
+    text-align: left;
+    font-size: 16px;
+    top: 50px;
+    left: 50px;
+}
+
+.GameTutorial-skip {
+    position: absolute;
+    font-family: "Roboto Mono", monospace;
+    font-weight: 100px;
+    color: #3d4a61;
+    height: 30px;
+    width: 120px;
+    left: 45%;
+    top: 30px;
+    border-style: solid;
+    border-radius: 10px;
+    border-width: 2px;
+    border-color: #3d4a61;
+    opacity: 100%;
+    background-color: white;
+    z-index: 1000;
+    cursor: pointer;
+}

@@ -3,6 +3,8 @@ import { Link, useLocation } from "react-router-dom";
 import ItemDisplay from "../modules/ItemDisplay";
 import TradeModal from "../modules/TradeModal";
 import ReceiveModal from "../modules/ReceiveModal";
+import PointManual from "../modules/PointManual";
+import RulesManual from "../modules/RulesManual";
 
 import "./GameRound.css";
 
@@ -58,8 +60,6 @@ import fox from "../../public/assets/fox.png"
 import otter from "../../public/assets/otter.png"
 import tiger from "../../public/assets/tiger.png"
 import wolf from "../../public/assets/wolf.png"
-import PointManual from "../modules/PointManual";
-import RulesManual from "../modules/RulesManual";
 
 global.imgMap = {
     "armor_animal": armorAnimal,
@@ -113,13 +113,24 @@ global.imgMap = {
 }
 
 const GameRound = (props) => {
-    const {myState, tradeItem, untradeItem, receiveItem, readyForNext, readyForBattle, roundNo, maxRounds, receiveModal, setReceiveModal, setMyAchievements, bgm} = props ? props : useLocation().state;
+    const {myState, tradeItem, untradeItem, receiveItem, readyForNext, readyForBattle, roundNo, maxRounds, receiveModal, setReceiveModal, setMyAchievements, bgm, seconds, setSeconds, pause, setPause, currentTimer} = props ? props : useLocation().state;
     console.log(myState);
     const [tradeModal, setTradeModal] = useState(false);
     const [pointManual, setPointManual] = useState(false);
-    const [rulesManual, setRulesManual] = useState(false);
 
     const roundDuration = 30;
+
+    useEffect(() => {
+        if (seconds > 0) return;
+    
+        clearInterval(currentTimer);
+        if (roundNo > maxRounds) {
+            readyForBattle(myState);
+        } else {
+            readyForNext(myState);
+        }
+        setPause(true);
+    }, [currentTimer, seconds]);
 
     useEffect(() => {
         bgm.play();
@@ -140,6 +151,7 @@ const GameRound = (props) => {
     
     return (<>
         <div className="GameRound-roundNo">{roundNo > maxRounds ? "Preparing for battle" : <div>Round {roundNo}/{maxRounds}</div>}</div>
+        <div>Time left: {seconds}</div>
         <div className="textAlign">
             <button onClick={() => {setPointManual(true);}} className="GameRound-pointmanual">Point Manual</button>
         </div>
@@ -168,79 +180,77 @@ const GameRound = (props) => {
                 <div className="GameRound-multiplierbox">
                     {myState.avatar === "bunny" && myState.items[1].name === "sword" && myState.items[1].property === "special" ?
                         <div className="GameRound-multiplier">
-                            <div><b>Bunny + carrot: all points x1.5</b></div>
+                            <div><b>[Special sword] Bunny + carrot : all points x1.5</b></div>
                             <div><i>I had a carrot this big no lie</i></div>
                         </div>
                     : <div/>}
                     {myState.avatar === "cat" && myState.items[0].name === "helmet" && myState.items[0].property === "animal" ?
                         <div className="GameRound-multiplier">
-                            <div><b>Cat combo: all points x1.5</b></div>
-                            <div><i>The original start of the trend</i></div>
+                            <div><b>[Animal helmet] Cat combo: all points x1.5</b></div>
+                            <div><i>Double ears for double trouble</i></div>
                         </div>
                     : <div/>}
                     {myState.avatar === "dog" && myState.items[1].name === "sword" && myState.items[1].property === "animal" ?
                         <div className="GameRound-multiplier">
-                            <div><b>Dog combo: all points x1.5</b></div>
-                            <div><i>Perfectly balanced as all things should be</i></div>
+                            <div><b>[Animal sword] Dog combo: all points x1.5</b></div>
+                            <div><i>He angery, he attack</i></div>
                         </div>
                     : <div/>}
                     {myState.avatar === "deer" && myState.items[4].name === "boots" && myState.items[4].property === "animal" ?
                         <div className="GameRound-multiplier">
-                            <div><b>Deer combo: all points x1.5</b></div>
+                            <div><b>[Animal boots] Deer combo: all points x1.5</b></div>
                             <div><i>Finally... the real shoes</i></div>
                         </div>
                     : <div/>}
                     {myState.avatar === "fox" && myState.items[3].name === "armor" && myState.items[3].property === "special" ?
                         <div className="GameRound-multiplier">
-                            <div><b>Fox + grapes: all points x1.5</b></div>
-                            <div><i>And the fox realized how sweet the grapes were</i></div>
+                            <div><b>[Special armor] Fox + grapes: all points x1.5</b></div>
+                            <div><i>The fox finally got to eat the grapes</i></div>
                         </div>
                     : <div/>}
                     {myState.avatar === "otter" && myState.items[2].name === "shield" && myState.items[2].property === "animal" ?
                         <div className="GameRound-multiplier">
-                            <div><b>Otter combo: all points x1.5</b></div>
-                            <div><i>Holding hands helps with a more peaceful sleep</i></div>
+                            <div><b>[Animal shield] Otter combo: all points x1.5</b></div>
+                            <div><i>Calm, peaceful, and protected</i></div>
                         </div>
                     : <div/>}
                     {myState.avatar === "tiger" && myState.items[3].name === "armor" && myState.items[3].property === "animal" ?
                         <div className="GameRound-multiplier">
-                            <div><b>Tiger combo: all points x1.5</b></div>
+                            <div><b>[Animal armor] Tiger combo: all points x1.5</b></div>
                             <div><i>More stripes = more confidence!</i></div>
                         </div>
                     : <div/>}
                     {myState.avatar === "wolf" && myState.items[2].name === "shield" && myState.items[2].property === "special" ?
                         <div className="GameRound-multiplier">
-                            <div><b>Wolf + moon: all points x1.5</b></div>
-                            <div><i>The quietest he's ever been</i></div>
+                            <div><b>[Special shield] Wolf + moon: all points x1.5</b></div>
+                            <div><i>Werewolf unleashed</i></div>
                         </div>
                     : <div/>}
                     {myState.items[4].name === "boots" && myState.items[4].property === "special" ?
                         <div className="GameRound-multiplier">
-                            <div><b>Iron man boots: all points x1.2</b></div>
+                            <div><b>[Special boots] Iron man boots: all points x1.2</b></div>
                             <div><i>The power of technology</i></div>
                         </div>
                     : <div/>}
                     {myState.items[0].name === "helmet" && myState.items[0].property === "special" ?
                         <div className="GameRound-multiplier">
-                            <div><b>Clown: all points x0.8</b></div>
+                            <div><b>[Special helmet] Clown: all points x0.8</b></div>
                             <div><i>Can anyone really take you seriously like that?</i></div>
                         </div>
                     : <div/>}
                 </div>
                 {roundNo > maxRounds ? <button onClick={() => {
                     if (!tradeModal && !receiveModal) {
+                        setPause(true);
                         readyForBattle(myState);
                     }
                 }} className="GameRound-button"> FIGHT! </button> : <>
                     <button onClick={() => {
-                        if (!tradeModal && !receiveModal) {
-                            readyForNext(myState);
-                        }
+                        setPause(true);
+                        readyForNext(myState);
                     }} className="GameRound-button">KEEP</button>
                     <button onClick={() => {
-                        if (!tradeModal && !receiveModal) {
-                            setTradeModal(true);
-                        }
+                        setTradeModal(true);
                     }} className="GameRound-button">TRADE</button>
                 </>}
             </div>
@@ -248,14 +258,16 @@ const GameRound = (props) => {
                 setTradeModal={setTradeModal}
                 myState={myState}
                 tradeItem={tradeItem}
-                untradeItem={untradeItem}
                 readyForNext={readyForNext}
+                setPause={setPause}
             /> : <div/>}
             {receiveModal ? <ReceiveModal
                 setReceiveModal={setReceiveModal}
                 myState={myState}
                 roundNo={roundNo}
                 receiveItem={receiveItem}
+                setPause={setPause}
+                setSeconds={setSeconds}
             /> : <div/>}
             {pointManual ? <PointManual 
                 setPointManual={setPointManual}

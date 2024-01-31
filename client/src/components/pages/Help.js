@@ -15,31 +15,30 @@ const HelpPage = () => {
         <div className="Help-box">
           <div className="leftAlign">
             <p>
+              Welcome to Animal Clashing! Your goal is to equip yourself with the best possible 
+              combination of items through trading, and then clash with your friends.
+            </p>
+            <p>
               Your character will have 5 gear items: helmet, shield, sword, armor, shoes. These gear
               items can have 8 different properties: viking, scholar, athlete, musician, royal,
-              dancer, animal, special. Each item will have a certain property, and different
-              combinations of gear properties will give you different amounts of points. Your goal
-              is to get the combo with more points than all your friends to win every duel and come
-              out on top.
+              dancer, animal, and special. Each item will have a certain property, and different
+              combinations of gear properties will give you different amounts of points, also known as combat power. (Refer 
+              to the points manual for more information about points.)
             </p>
             <p> Game progression: </p>
             <p class="indent">
-              At the start of each game, each piece of gear your character has will be randomly
-              assigned to a certain property. The same gear item will only be assigned to each
-              property once.
+               - At the start of each game, you will be randomly assigned to a character and gear items with various
+              properties. 
             </p>
             <p class="indent">
-              You can choose to swap or keep each piece of your gear to try to get a better
-              combination of properties for more points (see points page for more details).
+              - During each round you can choose to keep your gear or trade any number (from 1 to all 5) of your gear items
+              to try to get more combat power. Trades will occur only if at least one other person in your lobby chooses to trade that item.
             </p>
             <p class="indent">
-              During each of 4 rounds, a random switch will be initiated between every person who
-              chose to trade each gear item.
+               - Depending on the number of people in the lobby, you will do up to 5 rounds of trades to finalize your gear properties. 
             </p>
             <p class="indent">
-              After all rounds of switches are completed, players will be randomly paired into
-              brackets to fight, where the person with the higher number of points wins each duel.
-              The player who wins the final duel wins the game!
+               - After all trading rounds are completed, players will fight, where the person with the most combat power wins the clash!
             </p>
           </div>
         </div>

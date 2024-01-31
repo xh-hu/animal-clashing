@@ -4,11 +4,12 @@ import { useNavigate } from "react-router-dom";
 
 import "../../utilities.css";
 import "./StartScreen.css";
+import title from "../../public/assets/title.png"
 
 //TODO: REPLACE WITH YOUR OWN CLIENT_ID
 const GOOGLE_CLIENT_ID = "403610806352-6todi6649i18j0fn8sauqk7bpgsqghru.apps.googleusercontent.com";
 
-const StartScreen = ({ userId, handleLogin, handleLogout }) => {
+const StartScreen = ({ userId, handleLogin, handleLogout, tutorial }) => {
     const navigate = useNavigate();
   return (
     <div className="StartScreen-container">
@@ -36,25 +37,31 @@ const StartScreen = ({ userId, handleLogin, handleLogout }) => {
             </div>
         )}
         </GoogleOAuthProvider>
+        <div>
+            <img src={title} className="StartScreen-title"/>
+        </div>
         <div className="StartScreen-body">
-            <h1>animal clashing</h1>
             {userId ? <>
-                <div className="textAlign">
+                <div className="textAlign textAlign-play">
                     <button onClick={() => {
-                        navigate("/lobbyfind");
+                        if (!tutorial) {
+                            navigate("/gametutorial");
+                        } else {
+                            navigate("/lobbyfind");
+                        }
                     }} className="StartScreen-button">PLAY</button>
                 </div>
-                <div className="textAlign">
+                <div className="textAlign textAlign-rules">
                     <button onClick={() => {
                         navigate("/help");
                     }} className="StartScreen-button">RULES</button>
                 </div>
-                <div className="textAlign">
+                <div className="textAlign textAlign-points">
                     <button onClick={() => {
                         navigate("/pointpage");
                     }} className="StartScreen-button">POINT MANUAL</button>
                 </div>
-                <div className="textAlign">
+                <div className="textAlign textAlign-achieve">
                     <button onClick={() => {
                         navigate("/achievements");
                     }} className="StartScreen-button">ACHIEVEMENTS</button>

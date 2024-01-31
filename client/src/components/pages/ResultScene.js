@@ -4,13 +4,20 @@ import { Link, useNavigate } from "react-router-dom";
 import "../../utilities.css";
 import "./ResultScene.css";
 
+import { get, post } from "../../utilities";
+
 const ResultScene = (props) => {
-    const {myState, winState, deleteState, bgm} = props ? props : useLocation().state;
+    const {myState, winState, deleteState, bgm, setMyAchievements} = props ? props : useLocation().state;
 
     const navigate = useNavigate();
 
+    useEffect(() => {
+        post("/api/addgamestat", {state: myState}).then((achievement) => {
+            setMyAchievements(achievement);
+        })
+    }, [])
+
     return (
-        <>
         <div className="ResultScene-container">
             {winState ? <div>
                 <h1>{winState.name} won!</h1>
@@ -29,7 +36,6 @@ const ResultScene = (props) => {
                 </div>
             </div> : <div/> }
         </div>
-        </>
     );
   };
   
