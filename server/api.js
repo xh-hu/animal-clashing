@@ -214,9 +214,6 @@ router.post("/readyfornext", auth.ensureLoggedIn, async (req, res) => {
   const friendStates = await State.find({lobbyName: lobbyName});
   let allPlayersReady = true
   for (let i = 0; i < friendStates.length; i++) {
-    if (friendStates[i].user_id === newState.user_id) {
-      continue;
-    }
     allPlayersReady = (allPlayersReady && friendStates[i].readyForNext);
   }
   if (allPlayersReady) {
