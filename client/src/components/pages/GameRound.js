@@ -263,14 +263,14 @@ const GameRound = (props) => {
                         setPause(true);
                         readyForBattle(myState);
                     }
-                }} className="GameRound-button"> FIGHT! </button> : <>
+                }} className="GameRound-fightbutton"> FIGHT! </button> : <>
                     <button onClick={() => {
                         setPause(true);
                         readyForNext(myState);
-                    }} className="GameRound-button">KEEP</button>
+                    }} className="GameRound-keepbutton">KEEP</button>
                     <button onClick={() => {
                         setTradeModal(true);
-                    }} className="GameRound-button">TRADE</button>
+                    }} className="GameRound-tradebutton">TRADE</button>
                 </>}
             </div>
             {tradeModal ? <TradeModal

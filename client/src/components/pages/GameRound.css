@@ -95,13 +95,53 @@
     font-weight: 300;
 }
 
-.GameRound-button {
+.GameRound-fightbutton {
     position: absolute;
     font-family: "Cute Font", monospace;
     color: #3d4a61;
     font-size: 36px;
     top: 570px;
     left: 900px;
+    height: 60px;
+    font-weight: 1000;
+    min-width: 120px;
+    margin: 30px 10px;
+    border-radius: 50px;
+    border-style: solid;
+    border-width: 4px;
+    border-color: #3d4a61;
+    z-index: 9;
+    cursor: pointer;
+    background-color: rgb(224, 225, 238);
+}
+
+.GameRound-tradebutton {
+    position: absolute;
+    font-family: "Cute Font", monospace;
+    color: #3d4a61;
+    font-size: 36px;
+    top: 570px;
+    left: 980px;
+    height: 60px;
+    font-weight: 1000;
+    min-width: 120px;
+    margin: 30px 10px;
+    border-radius: 50px;
+    border-style: solid;
+    border-width: 4px;
+    border-color: #3d4a61;
+    z-index: 9;
+    cursor: pointer;
+    background-color: rgb(224, 225, 238);
+}
+
+.GameRound-keepbutton {
+    position: absolute;
+    font-family: "Cute Font", monospace;
+    color: #3d4a61;
+    font-size: 36px;
+    top: 570px;
+    left: 820px;
     height: 60px;
     font-weight: 1000;
     min-width: 120px;
