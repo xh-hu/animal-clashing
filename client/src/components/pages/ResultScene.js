@@ -9,11 +9,9 @@ import VictorySound from "../../public/win.mp3"
 import { get, post } from "../../utilities";
 
 const ResultScene = (props) => {
-    const {myState, winState, deleteState, setMyAchievements} = props ? props : useLocation().state;
+    const {myState, winState, deleteState, setMyAchievements, victorySound} = props ? props : useLocation().state;
 
     const navigate = useNavigate();
-
-    const [victorySound, setVictorySound] = useState(new Audio(VictorySound));
 
     useEffect(() => {
         post("/api/addgamestat", {state: myState}).then((achievement) => {
@@ -24,7 +22,11 @@ const ResultScene = (props) => {
     useEffect(() => {
         victorySound.muted = false;
         victorySound.play();
-    }, [victorySound]);
+
+        return () => {
+            victorySound.pause();
+        }
+    }, []);
 
     return (
         <div className="ResultScene-container">

@@ -22,6 +22,10 @@ import { socket } from "../client-socket.js";
 
 import { get, post } from "../utilities";
 
+import BackgroundMusic from "../public/general_bgm.mp3"
+import DrumRoll from "../public/drum_roll.mp3"
+import VictorySound from "../public/win.mp3"
+
 /**
  * Define the "App" component
  */
@@ -41,6 +45,11 @@ const App = () => {
   const [waiting, setWaiting] = useState(false);
   const [seconds, setSeconds] = useState(45);
   const [pause, setPause] = useState(false);
+
+  const [bgm, setBgm] = useState(new Audio(BackgroundMusic));
+  const [drumroll, setDrumRoll] = useState(new Audio(DrumRoll));
+  const [victorySound, setVictorySound] = useState(new Audio(VictorySound));
+
   const roundDuration = 20;
 
   const timer = useRef(null);
@@ -450,6 +459,7 @@ const App = () => {
             pause={pause}
             setPause={setPause}
             currentTimer={timer.current}
+            bgm={bgm}
           />
         }
       />
@@ -461,6 +471,7 @@ const App = () => {
             allStates={allStates}
             setBattle={setBattle}
             setWinState={setWinState}
+            drumroll={drumroll}
           />
         }
       />
@@ -472,6 +483,7 @@ const App = () => {
             winState={winState}
             deleteState={deleteState}
             setMyAchievements={setMyAchievements}
+            victorySound={victorySound}
           />
         }
       />
