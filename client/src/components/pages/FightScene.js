@@ -92,10 +92,8 @@ const FightScene = (props) => {
     }, [])
 
     useEffect(() => {
-        if (myState) {
-            drumroll.muted = false;
-            drumroll.play();
-        }
+        drumroll.muted = false;
+        drumroll.play();
     }, [drumroll]);
 
     return (

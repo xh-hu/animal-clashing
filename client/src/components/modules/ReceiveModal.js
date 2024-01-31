@@ -22,13 +22,13 @@ function ReceiveModal(props) {
                 {myState.receive.filter((item) => !itemInArray(item, myState.items)).length > 0 ? <div>
                     <div className="ReceiveModal-text">You got...</div>
                     {myState.receive.filter((item) => !itemInArray(item, myState.items)).map((item) => 
-                        <div className="ReceiveModal-itemtext">{item.name}: {item.property}</div>
+                        <div className="ReceiveModal-itemtext">{item.name}: {item.property} {emojiMap[item.property]}</div>
                     )}
                 </div> : <div/>}
                 {myState.receive.filter((item) => itemInArray(item, myState.items)).length > 0 ? <div>
                     <div className="ReceiveModal-text">You kept...</div>
                     {myState.receive.filter((item) => itemInArray(item, myState.items)).map((item) => 
-                        <div className="ReceiveModal-itemtext">{item.name}: {item.property}</div>
+                        <div className="ReceiveModal-itemtext">{item.name}: {item.property} {emojiMap[item.property]}</div>
                     )}
                 </div> : <div/>}
             </> : <>

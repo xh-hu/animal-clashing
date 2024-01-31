@@ -8,7 +8,7 @@ function ItemDisplay(props) {
     return (
         <div className="ItemDisplay-container">
             {item ? <div className="ItemDisplay-itembox">
-                {item.name}: {item.property}
+                {item.name}: {item.property} {emojiMap[item.property]}
             </div> : <div/>}
         </div>
     );
