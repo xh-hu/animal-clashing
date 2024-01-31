@@ -12,12 +12,12 @@ function ItemTrade(props) {
                 setTraded(false);
                 untradeItem(item, state);
             }} className="ItemTrade-untradeButton">
-                {item.name}: {item.property}
+                {item.name}: {item.property} {emojiMap[item.property]}
             </button> : <button onClick={() => {
                 setTraded(true);
                 tradeItem(item, state);
             }} className="ItemTrade-tradeButton">
-                {item.name}: {item.property}
+                {item.name}: {item.property} {emojiMap[item.property]}
             </button>) : <div/>}
         </div>
     );

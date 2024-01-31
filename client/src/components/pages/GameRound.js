@@ -114,6 +114,17 @@ global.imgMap = {
     "wolf": wolf,
 }
 
+global.emojiMap = {
+    "animal": "🐶",
+    "athlete": "🏀",
+    "dancer": "🩰",
+    "musician": "🎵",
+    "royal": "👑",
+    "scholar": "📕",
+    "special": "🤡",
+    "viking": "🏴‍☠️",
+}
+
 const GameRound = (props) => {
     const {myState, tradeItem, untradeItem, receiveItem, readyForNext, readyForBattle, roundNo, maxRounds, receiveModal, setReceiveModal, setMyAchievements, seconds, setSeconds, pause, setPause, currentTimer} = props ? props : useLocation().state;
     console.log(myState);
