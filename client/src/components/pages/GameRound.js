@@ -117,6 +117,7 @@ const GameRound = (props) => {
     console.log(myState);
     const [tradeModal, setTradeModal] = useState(false);
     const [pointManual, setPointManual] = useState(false);
+    const [rulesManual, setRulesManual] = useState(false);
 
     const roundDuration = 30;
 
