@@ -1,47 +1,72 @@
 @import url("https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@100;400&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Cute+Font&display=swap');
 
 .PointManual-container {
   position: absolute;
-  font-family: "Roboto Mono", monospace;
+  font-family: "Cute Font", monospace;
   margin: auto;
-  top: 50px;
-  height: calc(100vh - 150px);
-  width: calc(100vw - 200px);
+  top: 100px;
+  left: 90px;
+  height: 520px;
+  width: 1250px;
   text-align: center;
   padding: 25px;
   border-radius: 50px;
   color: #3d4a61;
   font-weight: 1000;
   font-size: 18px;
-  background-color: rgb(239, 239, 239);
+  background-color: white;
+  border-style:solid;
+  border-width: 8px;
+  border-color:#3d4a61;
   z-index: 50;
 }
 
 .PointManual-title {
-  font-size: 48px;
+  font-size: 60px;
 }
 
 .PointManual-body {
   text-align: left;
-  font-size: 40px;
+  font-size: 30px;
   padding: 50px;
-  height: 475px;
-  overflow: scroll;
+  height: 350px;
+  overflow-y: scroll;
+  overflow-x: clip
 }
 
 .PointManual-closeButton {
-  position: relative;
-  font-family: "Roboto Mono", monospace;
-  color: white;
-  background-color: rgb(153, 153, 153);
-  font-size: 18px;
+  position: absolute;
+  font-family: "Cute Font", monospace;
+  color: #3d4a61;
+  background-color: rgb(224, 225, 238);
+  font-size: 36px;
   height: 60px;
   font-weight: 1000;
   min-width: 120px;
+  left: 1130px;
+  top: 30px;
   /* margin: 30px 1vw;  */
   border-radius: 50px;
-  border-color: rgb(153, 153, 153);
+  border-width: 4px;
+  border-color: #3d4a61;
   cursor: pointer;
+
+    /* font-family: "Cute Font", monospace;
+    color: #3d4a61;
+    font-size: 36px;
+    height: 60px;
+    left: 0px;
+    top: 0px;
+    font-weight: 1000;
+    min-width: 150px;
+    margin: 30px 10px;
+    border-radius: 50px;
+    border-style: solid;
+    border-width: 4px;
+    border-color: #3d4a61;
+    cursor: pointer;
+    background-color: white; */
 }
 
 p.indent {
