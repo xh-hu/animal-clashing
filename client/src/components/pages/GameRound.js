@@ -119,12 +119,13 @@ const GameRound = (props) => {
     const [pointManual, setPointManual] = useState(false);
     const [rulesManual, setRulesManual] = useState(false);
 
-    const roundDuration = 30;
+    const roundDuration = 45;
 
     useEffect(() => {
         if (seconds > 0) return;
     
         clearInterval(currentTimer);
+        setTradeModal(false);
         if (roundNo > maxRounds) {
             readyForBattle(myState);
         } else {

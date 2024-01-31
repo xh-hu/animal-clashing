@@ -36,7 +36,6 @@ function ReceiveModal(props) {
             </>}
             <button onClick={() => {
                 setReceiveModal(false);
-                setPause(false);
                 receiveItem(myState);
             }} className="ReceiveModal-confirmButton"> CONFIRM </button>
         </div>

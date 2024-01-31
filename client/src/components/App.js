@@ -40,7 +40,7 @@ const App = () => {
   const [makingChanges, setMakingChanges] = useState(false);
   const [maxRounds, setMaxRounds] = useState(3);
   const [waiting, setWaiting] = useState(false);
-  const [seconds, setSeconds] = useState(30);
+  const [seconds, setSeconds] = useState(45);
   const [pause, setPause] = useState(false);
   const [bgm, setBgm] = useState(new Audio(BackgroundMusic));
   const roundDuration = 20;
@@ -52,7 +52,7 @@ const App = () => {
     if (!pause) {
       // useRef value stored in .current property
       console.log("AWAWAWAWAWAWA");
-      setSeconds(30);
+      setSeconds(45);
       timer.current = setInterval(() => setSeconds((v) => v - 1), 1000);
     } else {
       clearInterval(timer.current);
@@ -196,7 +196,7 @@ const App = () => {
       setMyLobby(null);
       setMyState(state);
       setRoundNo(1);
-      setSeconds(30);
+      setSeconds(45);
       setMaxRounds(Math.min(playerNo, 5));
       setMakingChanges(false);
       return () => {
@@ -211,9 +211,8 @@ const App = () => {
       setMyState(state);
       if (roundNo > 0) {
         setReceiveModal(true);
-      } else {
-        setPause(false);
       }
+      setPause(false);
       setRoundNo(roundNo+1);
       setMakingChanges(false);
       setWaiting(false);
@@ -354,7 +353,7 @@ const App = () => {
       setMyState(null);
       setBattle(false);
       setRoundNo(1);
-      setSeconds(30);
+      setSeconds(45);
       setAllStates(null);
       setWinState(null);
     })
