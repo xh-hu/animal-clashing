@@ -92,10 +92,6 @@ const App = () => {
         console.log(achievement);
         setMyAchievements(achievement);
       })
-      post("/api/achievements", {user: user}).then((achievement) => {
-        console.log(achievement);
-        setMyAchievements(achievement);
-      })
     }
     
     if (user) {
@@ -361,7 +357,8 @@ const App = () => {
       setAllStates(null);
       setWinState(null);
     })
-  })
+    })
+  }
 
   function completeTutorial(user) {
     post("/api/tutorialcomplete", {user: user}).then((achievement) => {
@@ -471,7 +468,6 @@ const App = () => {
         element={
           <FightScene
             myState={myState}
-            allStates={allStates}
             allStates={allStates}
             setBattle={setBattle}
             setWinState={setWinState}
