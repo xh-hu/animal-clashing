@@ -4,18 +4,27 @@ import { Link, useNavigate } from "react-router-dom";
 import "../../utilities.css";
 import "./ResultScene.css";
 
+import VictorySound from "../../public/win.mp3"
+
 import { get, post } from "../../utilities";
 
 const ResultScene = (props) => {
-    const {myState, winState, deleteState, bgm, setMyAchievements} = props ? props : useLocation().state;
+    const {myState, winState, deleteState, setMyAchievements} = props ? props : useLocation().state;
 
     const navigate = useNavigate();
+
+    const [victorySound, setVictorySound] = useState(new Audio(VictorySound));
 
     useEffect(() => {
         post("/api/addgamestat", {state: myState}).then((achievement) => {
             setMyAchievements(achievement);
         })
     }, [])
+
+    useEffect(() => {
+        victorySound.muted = false;
+        victorySound.play();
+    }, [victorySound]);
 
     return (
         <div className="ResultScene-container">
@@ -30,7 +39,6 @@ const ResultScene = (props) => {
                 <div className="textAlign">
                     <button onClick={() => {
                         deleteState(myState);
-                        bgm.pause();
                         navigate("/");
                     }} className="ResultScene-button">HOME</button>
                 </div>
