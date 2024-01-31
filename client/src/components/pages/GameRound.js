@@ -153,7 +153,7 @@ const GameRound = (props) => {
     
     return (<>
         <div className="GameRound-roundNo">{roundNo > maxRounds ? "Preparing for battle" : <div>Round {roundNo}/{maxRounds}</div>}</div>
-        <div>Time left: {seconds}</div>
+        <div className="GameRound-time">Time left: {seconds}</div>
         <div className="textAlign">
             <button onClick={() => {setPointManual(true);}} className="GameRound-pointmanual">Point Manual</button>
         </div>

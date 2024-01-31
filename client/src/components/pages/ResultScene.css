@@ -9,19 +9,22 @@
     text-align: center;
     vertical-align: middle;
     margin: auto;
-    width: calc(100vw - 160px);
-    height: 100vw;
-    top: 100px;
+    width: 1400px;
+    height: 1000px;
+    top: 0px;
+    left:0px;
+    font-size: 50px;
     background-color: rgb(201, 203, 221);
+    z-index: 100;
 }
 
 .ResultScene-button {
     position: absolute;
     font-family: "Cute Font", monospace;
     color: #3d4a61;
-    font-size: 18px;
-    top: 480px;
-    left: calc(50vw - 60px);
+    font-size: 36px;
+    top: 570px;
+    left: 720px;
     height: 60px;
     font-weight: 1000;
     min-width: 120px;
@@ -32,13 +35,15 @@
     border-color: #3d4a61;
     cursor: pointer;
     background-color: white;
+    z-index: 101;
 }
 
 .ResultScene-image {
     position: absolute;
-    left: calc((100vw - 556px)/2);
-    width: 556px;
-    height: 417px;
+    left: 430px;
+    top: 140px;
+    width: 667.2px;
+    height: 500.4px;
 }
 
 .ResultScene-avatar {

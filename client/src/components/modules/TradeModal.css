@@ -4,10 +4,10 @@
 .TradeModal-container {
     position: absolute;
     font-family: "Cute Font", monospace;
-    left: calc((110vw - 500px)/2 - 25px);
+    left: 550px;
     top: 120px;
-    height: calc(90vh - 100px);
-    width: 750px;
+    height: 500px;
+    width: 780px;
     text-align: center;
     padding: 25px;
     border-radius: 50px;
@@ -19,7 +19,7 @@
 }
 
 .TradeModal-text {
-    font-size: 24px;
+    font-size: 36px;
 }
 
 .TradeModal-items {
@@ -31,7 +31,7 @@
     font-family: "Cute Font", monospace;
     color: #3d4a61;
     background-color: white;
-    font-size: 18px;
+    font-size: 36px;
     top: 40px;
     height: 60px;
     font-weight: 1000;
@@ -45,7 +45,7 @@
 
 .TradeModal-back {
     position: absolute;
-    left: 740px;
+    left: 760px;
     top: 20px;
     color: white;
     background-color: #3d4a61;
@@ -54,6 +54,6 @@
     border-style: solid;
     border-radius: 50px;
     border-color: #3d4a61;
-    font-size: 36px;
+    font-size: 28px;
     cursor: pointer;
 }

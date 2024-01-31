@@ -4,11 +4,12 @@
 .GameRound-container {
     position: absolute;
     color: #3d4a61;
+    color: #3d4a61;
     padding: 100px 80px;
     text-align: center;
     vertical-align: middle;
     margin: auto;
-    width: 100vw;
+    width: 1800px;
     height: max-content;
     background-color: rgb(201, 203, 221);
 }
@@ -17,12 +18,12 @@
     position: absolute;
     font-family: "Cute Font", monospace;
     color: #3d4a61;
-    font-size: 20px;
-    height: 40px;
+    font-size: 30px;
+    height: 50px;
     top: 20px;
     right: 20px;
     font-weight: 1000;
-    width: 12vw;
+    width: 100px;
     min-width: 180px;
     border-radius: 50px;
     border-style: solid;
@@ -37,12 +38,12 @@
     position: absolute;
     font-family: "Cute Font", monospace;
     color: #3d4a61;
-    font-size: 20px;
-    height: 40px;
+    font-size: 30px;
+    height: 50px;
     top: 20px;
     right: 220px;
     font-weight: 1000;
-    width: 12vw;
+    width: 100px;
     min-width: 180px;
     border-radius: 50px;
     border-style: solid;
@@ -59,7 +60,7 @@
 }
 
 .GameRound-profile {
-    height: 450px;
+    height: 420px;
     width: 250px;
     outline-style: solid;
     outline-color: #3d4a61;
@@ -71,7 +72,7 @@
 
 .GameRound-items {
     /* position: relative; */
-    height: 600px;
+    height: 570px;
     width: 850px;
     outline-style: solid;
     outline-color: #3d4a61;
@@ -82,14 +83,15 @@
 
 .GameRound-username {
     position: relative;
-    top: -10px;
-    font-size: 32px;
+    top: -40px;
+    font-size: 48px;
     font-weight: 500;
 }
 
 .GameRound-character {
     position: relative;
-    font-size: 20px;
+    top: -40px;
+    font-size: 34px;
     font-weight: 300;
 }
 
@@ -97,29 +99,42 @@
     position: relative;
     font-family: "Cute Font", monospace;
     color: #3d4a61;
-    font-size: 18px;
-    bottom: -120px;
+    font-size: 36px;
+    top: 70px;
     height: 60px;
     font-weight: 1000;
     min-width: 120px;
-    margin: 30px 1vw;
+    margin: 30px 10px;
     border-radius: 50px;
     border-style: solid;
     border-width: 4px;
     border-color: #3d4a61;
-    z-index: 10;
+    z-index: 9;
     cursor: pointer;
     background-color: rgb(224, 225, 238);
 }
 
 .GameRound-roundNo {
     position: absolute;
-    top: 10px;
-    left: 50px;
+    top: 0px;
+    left: 40px;
     color: #3d4a61;
     font-style: normal;
     font-weight: 400;
-    font-size: 20px;
+    font-size: 40px;
+    line-height: 67px;
+    z-index: 60;
+}
+
+
+.GameRound-time {
+    position: absolute;
+    top: 30px;
+    left: 40px;
+    color: #3d4a61;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 40px;
     line-height: 67px;
     z-index: 60;
 }
@@ -157,21 +172,22 @@
 
 .GameRound-points {
     position: absolute;
+    text-align: center;
     top: 625px;
-    left: 210px;
-    font-size: 16px;
+    left: 200px;
+    font-size: 38px;
     font-weight: 400;
 }
 
 .GameRound-multiplierbox {
     text-align: left;
-    font-size: 16px;
+    font-size: 28px;
 }
 
 .GameRound-multiplier {
     position: relative;
     text-align: left;
-    font-size: 16px;
-    top: 50px;
+    font-size: 24px;
+    top: 30px;
     left: 50px;
 }

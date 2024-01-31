@@ -170,7 +170,7 @@ const GameTutorial = (props) => {
             navigate("/");
         }} className="GameTutorial-skip">SKIP TUTORIAL</button>
         <div className="GameTutorial-roundNo">{postReceive ? "Preparing for battle" : <div>Round 1/1</div>}</div>
-        <div className="GameTutorial-time">Time left: 30</div>
+        <div className="GameTutorial-time">Time left: 45</div>
         <div className="textAlign">
             <button onClick={() => {}} className="GameTutorial-pointmanual">Point Manual</button>
         </div>

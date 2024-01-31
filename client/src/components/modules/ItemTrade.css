@@ -12,13 +12,14 @@
     margin: 0vw 30px;
     text-align: left;
     width: 400px;
+    height: 22px;
     padding: 20px;
     border-radius: 50px;
     border-width: 2px;
     border-style: solid;
     border-color: #3d4a61;
     font-weight: 1000;
-    font-size: 18px;
+    font-size: 28px;
     background-color: white;
     color: #3d4a61;
 }
@@ -30,13 +31,14 @@
     margin: 0vw 30px;
     text-align: left;
     width: 400px;
+    height: 22px;
     padding: 20px;
     border-style: solid;
     border-radius: 50px;
     border-width: 4px;
     border-color: #3d4a61;
     font-weight: 1000;
-    font-size: 18px;
+    font-size: 28px;
     background-color:  rgb(201, 203, 221);
     color: #3d4a61;
 }

@@ -18,11 +18,12 @@
 }
 
 .PointManual-title {
-  font-size: 24px;
+  font-size: 48px;
 }
 
 .PointManual-body {
   text-align: left;
+  font-size: 40px;
   padding: 50px;
   height: 475px;
   overflow: scroll;

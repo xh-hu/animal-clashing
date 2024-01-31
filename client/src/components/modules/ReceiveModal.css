@@ -4,10 +4,10 @@
 .ReceiveModal-container {
     position: absolute;
     font-family: "Cute Font", monospace;
-    left: calc((110vw - 500px)/2 - 25px);
+    left: 550px;
     top: 120px;
-    height: calc(90vh - 100px);
-    width: 750px;
+    height: 500px;
+    width: 780px;
     text-align: center;
     padding: 25px;
     border-radius: 50px;
@@ -20,25 +20,26 @@
 
 .ReceiveModal-text {
     text-align: left;
-    font-size: 24px;
+    font-size: 56px;
 }
 
 .ReceiveModal-itemtext {
     text-align: center;
-    font-size: 20px;
+    font-size: 50px;
     font-weight: 900;
 }
 
 .ReceiveModal-confirmButton {
-    position: relative;
-    top: 330px;
+    position: absolute;
+    top: 480px;
+    left: 370px;
     font-family: "Cute Font", monospace;
     color: #3d4a61;
     background-color: white;
-    font-size: 18px;
+    font-size: 36px;
     height: 60px;
     font-weight: 1000;
-    min-width: 120px;
+    min-width: 140px;
     /* margin: 30px 1vw;  */
     border-radius: 50px;
     border-style: solid;

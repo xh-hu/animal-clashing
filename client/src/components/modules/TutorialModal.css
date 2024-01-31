@@ -20,7 +20,7 @@
     border-color: #EDBBCE;
     color: #3d4a61;
     font-weight: 1000;
-    font-size: 18px;
+    font-size: 32px;
     background-color: white;
     z-index: 1005;
 }
@@ -97,8 +97,8 @@
 .TutorialModal-blackout5 {
     position: absolute;
     width: 810px;
-    height: 80px;
-    top: 460px;
+    height: 70px;
+    top: 470px;
     left: 560px;
     z-index: 100;
     box-shadow: 0 0 0 10000px rgba(0, 0, 0, .7);
@@ -109,7 +109,7 @@
     position: absolute;
     width: 350px;
     height: 80px;
-    top: 610px;
+    top: 595px;
     left: 790px;
     z-index: 100;
     box-shadow: 0 0 0 10000px rgba(0, 0, 0, .7);
@@ -120,8 +120,8 @@
     position: absolute;
     width: 180px;
     height: 70px;
-    top: 25px;
-    left: 35px;
+    top: 15px;
+    left: 25px;
     z-index: 100;
     box-shadow: 0 0 0 10000px rgba(0, 0, 0, .7);
     border-radius: 20px;
@@ -130,7 +130,7 @@
 .TutorialModal-blackout8 {
     position: absolute;
     width: 405px;
-    height: 60px;
+    height: 70px;
     top: 10px;
     left: 1120px;
     z-index: 100;

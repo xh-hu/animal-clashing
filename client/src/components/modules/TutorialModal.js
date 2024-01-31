@@ -70,7 +70,7 @@ function TutorialModal(props) {
         </div> : modal7 ?
         <div className="TutorialModal-blackout7">
             <div className="TutorialModal-container TutorialModal-7">
-                At the top left, you can see the number of rounds remaining before the clash and the time left during each round. Each round is 30 seconds, and you will automatically keep all your items if time runs out!
+                At the top left, you can see the number of rounds remaining before the clash and the time left during each round. Each round is 45 seconds, and you will automatically keep all your items if time runs out!
                 <button onClick={()=>{setModal7(false); setModal8(true)}} className="TutorialModal-nextbutton TutorialModal-nextbutton7">&gt;&gt;</button>
             </div>
         </div> : modal8 ?
